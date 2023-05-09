@@ -50,6 +50,7 @@ public class KoboldEntity extends PathAwareEntity implements IAnimatable, Monste
     public static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     private static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(KoboldEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private long ticksUntilAttackFinish = 0;
 
     public KoboldEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
@@ -98,8 +99,8 @@ public class KoboldEntity extends PathAwareEntity implements IAnimatable, Monste
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.5, false));
-        this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.75));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.25f, false));
+        this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.75f));
         this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
         this.goalSelector.add(4, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, CowEntity.class, true));
@@ -107,31 +108,22 @@ public class KoboldEntity extends PathAwareEntity implements IAnimatable, Monste
 
     @Override
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 1, animationEvent -> {
+        animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
             if (animationEvent.isMoving() && !handSwinging) {
-                if (isAttacking() && !handSwinging) {
-                    animationEvent.getController().setAnimation(RUN);
-                    return PlayState.CONTINUE;
-                }
                 animationEvent.getController().setAnimation(WALK);
                 return PlayState.CONTINUE;
-            }
-            else if (handSwinging) {
-                MythicMobs.LOGGER.info("ATTACKING ANIMATION");
-                this.speed = 0;
+            } else if (handSwinging) {
                 animationEvent.getController().setAnimation(ATTACK);
-                ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-                executor.schedule(() -> setHandSwinging(false), 440, TimeUnit.MILLISECONDS);
-//                executor.schedule(() -> resetSpeed(), 840, TimeUnit.MILLISECONDS);
+                ticksUntilAttackFinish++;
+                if (ticksUntilAttackFinish > 20 * 2) {
+                    handSwinging = false;
+                    ticksUntilAttackFinish = 0;
+                }
                 return PlayState.CONTINUE;
             }
             animationEvent.getController().setAnimation(IDLE);
             return PlayState.CONTINUE;
         }));
-    }
-
-    private void setHandSwinging(boolean value) {
-        handSwinging = value;
     }
 
     @Override

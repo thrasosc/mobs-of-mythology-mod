@@ -120,15 +120,22 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 50).add(EntityAttributes.GENERIC_ARMOR, 25).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes()
+                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
+                .add(EntityAttributes.GENERIC_ARMOR, 25)
+                .add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10)
+                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
+                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override
     protected void initGoals() {
         goalSelector.add(0, new SwimGoal(this));
-        goalSelector.add(1, new WendigoAttackGoal(this, 1.5, true));
-        goalSelector.add(2, new WanderAroundFarGoal(this, 1));
-        goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 8));
+        goalSelector.add(1, new WendigoAttackGoal(this, 1.0f, true));
+        goalSelector.add(2, new WanderAroundFarGoal(this, 0.75f));
+        goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         goalSelector.add(4, new LookAroundGoal(this));
         targetSelector.add(1, new ActiveTargetGoal<>(this, CowEntity.class, true));
         targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
@@ -144,6 +151,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
 
     @Override
     public void registerControllers(AnimationData animationData) {
+        setAnim();
         animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
             if (!getHasRoared() && isAttacking()) {
                 animationEvent.getController().setAnimation(ROAR);

@@ -19,7 +19,7 @@ public class EntityEvents {
             if(entity instanceof IronGolemEntity ironGolem && entity.getClass() == IronGolemEntity.class && ((IMobRememberSpawnReason)ironGolem).getMobSpawnType() != SpawnReason.COMMAND && !ironGolem.isPlayerCreated()) {
                 AutomatonEntity automatonEntity = EntityRegistry.AUTOMATON_ENTITY.create(level);
                 if(automatonEntity == null) return;
-                automatonEntity.refreshPositionAfterTeleport(ironGolem.getPos());   //maybe wrong method
+                automatonEntity.refreshPositionAfterTeleport(ironGolem.getPos());
                 AUTOMATON_ENTITIES.add(automatonEntity);
                 ironGolem.discard();
             }

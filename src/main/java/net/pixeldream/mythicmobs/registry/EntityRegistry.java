@@ -23,7 +23,7 @@ public class EntityRegistry {
     public static final EntityType<TrollEntity> TROLL_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "troll"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, TrollEntity::new).dimensions(EntityDimensions.fixed(3.0f,5.0f)).build()
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, TrollEntity::new).dimensions(EntityDimensions.fixed(1.5f,4.5f)).build()
     );
     public static final EntityType<KoboldEntity> KOBOLD_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,

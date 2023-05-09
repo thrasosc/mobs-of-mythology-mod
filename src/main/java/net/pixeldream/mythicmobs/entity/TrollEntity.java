@@ -8,6 +8,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.ChickenEntity;
+import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.MerchantEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.sound.SoundEvent;
@@ -30,6 +31,8 @@ public class TrollEntity extends PathAwareEntity implements IAnimatable, Monster
     public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+    private long ticksUntilAttackFinish = 0;
+
 
 
     public TrollEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
@@ -40,44 +43,42 @@ public class TrollEntity extends PathAwareEntity implements IAnimatable, Monster
     public static DefaultAttributeContainer.Builder setAttributes() {
         return HostileEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
                 .add(EntityAttributes.GENERIC_ATTACK_SPEED, 2)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.4);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(2, new MeleeAttackGoal(this, 1.2D, false));
-        this.goalSelector.add(3, new WanderAroundFarGoal(this, 0.75f, 1));
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0f, false));
+        this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.75f));
+        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
         this.goalSelector.add(4, new LookAroundGoal(this));
-
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, MerchantEntity.class, true));
-        this.targetSelector.add(3, new ActiveTargetGoal<>(this, ChickenEntity.class, true));
+        this.targetSelector.add(1, new ActiveTargetGoal<>(this, CowEntity.class, true));
     }
 
     @Override
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 0, animationEvent -> {
-            if (animationEvent.isMoving()) {
-                if (this.isAttacking()) {
+        animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
+            if (animationEvent.isMoving() && !handSwinging) {
+                if (isAttacking() && !handSwinging) {
                     animationEvent.getController().setAnimation(RUN);
                     return PlayState.CONTINUE;
                 }
                 animationEvent.getController().setAnimation(WALK);
                 return PlayState.CONTINUE;
+            } else if (handSwinging) {
+                animationEvent.getController().setAnimation(ATTACK);
+                ticksUntilAttackFinish++;
+                if (ticksUntilAttackFinish > 20 * 3) {
+                    handSwinging = false;
+                    ticksUntilAttackFinish = 0;
+                }
+                return PlayState.CONTINUE;
             }
             animationEvent.getController().setAnimation(IDLE);
-            return PlayState.CONTINUE;
-        }));
-        animationData.addAnimationController(new AnimationController(this, "attackController", 0, animationEvent -> {
-            if (this.handSwinging) { //&& event.getController().getAnimationState().equals(AnimationState.Stopped)) {
-                animationEvent.getController().markNeedsReload();
-                animationEvent.getController().setAnimation(ATTACK);
-                this.handSwinging = false;
-            }
             return PlayState.CONTINUE;
         }));
     }
