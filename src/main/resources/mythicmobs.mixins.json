@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.pixeldream.mythicmobs.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MobRememberSpawnReasonMixin",
+    "CarvedPumpkinAutomatonSpawn"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

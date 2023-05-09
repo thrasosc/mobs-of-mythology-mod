@@ -1,0 +1,10 @@
+{
+  "entity.mythicmobs.wendigo": "Wendigo",
+  "entity.mythicmobs.kobold": "Kobold",
+  "entity.mythicmobs.troll": "Quái Nhân",
+
+  "item.mythicmobs.spear": "Spear",
+  "item.mythicmobs.axe-calibur": "Axe Calibur",
+
+  "itemGroup.mythicmobs.item_group": "Mythic Mobs"
+}

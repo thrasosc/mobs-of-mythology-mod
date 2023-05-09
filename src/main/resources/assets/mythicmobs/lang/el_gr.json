@@ -1,0 +1,10 @@
+{
+  "entity.mythicmobs.wendigo": "Γουέντιγκο",
+  "entity.mythicmobs.kobold": "Καλικάντζαρος",
+  "entity.mythicmobs.troll": "Τρολ",
+
+  "item.mythicmobs.spear": "Spear",
+  "item.mythicmobs.axe-calibur": "Axe Calibur",
+
+  "itemGroup.mythicmobs.item_group": "Mythic Mobs"
+}

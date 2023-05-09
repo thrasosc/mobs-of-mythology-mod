@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "mythicmobs",
+	"version": "${version}",
+	"name": "Mythic Mobs",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Pixel Dream Studios"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/mythicmobs/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.pixeldream.mythicmobs.MythicMobs"
+		],
+		"client": [
+			"net.pixeldream.mythicmobs.MythicMobsClient"
+		]
+	},
+	"mixins": [
+		"mythicmobs.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.19",
+		"minecraft": "~1.19.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	},
+	"accessWidener": "mythicmobs.accesswidener"
+}
