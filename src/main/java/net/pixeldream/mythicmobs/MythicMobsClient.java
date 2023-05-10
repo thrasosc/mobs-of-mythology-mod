@@ -11,5 +11,6 @@ public class MythicMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityRegistry.KOBOLD_ENTITY, KoboldRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.WENDIGO_ENTITY, WendigoRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.AUTOMATON_ENTITY, AutomatonRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.WYVERN_ENTITY, WyvernRenderer::new);
     }
 }

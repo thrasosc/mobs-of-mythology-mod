@@ -8,10 +8,7 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.pixeldream.mythicmobs.MythicMobs;
-import net.pixeldream.mythicmobs.entity.AutomatonEntity;
-import net.pixeldream.mythicmobs.entity.KoboldEntity;
-import net.pixeldream.mythicmobs.entity.TrollEntity;
-import net.pixeldream.mythicmobs.entity.WendigoEntity;
+import net.pixeldream.mythicmobs.entity.*;
 
 public class EntityRegistry {
     public EntityRegistry() {
@@ -19,6 +16,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(KOBOLD_ENTITY, KoboldEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(WENDIGO_ENTITY, WendigoEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(AUTOMATON_ENTITY, AutomatonEntity.setAttributes());
+        FabricDefaultAttributeRegistry.register(WYVERN_ENTITY, WyvernEntity.setAttributes());
     }
     public static final EntityType<TrollEntity> TROLL_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
@@ -41,5 +39,10 @@ public class EntityRegistry {
             Registry.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "automaton"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, AutomatonEntity::new).dimensions(EntityDimensions.fixed(1.5f,3.0f)).build()
+    );
+    public static final EntityType<WyvernEntity> WYVERN_ENTITY = Registry.register(
+            Registry.ENTITY_TYPE,
+            new Identifier(MythicMobs.MOD_ID, "wyvern"),
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WyvernEntity::new).dimensions(EntityDimensions.fixed(5f,4.0f)).build()
     );
 }
