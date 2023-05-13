@@ -137,7 +137,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     protected void initGoals() {
         goalSelector.add(0, new SwimGoal(this));
         goalSelector.add(1, new RoarGoal(this));
-        goalSelector.add(2, new WendigoAttackGoal(this, 1.25f, true));
+        goalSelector.add(2, new MeleeAttackGoal(this, 1.25f, true));
         goalSelector.add(3, new WanderAroundFarGoal(this, 0.75f));
         goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         goalSelector.add(5, new LookAroundGoal(this));
@@ -237,145 +237,145 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
         playSound(SoundEvents.ENTITY_PIGLIN_STEP, 0.5f, 1.0f);
     }
 
-    public class WendigoAttackGoal extends Goal {
-        protected final WendigoEntity mob;
-        private final double speed;
-        private final boolean pauseWhenMobIdle;
-        private Path path;
-        private double targetX;
-        private double targetY;
-        private double targetZ;
-        private int updateCountdownTicks;
-        private int cooldown;
-        private final int attackIntervalTicks = 20;
-        private long lastUpdateTime;
-        private static final long MAX_ATTACK_TIME = 20L;
-
-        public WendigoAttackGoal(WendigoEntity mob, double speed, boolean pauseWhenMobIdle) {
-            this.mob = mob;
-            this.speed = speed;
-            this.pauseWhenMobIdle = pauseWhenMobIdle;
-            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
-        }
-
-        @Override
-        public boolean canStart() {
-            long l = this.mob.world.getTime();
-            if (l - this.lastUpdateTime < 20L) {
-                return false;
-            }
-            this.lastUpdateTime = l;
-            LivingEntity livingEntity = this.mob.getTarget();
-            if (livingEntity == null) {
-                return false;
-            }
-            if (!livingEntity.isAlive()) {
-                return false;
-            }
-            this.path = this.mob.getNavigation().findPathTo(livingEntity, 0);
-            if (this.path != null) {
-                return true;
-            }
-            return this.getSquaredMaxAttackDistance(livingEntity) >= this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
-        }
-
-        @Override
-        public boolean shouldContinue() {
-            LivingEntity livingEntity = this.mob.getTarget();
-            if (livingEntity == null) {
-                return false;
-            }
-            if (!livingEntity.isAlive()) {
-                return false;
-            }
-            if (!this.pauseWhenMobIdle) {
-                return !this.mob.getNavigation().isIdle();
-            }
-            if (!this.mob.isInWalkTargetRange(livingEntity.getBlockPos())) {
-                return false;
-            }
-            return !(livingEntity instanceof PlayerEntity) || !livingEntity.isSpectator() && !((PlayerEntity)livingEntity).isCreative();
-        }
-
-        @Override
-        public void start() {
-            this.mob.getNavigation().startMovingAlong(this.path, this.speed);
-            this.mob.setAttacking(true);
-            this.updateCountdownTicks = 0;
-            this.cooldown = 40;
-        }
-
-        @Override
-        public void stop() {
-            LivingEntity livingEntity = this.mob.getTarget();
-            if (!EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
-                this.mob.setTarget(null);
-            }
-            this.mob.setAttacking(false);
-            this.mob.getNavigation().stop();
-        }
-
-        @Override
-        public boolean shouldRunEveryTick() {
-            return true;
-        }
-
-        @Override
-        public void tick() {
-            LivingEntity livingEntity = this.mob.getTarget();
-            if (livingEntity == null) {
-                return;
-            }
-            this.mob.getLookControl().lookAt(livingEntity, 30.0f, 30.0f);
-            double d = this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
-            this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
-            if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity)) && this.updateCountdownTicks <= 0 && (this.targetX == 0.0 && this.targetY == 0.0 && this.targetZ == 0.0 || livingEntity.squaredDistanceTo(this.targetX, this.targetY, this.targetZ) >= 1.0 || this.mob.getRandom().nextFloat() < 0.05f)) {
-                this.targetX = livingEntity.getX();
-                this.targetY = livingEntity.getY();
-                this.targetZ = livingEntity.getZ();
-                this.updateCountdownTicks = 4 + this.mob.getRandom().nextInt(7);
-                if (d > 1024.0) {
-                    this.updateCountdownTicks += 10;
-                } else if (d > 256.0) {
-                    this.updateCountdownTicks += 5;
-                }
-                if (!this.mob.getNavigation().startMovingTo(livingEntity, this.speed)) {
-                    this.updateCountdownTicks += 15;
-                }
-                this.updateCountdownTicks = this.getTickCount(this.updateCountdownTicks);
-            }
-            this.cooldown--;
-            this.attack(livingEntity, d);
-        }
-
-        protected void attack(LivingEntity target, double squaredDistance) {
-            double d = this.getSquaredMaxAttackDistance(target);
-            if (squaredDistance <= d && this.cooldown <= 0) {
-                this.resetCooldown();
-                this.mob.swingHand(Hand.MAIN_HAND);
-                this.mob.tryAttack(target);
-            }
-        }
-
-        protected void resetCooldown() {
-            this.cooldown = 40;
-        }
-
-        protected boolean isCooledDown() {
-            return this.cooldown <= 0;
-        }
-
-        protected int getCooldown() {
-            return this.cooldown;
-        }
-
-        protected int getMaxCooldown() {
-            return this.getTickCount(20);
-        }
-
-        protected double getSquaredMaxAttackDistance(LivingEntity entity) {
-            return this.mob.getWidth() * 2.0f * (this.mob.getWidth() * 2.0f) + entity.getWidth();
-        }
-    }
+//    public class WendigoAttackGoal extends Goal {
+//        protected final WendigoEntity mob;
+//        private final double speed;
+//        private final boolean pauseWhenMobIdle;
+//        private Path path;
+//        private double targetX;
+//        private double targetY;
+//        private double targetZ;
+//        private int updateCountdownTicks;
+//        private int cooldown;
+//        private final int attackIntervalTicks = 20;
+//        private long lastUpdateTime;
+//        private static final long MAX_ATTACK_TIME = 20L;
+//
+//        public WendigoAttackGoal(WendigoEntity mob, double speed, boolean pauseWhenMobIdle) {
+//            this.mob = mob;
+//            this.speed = speed;
+//            this.pauseWhenMobIdle = pauseWhenMobIdle;
+//            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+//        }
+//
+//        @Override
+//        public boolean canStart() {
+//            long l = this.mob.world.getTime();
+//            if (l - this.lastUpdateTime < 20L) {
+//                return false;
+//            }
+//            this.lastUpdateTime = l;
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (livingEntity == null) {
+//                return false;
+//            }
+//            if (!livingEntity.isAlive()) {
+//                return false;
+//            }
+//            this.path = this.mob.getNavigation().findPathTo(livingEntity, 0);
+//            if (this.path != null) {
+//                return true;
+//            }
+//            return this.getSquaredMaxAttackDistance(livingEntity) >= this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+//        }
+//
+//        @Override
+//        public boolean shouldContinue() {
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (livingEntity == null) {
+//                return false;
+//            }
+//            if (!livingEntity.isAlive()) {
+//                return false;
+//            }
+//            if (!this.pauseWhenMobIdle) {
+//                return !this.mob.getNavigation().isIdle();
+//            }
+//            if (!this.mob.isInWalkTargetRange(livingEntity.getBlockPos())) {
+//                return false;
+//            }
+//            return !(livingEntity instanceof PlayerEntity) || !livingEntity.isSpectator() && !((PlayerEntity)livingEntity).isCreative();
+//        }
+//
+//        @Override
+//        public void start() {
+//            this.mob.getNavigation().startMovingAlong(this.path, this.speed);
+//            this.mob.setAttacking(true);
+//            this.updateCountdownTicks = 0;
+//            this.cooldown = 40;
+//        }
+//
+//        @Override
+//        public void stop() {
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (!EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+//                this.mob.setTarget(null);
+//            }
+//            this.mob.setAttacking(false);
+//            this.mob.getNavigation().stop();
+//        }
+//
+//        @Override
+//        public boolean shouldRunEveryTick() {
+//            return true;
+//        }
+//
+//        @Override
+//        public void tick() {
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (livingEntity == null) {
+//                return;
+//            }
+//            this.mob.getLookControl().lookAt(livingEntity, 30.0f, 30.0f);
+//            double d = this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+//            this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
+//            if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity)) && this.updateCountdownTicks <= 0 && (this.targetX == 0.0 && this.targetY == 0.0 && this.targetZ == 0.0 || livingEntity.squaredDistanceTo(this.targetX, this.targetY, this.targetZ) >= 1.0 || this.mob.getRandom().nextFloat() < 0.05f)) {
+//                this.targetX = livingEntity.getX();
+//                this.targetY = livingEntity.getY();
+//                this.targetZ = livingEntity.getZ();
+//                this.updateCountdownTicks = 4 + this.mob.getRandom().nextInt(7);
+//                if (d > 1024.0) {
+//                    this.updateCountdownTicks += 10;
+//                } else if (d > 256.0) {
+//                    this.updateCountdownTicks += 5;
+//                }
+//                if (!this.mob.getNavigation().startMovingTo(livingEntity, this.speed)) {
+//                    this.updateCountdownTicks += 15;
+//                }
+//                this.updateCountdownTicks = this.getTickCount(this.updateCountdownTicks);
+//            }
+//            this.cooldown--;
+//            this.attack(livingEntity, d);
+//        }
+//
+//        protected void attack(LivingEntity target, double squaredDistance) {
+//            double d = this.getSquaredMaxAttackDistance(target);
+//            if (squaredDistance <= d && this.cooldown <= 0) {
+//                this.resetCooldown();
+//                this.mob.swingHand(Hand.MAIN_HAND);
+//                this.mob.tryAttack(target);
+//            }
+//        }
+//
+//        protected void resetCooldown() {
+//            this.cooldown = 40;
+//        }
+//
+//        protected boolean isCooledDown() {
+//            return this.cooldown <= 0;
+//        }
+//
+//        protected int getCooldown() {
+//            return this.cooldown;
+//        }
+//
+//        protected int getMaxCooldown() {
+//            return this.getTickCount(20);
+//        }
+//
+//        protected double getSquaredMaxAttackDistance(LivingEntity entity) {
+//            return this.mob.getWidth() * 2.0f * (this.mob.getWidth() * 2.0f) + entity.getWidth();
+//        }
+//    }
 
 }

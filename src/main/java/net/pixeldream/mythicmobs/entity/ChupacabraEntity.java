@@ -1,6 +1,8 @@
 package net.pixeldream.mythicmobs.entity;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.LeavesBlock;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -14,6 +16,7 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -22,6 +25,9 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.GameRules;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -36,6 +42,8 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+
+import java.util.Iterator;
 
 public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Monster {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -67,20 +75,55 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.25f, false));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.25f, true));
         this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.75f));
         this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
         this.goalSelector.add(4, new LookAroundGoal(this));
-        this.targetSelector.add(1, new ActiveTargetGoal<>(this, CowEntity.class, true));
+        this.targetSelector.add(1, new RevengeGoal(this));
+        this.targetSelector.add(2, new ActiveTargetGoal<>(this, AnimalEntity.class, true));
     }
 
     @Override
     public void tick() {
         super.tick();
         if (handSwinging) {
-            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX() + 0.5, getY() + 0.5, getZ() + 0.5, 0.0, 0.0, 0.0);
+            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
         }
     }
+
+//    @Override
+//    public void tickMovement() {
+//        super.tickMovement();
+//        if (isAlive()) {
+//            if (this.horizontalCollision && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
+//                boolean bl = false;
+//                Box box = this.getBoundingBox().expand(0.2);
+//                Iterator var8 = BlockPos.iterate(MathHelper.floor(box.minX), MathHelper.floor(box.minY), MathHelper.floor(box.minZ), MathHelper.floor(box.maxX), MathHelper.floor(box.maxY), MathHelper.floor(box.maxZ)).iterator();
+//
+//                label60:
+//                while(true) {
+//                    BlockPos blockPos;
+//                    Block block;
+//                    do {
+//                        if (!var8.hasNext()) {
+//                            if (!bl && this.onGround) {
+//                                this.jump();
+//                            }
+//                            break label60;
+//                        }
+//
+//                        blockPos = (BlockPos)var8.next();
+//                        BlockState blockState = this.world.getBlockState(blockPos);
+//                        block = blockState.getBlock();
+//                    } while(!(block instanceof LeavesBlock));
+//
+//                    bl = this.world.breakBlock(blockPos, true, this) || bl;
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void registerControllers(AnimationData animationData) {

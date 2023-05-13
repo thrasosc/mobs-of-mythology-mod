@@ -9,11 +9,13 @@ import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.ChupacabraEntity;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib3.renderers.geo.layer.LayerGlowingAreasGeo;
 
 public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
     public ChupacabraRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new ChupacabraModel());
-        this.shadowRadius = 0.45f;
+        this.shadowRadius = 0.65f;
+        this.addLayer(new ChupacabraLayer<>(this)); //GLOW LAYER
     }
 
     @Override
