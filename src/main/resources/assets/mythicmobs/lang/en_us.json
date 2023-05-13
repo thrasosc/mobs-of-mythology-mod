@@ -7,5 +7,7 @@
   "item.mythicmobs.spear": "Spear",
   "item.mythicmobs.axe-calibur": "Axe Calibur",
 
-  "itemGroup.mythicmobs.item_group": "Mythic Mobs"
+  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+
+  "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Replace Iron Golems"
 }

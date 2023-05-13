@@ -41,6 +41,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.MythicMobs;
+import net.pixeldream.mythicmobs.goal.RoarGoal;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.IAnimationTickable;
@@ -63,10 +64,11 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     private final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     private final AnimationBuilder ROAR = new AnimationBuilder().addAnimation("thing", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     private long ticksUntilAttackFinish = 0;
+    private int roarTimer = 0;
     private long age = 0;
-    private int ticksUntilRoarFinish = 0;
     private static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(WendigoEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> HAS_ROARED = DataTracker.registerData(WendigoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Boolean> ROARING = DataTracker.registerData(WendigoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> HAS_ATTACKED = DataTracker.registerData(WendigoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Boolean> WAS_STANDING = DataTracker.registerData(WendigoEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
 
@@ -80,6 +82,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
         super.initDataTracker();
         this.dataTracker.startTracking(DATA_ID_TYPE_VARIANT, 0);
         this.dataTracker.startTracking(HAS_ROARED, Boolean.FALSE);
+        this.dataTracker.startTracking(ROARING, Boolean.TRUE);
         this.dataTracker.startTracking(HAS_ATTACKED, Boolean.FALSE);
         this.dataTracker.startTracking(WAS_STANDING, Boolean.FALSE);
     }
@@ -133,33 +136,30 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     @Override
     protected void initGoals() {
         goalSelector.add(0, new SwimGoal(this));
-        goalSelector.add(1, new WendigoAttackGoal(this, 1.0f, true));
-        goalSelector.add(2, new WanderAroundFarGoal(this, 0.75f));
-        goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
-        goalSelector.add(4, new LookAroundGoal(this));
-        targetSelector.add(1, new ActiveTargetGoal<>(this, CowEntity.class, true));
-        targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+        goalSelector.add(1, new RoarGoal(this));
+        goalSelector.add(2, new WendigoAttackGoal(this, 1.25f, true));
+        goalSelector.add(3, new WanderAroundFarGoal(this, 0.75f));
+        goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
+        goalSelector.add(5, new LookAroundGoal(this));
+        targetSelector.add(2, new ActiveTargetGoal<>(this, CowEntity.class, true));
+        targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
     }
 
-    private boolean getHasRoared() {
-        return this.dataTracker.get(HAS_ROARED);
+    public boolean getRoaring() {
+        return this.dataTracker.get(ROARING);
     }
 
-    private void setHasRoared(boolean b) {
-        this.dataTracker.set(HAS_ROARED, b);
+    public void setRoaring(boolean roaring) {
+        this.dataTracker.set(ROARING, roaring);
     }
 
     @Override
     public void registerControllers(AnimationData animationData) {
         setAnim();
         animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
-            if (!getHasRoared() && isAttacking()) {
+            if (getRoaring() && isAttacking() && !handSwinging) {
                 animationEvent.getController().setAnimation(ROAR);
-//                this.addStatusEffect(new StatusEffectInstance(new StopMovingStatusEffect(), 20*9));
-                ticksUntilRoarFinish++;
-                if (ticksUntilRoarFinish > 32 * 4) {
-                    setHasRoared(true);
-                }
+                MythicMobs.LOGGER.info("ROARING CURRENTLY");
                 return PlayState.CONTINUE;
             } else if (animationEvent.isMoving() && !handSwinging) {
                 if (isAttacking() && !handSwinging) {
@@ -182,22 +182,6 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
         }));
     }
 
-//    public class StopMovingStatusEffect extends StatusEffect {
-//        public StopMovingStatusEffect() {
-//            super(StatusEffectCategory.HARMFUL, 0xFF0000);
-//        }
-//
-//        @Override
-//        public void applyUpdateEffect(LivingEntity entity, int amplifier) {
-//            entity.setVelocity(0, 0, 0); // Stop the entity's movement
-//        }
-//
-//        @Override
-//        public boolean canApplyUpdateEffect(int duration, int amplifier) {
-//            return true;
-//        }
-//    }
-
     @Override
     public void tick() {
         super.tick();
@@ -207,9 +191,12 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
                 setAnim();
             }
 
-            if (getHasRoared() && !this.isAttacking()) {
-                setHasRoared(false);
-                ticksUntilRoarFinish = 0;
+            if (!getRoaring()) {
+                roarTimer++;
+                if (roarTimer > 6000) {
+                    setRoaring(true);
+                    roarTimer = 0;
+                }
             }
 
             if (this.getVariant().equals(WendigoVariant.WENDIGO_STANDING) && this.isAttacking()) {

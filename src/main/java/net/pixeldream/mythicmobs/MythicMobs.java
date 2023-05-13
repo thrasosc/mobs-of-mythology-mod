@@ -1,11 +1,13 @@
 package net.pixeldream.mythicmobs;
 
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.pixeldream.mythicmobs.config.CommonConfigs;
 import net.pixeldream.mythicmobs.event.EntityEvents;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
@@ -24,7 +26,10 @@ public class MythicMobs implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Hello from " + MOD_NAME + "!");
+		LOGGER.info("Initializing GeckoLib for " + MOD_NAME);
 		GeckoLib.initialize();
+		LOGGER.info("Initializing MidnightConfig for " + MOD_NAME);
+		MidnightConfig.init(MOD_ID, CommonConfigs.class);
 		LOGGER.info("Registering entities for " + MOD_NAME);
 		new EntityRegistry();
 		LOGGER.info("Registering items for " + MOD_NAME);
