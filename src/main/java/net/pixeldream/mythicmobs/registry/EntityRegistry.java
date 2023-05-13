@@ -17,6 +17,7 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(WENDIGO_ENTITY, WendigoEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(AUTOMATON_ENTITY, AutomatonEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(WYVERN_ENTITY, WyvernEntity.setAttributes());
+        FabricDefaultAttributeRegistry.register(CHUPACABRA_ENTITY, ChupacabraEntity.setAttributes());
     }
     public static final EntityType<TrollEntity> TROLL_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
@@ -44,5 +45,11 @@ public class EntityRegistry {
             Registry.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "wyvern"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WyvernEntity::new).dimensions(EntityDimensions.fixed(5f,4.0f)).build()
+    );
+
+    public static final EntityType<ChupacabraEntity> CHUPACABRA_ENTITY = Registry.register(
+            Registry.ENTITY_TYPE,
+            new Identifier(MythicMobs.MOD_ID, "chupacabra"),
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChupacabraEntity::new).dimensions(EntityDimensions.fixed(1.5f,3.0f)).build()
     );
 }

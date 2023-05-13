@@ -4,13 +4,17 @@ import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.DefaultParticleType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import net.pixeldream.mythicmobs.config.CommonConfigs;
 import net.pixeldream.mythicmobs.event.EntityEvents;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
+import net.pixeldream.mythicmobs.registry.ParticleRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib3.GeckoLib;
@@ -32,10 +36,13 @@ public class MythicMobs implements ModInitializer {
 		MidnightConfig.init(MOD_ID, CommonConfigs.class);
 		LOGGER.info("Registering entities for " + MOD_NAME);
 		new EntityRegistry();
+		LOGGER.info("Registering particles for " + MOD_NAME);
+		new ParticleRegistry();
 		LOGGER.info("Registering items for " + MOD_NAME);
 		new ItemRegistry();
 		LOGGER.info("Replacing Iron Golems with Automata from " + MOD_NAME);
 		EntityEvents.replaceNaturallySpawningIronGolemsWithClayGolems();
 		EntityEvents.checkForUnSpawnedGolem();
+
 	}
 }
