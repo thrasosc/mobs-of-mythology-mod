@@ -3,8 +3,7 @@
   "entity.mythicmobs.kobold": "Καλικάντζαρος",
   "entity.mythicmobs.troll": "Τρολ",
 
-  "item.mythicmobs.spear": "Spear",
-  "item.mythicmobs.axe-calibur": "Axe Calibur",
+  "item.mythicmobs.kobold_spear": "Kobold Spear",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 

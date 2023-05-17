@@ -4,7 +4,6 @@ import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.scoreboard.ScoreboardCriterion;
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.ChupacabraEntity;
@@ -24,7 +23,7 @@ public class ChupacabraLayer<T extends ChupacabraEntity> extends GeoLayerRendere
     public void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entityLivingBaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch){
         RenderLayer glow = RenderLayer.getEntityTranslucentEmissive(CHUPACABRA_EYES_TEXTURE);
         this.getRenderer().render(this.getEntityModel().getModel(CHUPACABRA_GEO),entityLivingBaseIn,partialTicks,glow,
-                matrixStackIn,bufferIn,bufferIn.getBuffer(glow),packedLightIn, OverlayTexture.DEFAULT_UV,1,1f,1f,1f
+                matrixStackIn,bufferIn,bufferIn.getBuffer(glow),packedLightIn, OverlayTexture.DEFAULT_UV,1f,1f,1f,1f
         );
     }
 }
