@@ -17,10 +17,12 @@ public class ItemRegistry {
     public static final KoboldSpearItem KOBOLD_SPEAR = new KoboldSpearItem(ToolMaterials.IRON, 4, 1, new Item.Settings().group(ITEM_GROUP).maxCount(1));
     public static final Item BRONZE_INGOT = new Item(new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
     public static final BlockItem BRONZE_BLOCK = new BlockItem(BlockRegistry.BRONZE_BLOCK, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
+    public static final BlockItem BRONZE_BLOCK_CUT = new BlockItem(BlockRegistry.BRONZE_BLOCK_CUT, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
     public ItemRegistry() {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "kobold_spear"), KOBOLD_SPEAR);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_ingot"), BRONZE_INGOT);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_block"),BRONZE_BLOCK);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_block_cut"),BRONZE_BLOCK_CUT);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "automaton_spawn_egg"), AUTOMATON_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "kobold_spawn_egg"), KOBOLD_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "kobold_warrior_spawn_egg"), KOBOLD_WARRIOR_SPAWN_EGG);
