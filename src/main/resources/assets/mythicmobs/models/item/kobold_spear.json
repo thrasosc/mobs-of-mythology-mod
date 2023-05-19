@@ -1,9 +1,10 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/handheld",
+	"texture_size": [32, 32],
 	"textures": {
-		"0": "kobold_spear",
-		"particle": "kobold_spear"
+		"0": "mythicmobs:item/kobold_spear",
+		"particle": "mythicmobs:item/kobold_spear"
 	},
 	"display": {
 		"thirdperson_righthand": {

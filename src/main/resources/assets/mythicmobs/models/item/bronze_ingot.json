@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "mythicmobs:item/bronze_item"
+    "layer0": "mythicmobs:item/bronze_ingot"
   }
 }

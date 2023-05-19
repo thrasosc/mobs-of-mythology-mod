@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "mythicmobs:bronze_ingot"
+    }
+  },
+  "result": {
+    "item": "mythicmobs:bronze_block"
+  }
+}
