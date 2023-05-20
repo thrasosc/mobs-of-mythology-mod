@@ -3,15 +3,14 @@
 	"id": "mythicmobs",
 	"version": "${version}",
 	"name": "Mythic Mobs",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "This mod adds mythological creatures to your world!",
 	"authors": [
 		"Pixel Dream Studios"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://pixeldreamstudios.github.io"
 	},
-	"license": "CC0-1.0",
+	"license": "All Rights Reserved",
 	"icon": "assets/mythicmobs/icon.png",
 	"environment": "*",
 	"entrypoints": {
@@ -29,10 +28,12 @@
 		"fabricloader": ">=0.14.19",
 		"minecraft": "~1.19.2",
 		"java": ">=17",
+		"midnightlib": ">=1.1.0",
+		"geckolib3": ">=3.1.40",
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"bettercombat": ">=1.7.1"
 	},
 	"accessWidener": "mythicmobs.accesswidener"
 }
