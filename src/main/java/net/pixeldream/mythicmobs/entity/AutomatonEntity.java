@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -38,6 +39,7 @@ import net.minecraft.world.SpawnHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.pixeldream.mythicmobs.MythicMobs;
+import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -73,7 +75,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     protected void initGoals() {
         this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.add(2, new WanderNearTargetGoal(this, 0.9, 32.0f));
-        this.goalSelector.add(2, new WanderAroundPointOfInterestGoal((PathAwareEntity)this, 0.6, false));
+        this.goalSelector.add(2, new WanderAroundPointOfInterestGoal((PathAwareEntity) this, 0.6, false));
         this.goalSelector.add(4, new IronGolemWanderAroundGoal(this, 0.6));
         this.goalSelector.add(5, new IronGolemLookGoal(this));
         this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
@@ -88,7 +90,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(IRON_GOLEM_FLAGS, (byte)0);
+        this.dataTracker.startTracking(IRON_GOLEM_FLAGS, (byte) 0);
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
@@ -97,6 +99,13 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.25)
                 .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.0)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15.0);
+    }
+
+    protected void produceParticles(ParticleEffect parameters) {
+        double d = this.random.nextGaussian() * 0.02;
+        double e = this.random.nextGaussian() * 0.02;
+        double f = this.random.nextGaussian() * 0.02;
+        this.world.addParticle(parameters, this.getParticleX(0.5), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
     }
 
     @Override
@@ -132,9 +141,21 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     @Override
     protected void pushAway(Entity entity) {
         if (entity instanceof Monster && !(entity instanceof CreeperEntity) && this.getRandom().nextInt(20) == 0) {
-            this.setTarget((LivingEntity)entity);
+            this.setTarget((LivingEntity) entity);
         }
         super.pushAway(entity);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (getHealth() < (double) 50) {
+            if (getHealth() < (double) 25) {
+                produceParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE);
+                return;
+            }
+            produceParticles(ParticleTypes.SMOKE);
+        }
     }
 
     @Override
@@ -152,11 +173,11 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
         if (this.lookingAtVillagerTicksLeft > 0) {
             --this.lookingAtVillagerTicksLeft;
         }
-        if (this.getVelocity().horizontalLengthSquared() > 2.500000277905201E-7 && this.random.nextInt(5) == 0 && !(blockState = this.world.getBlockState(new BlockPos(i = MathHelper.floor(this.getX()), j = MathHelper.floor(this.getY() - (double)0.2f), k = MathHelper.floor(this.getZ())))).isAir()) {
-            this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState), this.getX() + ((double)this.random.nextFloat() - 0.5) * (double)this.getWidth(), this.getY() + 0.1, this.getZ() + ((double)this.random.nextFloat() - 0.5) * (double)this.getWidth(), 4.0 * ((double)this.random.nextFloat() - 0.5), 0.5, ((double)this.random.nextFloat() - 0.5) * 4.0);
+        if (this.getVelocity().horizontalLengthSquared() > 2.500000277905201E-7 && this.random.nextInt(5) == 0 && !(blockState = this.world.getBlockState(new BlockPos(i = MathHelper.floor(this.getX()), j = MathHelper.floor(this.getY() - (double) 0.2f), k = MathHelper.floor(this.getZ())))).isAir()) {
+            this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, blockState), this.getX() + ((double) this.random.nextFloat() - 0.5) * (double) this.getWidth(), this.getY() + 0.1, this.getZ() + ((double) this.random.nextFloat() - 0.5) * (double) this.getWidth(), 4.0 * ((double) this.random.nextFloat() - 0.5), 0.5, ((double) this.random.nextFloat() - 0.5) * 4.0);
         }
         if (!this.world.isClient) {
-            this.tickAngerLogic((ServerWorld)this.world, true);
+            this.tickAngerLogic((ServerWorld) this.world, true);
         }
     }
 
@@ -212,7 +233,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     }
 
     private float getAttackDamage() {
-        return (float)this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
+        return (float) this.getAttributeValue(EntityAttributes.GENERIC_ATTACK_DAMAGE);
     }
 
     @Override
@@ -220,19 +241,19 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
         this.attackTicksLeft = 10;
         this.world.sendEntityStatus(this, EntityStatuses.PLAY_ATTACK_SOUND);
         float f = this.getAttackDamage();
-        float g = (int)f > 0 ? f / 2.0f + (float)this.random.nextInt((int)f) : f;
+        float g = (int) f > 0 ? f / 2.0f + (float) this.random.nextInt((int) f) : f;
         boolean bl = target.damage(DamageSource.mob(this), g);
         if (bl) {
             double d;
             if (target instanceof LivingEntity) {
-                LivingEntity livingEntity = (LivingEntity)target;
+                LivingEntity livingEntity = (LivingEntity) target;
                 d = livingEntity.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
             } else {
                 d = 0.0;
             }
             double d2 = d;
             double e = Math.max(0.0, 1.0 - d2);
-            target.setVelocity(target.getVelocity().add(0.0, (double)0.4f * e, 0.0));
+            target.setVelocity(target.getVelocity().add(0.0, (double) 0.4f * e, 0.0));
             this.applyDamageEffects(this, target);
         }
         this.playSound(SoundEvents.ENTITY_IRON_GOLEM_ATTACK, 1.0f, 1.0f);
@@ -294,7 +315,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!itemStack.isOf(Items.COPPER_INGOT)) {
+        if (!itemStack.isOf(ItemRegistry.BRONZE_INGOT)) {
             return ActionResult.PASS;
         }
         MythicMobs.LOGGER.info("HEALTH:" + this.getHealth());
@@ -327,9 +348,9 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     public void setPlayerCreated(boolean playerCreated) {
         byte b = this.dataTracker.get(IRON_GOLEM_FLAGS);
         if (playerCreated) {
-            this.dataTracker.set(IRON_GOLEM_FLAGS, (byte)(b | 1));
+            this.dataTracker.set(IRON_GOLEM_FLAGS, (byte) (b | 1));
         } else {
-            this.dataTracker.set(IRON_GOLEM_FLAGS, (byte)(b & 0xFFFFFFFE));
+            this.dataTracker.set(IRON_GOLEM_FLAGS, (byte) (b & 0xFFFFFFFE));
         }
     }
 
@@ -347,7 +368,8 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
             for (int i = 1; i < 3; ++i) {
                 BlockState blockState2;
                 BlockPos blockPos3 = blockPos.up(i);
-                if (SpawnHelper.isClearForSpawn(world, blockPos3, blockState2 = world.getBlockState(blockPos3), blockState2.getFluidState(), EntityType.IRON_GOLEM)) continue;
+                if (SpawnHelper.isClearForSpawn(world, blockPos3, blockState2 = world.getBlockState(blockPos3), blockState2.getFluidState(), EntityType.IRON_GOLEM))
+                    continue;
                 return false;
             }
             return SpawnHelper.isClearForSpawn(world, blockPos, world.getBlockState(blockPos), Fluids.EMPTY.getDefaultState(), EntityType.IRON_GOLEM) && world.doesNotIntersectEntities(this);

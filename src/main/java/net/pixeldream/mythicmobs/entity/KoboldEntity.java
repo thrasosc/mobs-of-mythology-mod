@@ -116,7 +116,7 @@ public class KoboldEntity extends AbstractKoboldEntity {
             koboldStack2.setCount(1);
             setStackInHand(Hand.MAIN_HAND, koboldStack2);
             decrementStackUnlessInCreative(player, playerStack);
-            world.playSoundFromEntity(player, this, SoundEvents.BLOCK_FROGLIGHT_HIT, SoundCategory.NEUTRAL, 2.0F, 1.0F);
+            world.playSoundFromEntity(player, this, SoundEvents.ENTITY_VILLAGER_TRADE, SoundCategory.NEUTRAL, 2.0F, 1.5f);
             this.produceParticles(ParticleTypes.POOF);
             getBrain().remember(MemoryModuleType.LIKED_PLAYER, player.getUuid());
             return ActionResult.SUCCESS;

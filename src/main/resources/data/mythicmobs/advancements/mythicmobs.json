@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "item": "mythicmobs:kobold_spear"
+      "item": "mythicmobs:bronze_ingot"
     },
     "title": "Mythic Mobs",
     "description": "A mythical world!",
@@ -12,9 +12,15 @@
   },
   "criteria": {
     "requirement": {
-      "trigger": "minecraft:enter_block",
+      "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "block": "minecraft:air"
+        "items": [
+          {
+            "items": [
+              "mythicmobs:kobold_spear"
+            ]
+          }
+        ]
       }
     }
   }
