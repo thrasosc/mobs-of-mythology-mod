@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "mythicmobs:bronze_ingot"
+    },
+    "title": "Scaly Bargain",
+    "description": "Keep your friends close, and your enemies closer!",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "mythicmobs:mythicmobs",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "mythicmobs:bronze_ingot"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

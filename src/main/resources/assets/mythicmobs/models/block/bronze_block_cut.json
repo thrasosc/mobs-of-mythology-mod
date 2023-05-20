@@ -1,7 +1,7 @@
 {
   "parent": "block/cube_column",
   "textures": {
-    "end": "mythicmobs:block/bronze_block_cut_side",
-    "side": "mythicmobs:block/bronze_block_cut_bottom_top"
+    "end": "mythicmobs:block/bronze_block_cut_bottom_top",
+    "side": "mythicmobs:block/bronze_block_cut_side"
   }
 }
