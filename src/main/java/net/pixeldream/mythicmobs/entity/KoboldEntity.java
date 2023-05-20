@@ -123,4 +123,14 @@ public class KoboldEntity extends AbstractKoboldEntity {
         }
         return super.interactMob(player, hand);
     }
+
+    @Override
+    public void updatePostDeath() {
+        ++deathTime;
+        if (deathTime == 30) {
+            produceParticles(ParticleTypes.POOF);
+            this.remove(Entity.RemovalReason.KILLED);
+            this.dropXp();
+        }
+    }
 }

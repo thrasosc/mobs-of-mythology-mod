@@ -1,21 +1,29 @@
 package net.pixeldream.mythicmobs.entity.client;
 
 import com.google.common.collect.Maps;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.Vec3f;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.KoboldWarriorEntity;
 import net.pixeldream.mythicmobs.entity.KoboldWarriorVariant;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib3.core.processor.IBone;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
+import software.bernie.geckolib3.renderers.geo.ExtendedGeoEntityRenderer;
 
 import java.util.Map;
 
-public class KoboldWarriorRenderer extends GeoEntityRenderer<KoboldWarriorEntity> {
+public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarriorEntity> {
+    protected ItemStack mainHandItem;
     public static final Map<KoboldWarriorVariant, Identifier> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldWarriorVariant.class), (map) -> {
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR,
@@ -39,6 +47,58 @@ public class KoboldWarriorRenderer extends GeoEntityRenderer<KoboldWarriorEntity
     public RenderLayer getRenderType(KoboldWarriorEntity animatable, float partialTicks, MatrixStack stack,
                                      VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
                                      int packedLightIn, Identifier textureLocation) {
+        mainHandItem = animatable.getEquippedStack(EquipmentSlot.MAINHAND);
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+    }
+
+    @Override
+    protected boolean isArmorBone(GeoBone bone) {
+        return false;
+    }
+
+    @Override
+    protected Identifier getTextureForBone(String boneName, KoboldWarriorEntity currentEntity) {
+        return null;
+    }
+
+    @Override
+    protected ItemStack getHeldItemForBone(String boneName, KoboldWarriorEntity currentEntity) {
+        if (boneName.equals("item"))
+            return mainHandItem;
+        return null;
+    }
+
+    @Override
+    protected ModelTransformation.Mode getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
+        if (boneName.equals("item"))
+            return ModelTransformation.Mode.THIRD_PERSON_RIGHT_HAND;
+        return ModelTransformation.Mode.NONE;
+    }
+
+    @Override
+    protected BlockState getHeldBlockForBone(String boneName, KoboldWarriorEntity currentEntity) {
+        return null;
+    }
+
+    @Override
+    protected void preRenderItem(MatrixStack stack, ItemStack item, String boneName, KoboldWarriorEntity currentEntity, IBone bone) {
+        if (item == this.mainHandItem) {
+            stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90f));
+        }
+    }
+
+    @Override
+    protected void preRenderBlock(MatrixStack PoseStack, BlockState block, String boneName, KoboldWarriorEntity currentEntity) {
+
+    }
+
+    @Override
+    protected void postRenderItem(MatrixStack PoseStack, ItemStack item, String boneName, KoboldWarriorEntity currentEntity, IBone bone) {
+
+    }
+
+    @Override
+    protected void postRenderBlock(MatrixStack PoseStack, BlockState block, String boneName, KoboldWarriorEntity currentEntity) {
+
     }
 }

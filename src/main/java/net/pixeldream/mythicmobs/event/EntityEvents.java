@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.particle.ParticleEffect;
 import net.pixeldream.mythicmobs.config.CommonConfigs;
 import net.pixeldream.mythicmobs.entity.AutomatonEntity;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
