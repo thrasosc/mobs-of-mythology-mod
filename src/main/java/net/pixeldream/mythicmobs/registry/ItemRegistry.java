@@ -25,10 +25,10 @@ public class ItemRegistry {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_ingot"), BRONZE_INGOT);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_block"),BRONZE_BLOCK);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_block_cut"),BRONZE_BLOCK_CUT);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "automaton_head"), AUTOMATON_HEAD);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "automaton_spawn_egg"), AUTOMATON_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "kobold_spawn_egg"), KOBOLD_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "kobold_warrior_spawn_egg"), KOBOLD_WARRIOR_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "chupacabra_spawn_egg"), CHUPACABRA_SPAWN_EGG);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "automaton_head"), AUTOMATON_HEAD);
     }
 }

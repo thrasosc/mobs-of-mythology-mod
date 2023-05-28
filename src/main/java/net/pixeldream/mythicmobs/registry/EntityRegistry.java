@@ -11,11 +11,6 @@ import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.*;
 
 public class EntityRegistry {
-    public static final EntityType<TrollEntity> TROLL_ENTITY = Registry.register(
-            Registry.ENTITY_TYPE,
-            new Identifier(MythicMobs.MOD_ID, "troll"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, TrollEntity::new).dimensions(EntityDimensions.fixed(1.5f,4.5f)).build()
-    );
     public static final EntityType<KoboldEntity> KOBOLD_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "kobold"),
@@ -31,16 +26,10 @@ public class EntityRegistry {
             new Identifier(MythicMobs.MOD_ID, "wendigo"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WendigoEntity::new).dimensions(EntityDimensions.fixed(3.5f,4.0f)).build()
     );
-
     public static final EntityType<AutomatonEntity> AUTOMATON_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "automaton"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, AutomatonEntity::new).dimensions(EntityDimensions.fixed(1.5f,3.0f)).build()
-    );
-    public static final EntityType<WyvernEntity> WYVERN_ENTITY = Registry.register(
-            Registry.ENTITY_TYPE,
-            new Identifier(MythicMobs.MOD_ID, "wyvern"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WyvernEntity::new).dimensions(EntityDimensions.fixed(5f,4.0f)).build()
     );
     public static final EntityType<ChupacabraEntity> CHUPACABRA_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
@@ -49,12 +38,10 @@ public class EntityRegistry {
     );
 
     public EntityRegistry() {
-        FabricDefaultAttributeRegistry.register(TROLL_ENTITY, TrollEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(KOBOLD_ENTITY, KoboldEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(KOBOLD_WARRIOR_ENTITY, KoboldWarriorEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(WENDIGO_ENTITY, WendigoEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(AUTOMATON_ENTITY, AutomatonEntity.setAttributes());
-        FabricDefaultAttributeRegistry.register(WYVERN_ENTITY, WyvernEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(CHUPACABRA_ENTITY, ChupacabraEntity.setAttributes());
     }
 }

@@ -3,8 +3,9 @@
 	"id": "mythicmobs",
 	"version": "${version}",
 	"name": "Mythic Mobs",
-	"description": "This mod adds mythological creatures to your world!",
+	"description": "Discover a world of mythical creatures in Minecraft.",
 	"authors": [
+		"Kyber_6",
 		"Pixel Dream Studios"
 	],
 	"contact": {
@@ -19,6 +20,9 @@
 		],
 		"client": [
 			"net.pixeldream.mythicmobs.MythicMobsClient"
+		],
+		"modmenu": [
+			"net.pixeldream.mythicmobs.integration.ModMenuIntegration"
 		]
 	},
 	"mixins": [
@@ -28,7 +32,6 @@
 		"fabricloader": ">=0.14.19",
 		"minecraft": "~1.19.2",
 		"java": ">=17",
-		"midnightlib": ">=1.1.0",
 		"geckolib3": ">=3.1.40",
 		"fabric-api": "*"
 	},

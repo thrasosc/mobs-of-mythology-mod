@@ -1,12 +1,23 @@
 {
   "entity.mythicmobs.wendigo": "Wendigo",
   "entity.mythicmobs.kobold": "Kobold",
-  "entity.mythicmobs.troll": "Troll",
+  "entity.mythicmobs.kobold_warrior": "Kobold Warrior",
   "entity.mythicmobs.automaton": "Automaton",
+  "entity.mythicmobs.chupacabra": "Chupacabra",
 
   "item.mythicmobs.kobold_spear": "Kobold Spear",
+  "item.mythicmobs.bronze_ingot": "Bronze Ingot",
+  "item.mythicmobs.automaton_spawn_egg": "Automaton Spawn Egg",
+  "item.mythicmobs.kobold_spawn_egg": "Kobold Spawn Egg",
+  "item.mythicmobs.kobold_warrior_spawn_egg": "Kobold Warrior Spawn Egg",
+  "item.mythicmobs.chupacabra_spawn_egg": "Chupacabra Spawn Egg",
+  "item.mythicmobs.automaton_head": "Automaton Head",
+
+  "block.mythicmobs.bronze_block": "Bronze Block",
+  "block.mythicmobs.bronze_block_cut": "Cut Bronze Block",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 
+  "mythicmobs.midnightconfig.title": "Mythic Mobs Options",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Replace Iron Golems"
 }

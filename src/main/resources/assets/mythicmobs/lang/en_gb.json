@@ -1,12 +1,12 @@
 {
   "entity.mythicmobs.wendigo": "Wendigo",
   "entity.mythicmobs.kobold": "Kobold",
-  "entity.mythicmobs.troll": "Troll",
   "entity.mythicmobs.automaton": "Automaton",
 
   "item.mythicmobs.kobold_spear": "Kobold Spear",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 
+  "mythicmobs.midnightconfig.title": "Mythic Mobs Options",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Replace Iron Golems"
 }
