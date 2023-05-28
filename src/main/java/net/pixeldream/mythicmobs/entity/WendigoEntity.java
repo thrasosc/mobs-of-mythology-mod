@@ -216,25 +216,25 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        playSound(SoundEvents.ENTITY_PILLAGER_AMBIENT, 1.0f, 3.0f);
+        playSound(SoundEvents.ENTITY_HUSK_AMBIENT, 1.0f, 3.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        playSound(SoundEvents.ENTITY_RAVAGER_HURT, 1.0f, 3.0f);
+        playSound(SoundEvents.ENTITY_HUSK_HURT, 1.0f, 3.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        playSound(SoundEvents.ENTITY_PILLAGER_DEATH, 1.0f, 3.0f);
+        playSound(SoundEvents.ENTITY_HUSK_DEATH, 1.0f, 3.0f);
         return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        playSound(SoundEvents.ENTITY_PIGLIN_STEP, 0.5f, 1.0f);
+        playSound(SoundEvents.ENTITY_HUSK_STEP, 0.5f, 1.0f);
     }
 
 //    public class WendigoAttackGoal extends Goal {

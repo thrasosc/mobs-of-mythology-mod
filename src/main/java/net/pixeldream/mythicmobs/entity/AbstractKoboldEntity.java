@@ -103,7 +103,7 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENTITY_RAVAGER_HURT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_PILLAGER_HURT, 1.0f, 3.0f);
         return null;
     }
 
@@ -115,6 +115,6 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.ENTITY_PIGLIN_STEP, 0.5f, 1.0f);
+        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.5f, 1.0f);
     }
 }

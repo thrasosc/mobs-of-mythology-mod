@@ -93,38 +93,6 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
         }
     }
 
-//    @Override
-//    public void tickMovement() {
-//        super.tickMovement();
-//        if (isAlive()) {
-//            if (this.horizontalCollision && this.world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING)) {
-//                boolean bl = false;
-//                Box box = this.getBoundingBox().expand(0.2);
-//                Iterator var8 = BlockPos.iterate(MathHelper.floor(box.minX), MathHelper.floor(box.minY), MathHelper.floor(box.minZ), MathHelper.floor(box.maxX), MathHelper.floor(box.maxY), MathHelper.floor(box.maxZ)).iterator();
-//
-//                label60:
-//                while(true) {
-//                    BlockPos blockPos;
-//                    Block block;
-//                    do {
-//                        if (!var8.hasNext()) {
-//                            if (!bl && this.onGround) {
-//                                this.jump();
-//                            }
-//                            break label60;
-//                        }
-//
-//                        blockPos = (BlockPos)var8.next();
-//                        BlockState blockState = this.world.getBlockState(blockPos);
-//                        block = blockState.getBlock();
-//                    } while(!(block instanceof LeavesBlock));
-//
-//                    bl = this.world.breakBlock(blockPos, true, this) || bl;
-//                }
-//            }
-//        }
-//    }
-
     @Override
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
@@ -156,24 +124,24 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.ENTITY_PILLAGER_AMBIENT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, 1.0f, 3.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENTITY_RAVAGER_HURT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_HURT, 1.0f, 3.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.ENTITY_PILLAGER_DEATH, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_DEATH, 1.0f, 3.0f);
         return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.ENTITY_PIGLIN_STEP, 0.5f, 1.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.5f, 1.0f);
     }
 }
