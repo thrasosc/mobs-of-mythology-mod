@@ -4,5 +4,7 @@
   "version": 1,
   "use_blocky_font": true,
   "creative_tab": "mythicmobs.item_group",
+  "model": "mythicmobs:mythical_guide_book",
+  "book_texture": "mythicmobs:textures/gui/mythical_guide_book_gui.png",
   "show_progress": false
 }

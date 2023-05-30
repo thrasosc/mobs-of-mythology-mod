@@ -80,8 +80,12 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 30) {
+            double d = this.random.nextGaussian() * 0.02;
+            double e = this.random.nextGaussian() * 0.02;
+            double f = this.random.nextGaussian() * 0.02;
+            this.world.addParticle(ParticleTypes.POOF, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
+//            produceParticles(ParticleTypes.POOF);
             this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
-            produceParticles(ParticleTypes.POOF);
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

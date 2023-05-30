@@ -11,17 +11,8 @@
     "background": "mythicmobs:textures/block/bronze_block_cut_side.png"
   },
   "criteria": {
-    "requirement": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicmobs:kobold_spear"
-            ]
-          }
-        ]
-      }
+    "tick": {
+      "trigger": "minecraft:tick"
     }
   }
 }
