@@ -154,6 +154,11 @@
 					]
 				},
 				{
+					"name": "item2",
+					"parent": "left_arm",
+					"pivot": [4.3, 9.2, -2]
+				},
+				{
 					"name": "right_leg",
 					"parent": "body",
 					"pivot": [-1.5, 10, -0.5],

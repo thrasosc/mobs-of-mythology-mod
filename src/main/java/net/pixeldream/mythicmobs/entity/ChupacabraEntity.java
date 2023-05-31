@@ -20,6 +20,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -90,6 +91,10 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            if (getHealth() < getMaxHealth()) {
+                this.heal(5.0f);
+                produceParticles(ParticleTypes.HAPPY_VILLAGER);
+            }
         }
     }
 
@@ -115,6 +120,21 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
             animationEvent.getController().setAnimation(IDLE);
             return PlayState.CONTINUE;
         }));
+    }
+
+    protected void produceParticles(ParticleEffect parameters) {
+        for(int i = 0; i < 5; ++i) {
+            double d = this.random.nextGaussian() * 0.02;
+            double e = this.random.nextGaussian() * 0.02;
+            double f = this.random.nextGaussian() * 0.02;
+            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
+        }
+    }
+
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        produceParticles(ParticleTypes.SMOKE);
+        super.onDeath(damageSource);
     }
 
     @Override

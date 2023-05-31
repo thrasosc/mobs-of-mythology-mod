@@ -356,6 +356,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
 
     @Override
     public void onDeath(DamageSource damageSource) {
+        produceParticles(ParticleTypes.POOF);
         super.onDeath(damageSource);
     }
 

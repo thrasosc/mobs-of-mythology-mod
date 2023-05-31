@@ -24,6 +24,7 @@ import java.util.Map;
 
 public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarriorEntity> {
     protected ItemStack mainHandItem;
+    protected ItemStack offHandItem;
     public static final Map<KoboldWarriorVariant, Identifier> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldWarriorVariant.class), (map) -> {
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR,
@@ -48,6 +49,7 @@ public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarri
                                      VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
                                      int packedLightIn, Identifier textureLocation) {
         mainHandItem = animatable.getEquippedStack(EquipmentSlot.MAINHAND);
+        offHandItem = animatable.getEquippedStack(EquipmentSlot.OFFHAND);
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 
@@ -65,6 +67,8 @@ public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarri
     protected ItemStack getHeldItemForBone(String boneName, KoboldWarriorEntity currentEntity) {
         if (boneName.equals("item"))
             return mainHandItem;
+        else if (boneName.equals("item2"))
+            return offHandItem;
         return null;
     }
 
@@ -72,6 +76,8 @@ public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarri
     protected ModelTransformation.Mode getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
         if (boneName.equals("item"))
             return ModelTransformation.Mode.THIRD_PERSON_RIGHT_HAND;
+        else if (boneName.equals("item2"))
+            return ModelTransformation.Mode.THIRD_PERSON_LEFT_HAND;
         return ModelTransformation.Mode.NONE;
     }
 
@@ -82,7 +88,7 @@ public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarri
 
     @Override
     protected void preRenderItem(MatrixStack stack, ItemStack item, String boneName, KoboldWarriorEntity currentEntity, IBone bone) {
-        if (item == this.mainHandItem) {
+        if (item == this.mainHandItem || item == this.offHandItem) {
             stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90f));
         }
     }

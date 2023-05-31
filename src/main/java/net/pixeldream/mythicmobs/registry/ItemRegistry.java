@@ -13,8 +13,8 @@ import static net.pixeldream.mythicmobs.MythicMobs.ITEM_GROUP;
 public class ItemRegistry {
     public static final Item AUTOMATON_SPAWN_EGG = new SpawnEggItem(EntityRegistry.AUTOMATON_ENTITY,0xcf9611, 0xa87807, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
     public static final Item KOBOLD_SPAWN_EGG = new SpawnEggItem(EntityRegistry.KOBOLD_ENTITY,0xd5f07d, 0x637036, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
-    public static final Item KOBOLD_WARRIOR_SPAWN_EGG = new SpawnEggItem(EntityRegistry.KOBOLD_WARRIOR_ENTITY,0xd5f07d, 0x637036, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
-    public static final Item CHUPACABRA_SPAWN_EGG = new SpawnEggItem(EntityRegistry.CHUPACABRA_ENTITY,0x444541, 0x82261e, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
+    public static final Item KOBOLD_WARRIOR_SPAWN_EGG = new SpawnEggItem(EntityRegistry.KOBOLD_WARRIOR_ENTITY,0xd5f07d, 0xe6b800, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
+    public static final Item CHUPACABRA_SPAWN_EGG = new SpawnEggItem(EntityRegistry.CHUPACABRA_ENTITY,0x8E7870, 0xDA5126, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
     public static final Item WENDIGO_SPAWN_EGG = new SpawnEggItem(EntityRegistry.WENDIGO_ENTITY,0x9f906f, 0x473a1f, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
     public static final KoboldSpearItem KOBOLD_SPEAR = new KoboldSpearItem(ToolMaterials.IRON, 4, -2.5f, new Item.Settings().group(ITEM_GROUP).maxCount(1).rarity(Rarity.UNCOMMON));
     public static final Item BRONZE_INGOT = new Item(new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
