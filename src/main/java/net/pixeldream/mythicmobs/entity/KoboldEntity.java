@@ -90,14 +90,6 @@ public class KoboldEntity extends AbstractKoboldEntity {
         this.dataTracker.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 
-    protected void produceParticles(ParticleEffect parameters) {
-        for(int i = 0; i < 5; ++i) {
-            double d = this.random.nextGaussian() * 0.02;
-            double e = this.random.nextGaussian() * 0.02;
-            double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
-        }
-    }
 
     public boolean isHoldingItem() {
         return !this.getStackInHand(Hand.MAIN_HAND).isEmpty();
@@ -128,7 +120,6 @@ public class KoboldEntity extends AbstractKoboldEntity {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 30) {
-            produceParticles(ParticleTypes.POOF);
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

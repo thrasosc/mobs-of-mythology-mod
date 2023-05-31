@@ -58,15 +58,6 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
         this.targetSelector.add(3, new UniversalAngerGoal(this, true));
     }
 
-    protected void produceParticles(ParticleEffect parameters) {
-        for(int i = 0; i < 5; ++i) {
-            double d = this.random.nextGaussian() * 0.02;
-            double e = this.random.nextGaussian() * 0.02;
-            double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
-        }
-    }
-
     @Override
     public <T> T getVariant() {
         return (T) KoboldWarriorVariant.byId(this.getTypeVariant() & 255);
@@ -80,11 +71,6 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 30) {
-            double d = this.random.nextGaussian() * 0.02;
-            double e = this.random.nextGaussian() * 0.02;
-            double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(ParticleTypes.POOF, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
-//            produceParticles(ParticleTypes.POOF);
             this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
