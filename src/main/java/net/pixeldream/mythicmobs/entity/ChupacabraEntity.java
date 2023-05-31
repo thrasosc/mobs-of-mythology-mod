@@ -91,6 +91,10 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            if (getHealth() < getMaxHealth()) {
+                this.heal(5.0f);
+                produceParticles(ParticleTypes.HAPPY_VILLAGER);
+            }
         }
     }
 
