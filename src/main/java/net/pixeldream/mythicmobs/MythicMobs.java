@@ -13,6 +13,7 @@ import net.pixeldream.mythicmobs.registry.BlockRegistry;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.ParticleRegistry;
+import net.pixeldream.mythicmobs.world.gen.WorldGen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.bernie.geckolib3.GeckoLib;
@@ -44,6 +45,8 @@ public class MythicMobs implements ModInitializer {
 		LOGGER.info("Replacing Iron Golems with Automata from " + MOD_NAME);
 		EntityEvents.replaceNaturallySpawningIronGolemsWithClayGolems();
 		EntityEvents.checkForUnSpawnedGolem();
+		LOGGER.info("Generating world-gen for " + MOD_NAME);
+		WorldGen.generateWorldGen();
 
 	}
 }

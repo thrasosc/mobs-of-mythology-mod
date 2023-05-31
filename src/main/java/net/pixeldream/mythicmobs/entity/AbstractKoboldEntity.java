@@ -8,14 +8,18 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.pixeldream.mythicmobs.MythicMobs;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -33,6 +37,7 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
     public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     protected static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(KoboldWarriorEntity.class, TrackedDataHandlerRegistry.INTEGER);
     protected long ticksUntilAttackFinish = 0;
+    protected int placeTorchCooldown = 0;
     protected AbstractKoboldEntity(EntityType<? extends PathAwareEntity> entityType, World world, int XP) {
         super(entityType, world);
         this.experiencePoints = XP;
@@ -85,6 +90,26 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        if (getEntityWorld().isNight()) {
+            if (!getStackInHand(Hand.OFF_HAND).isEmpty()) {
+                if (placeTorchCooldown == 30) {
+                    MythicMobs.LOGGER.info("PLACING TORCH");
+                    placeTorchCooldown = 0;
+                }
+            }
+            else {
+                MythicMobs.LOGGER.info("EQUIPPED TORCH");
+                setStackInHand(Hand.OFF_HAND, new ItemStack(Items.TORCH, 64));
+            }
+        }
+//        else if (getEntityWorld().isDay() && !getEntityWorld().isNight()) {
+//            setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
+//        }
+    }
+
+    @Override
     public void tickMovement() {
         int k;
         int j;
@@ -131,6 +156,6 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.ENTITY_CHICKEN_STEP, 0.5f, 1.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.5f, 1.0f);
     }
 }

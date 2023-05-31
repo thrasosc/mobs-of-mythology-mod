@@ -26,6 +26,7 @@ import java.util.Map;
 
 public class KoboldRenderer extends ExtendedGeoEntityRenderer<KoboldEntity> {
     protected ItemStack mainHandItem;
+    protected ItemStack offHandItem;
     public static final Map<KoboldVariant, Identifier> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldVariant.class), (map) -> {
                 map.put(KoboldVariant.KOBOLD,
@@ -48,6 +49,7 @@ public class KoboldRenderer extends ExtendedGeoEntityRenderer<KoboldEntity> {
                                      VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
                                      int packedLightIn, Identifier textureLocation) {
         mainHandItem = animatable.getEquippedStack(EquipmentSlot.MAINHAND);
+        offHandItem = animatable.getEquippedStack(EquipmentSlot.OFFHAND);
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 
@@ -65,6 +67,8 @@ public class KoboldRenderer extends ExtendedGeoEntityRenderer<KoboldEntity> {
     protected ItemStack getHeldItemForBone(String boneName, KoboldEntity currentEntity) {
         if (boneName.equals("hand"))
             return mainHandItem;
+        else if (boneName.equals("hand2"))
+            return offHandItem;
         return null;
     }
 
@@ -72,6 +76,8 @@ public class KoboldRenderer extends ExtendedGeoEntityRenderer<KoboldEntity> {
     protected ModelTransformation.Mode getCameraTransformForItemAtBone(ItemStack boneItem, String boneName) {
         if (boneName.equals("hand"))
             return ModelTransformation.Mode.THIRD_PERSON_RIGHT_HAND;
+        else if (boneName.equals("hand2"))
+            return ModelTransformation.Mode.THIRD_PERSON_LEFT_HAND;
         return ModelTransformation.Mode.NONE;
     }
 
@@ -82,7 +88,7 @@ public class KoboldRenderer extends ExtendedGeoEntityRenderer<KoboldEntity> {
 
     @Override
     protected void preRenderItem(MatrixStack stack, ItemStack item, String boneName, KoboldEntity currentEntity, IBone bone) {
-        if (item == this.mainHandItem) {
+        if (item == this.mainHandItem || item == this.offHandItem) {
             stack.multiply(Vec3f.POSITIVE_X.getDegreesQuaternion(-90f));
         }
     }

@@ -82,10 +82,7 @@
 				{
 					"name": "hand",
 					"parent": "left_arm2",
-					"pivot": [-4, 9, -2.5],
-					"cubes": [
-						{"origin": [-5, 8.5, -1.5], "size": [2, 3, 0], "inflate": 0.2, "uv": [13, 51], "mirror": true}
-					]
+					"pivot": [-4, 9, -2.5]
 				},
 				{
 					"name": "left_arm",
@@ -95,6 +92,11 @@
 						{"origin": [3, 8.5, -1.5], "size": [2, 10, 3], "uv": [0, 48]},
 						{"origin": [3, 8.5, -1.5], "size": [2, 10, 3], "inflate": 0.2, "uv": [10, 48]}
 					]
+				},
+				{
+					"name": "hand2",
+					"parent": "left_arm",
+					"pivot": [4, 9, -2.5]
 				},
 				{
 					"name": "right_leg",
