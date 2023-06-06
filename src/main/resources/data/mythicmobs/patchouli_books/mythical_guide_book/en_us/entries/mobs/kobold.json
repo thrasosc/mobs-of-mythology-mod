@@ -11,7 +11,8 @@
       "type": "image",
       "title": "Kobold",
       "images": [
-        "mythicmobs:images/kobold.png"
+        "mythicmobs:images/kobold.png",
+        "mythicmobs:images/kobold_cloth.png"
       ],
       "border": true
     }

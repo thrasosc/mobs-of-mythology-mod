@@ -1,0 +1,21 @@
+{
+  "name": "Kobold Warrior",
+  "icon": "mythicmobs:kobold_warrior_spawn_egg",
+  "category": "mythicmobs:mobs",
+  "pages": [
+    {
+      "type": "text",
+      "text": "DETAILS"
+    },
+    {
+      "type": "image",
+      "title": "Kobold Warrior",
+      "images": [
+        "mythicmobs:images/kobold_warrior_1.png",
+        "mythicmobs:images/kobold_warrior_2.png",
+        "mythicmobs:images/kobold_warrior_3.png"
+      ],
+      "border": true
+    }
+  ]
+}
