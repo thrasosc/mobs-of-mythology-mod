@@ -1,0 +1,19 @@
+{
+  "name": "Kobold",
+  "icon": "mythicmobs:kobold_spawn_egg",
+  "category": "mythicmobs:mobs",
+  "pages": [
+    {
+      "type": "text",
+      "text": "DETAILS"
+    },
+    {
+      "type": "image",
+      "title": "Kobold",
+      "images": [
+        "mythicmobs:images/kobold.png"
+      ],
+      "border": true
+    }
+  ]
+}

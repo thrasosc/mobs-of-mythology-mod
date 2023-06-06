@@ -27,12 +27,12 @@ public class KoboldWarriorRenderer extends ExtendedGeoEntityRenderer<KoboldWarri
     protected ItemStack offHandItem;
     public static final Map<KoboldWarriorVariant, Identifier> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldWarriorVariant.class), (map) -> {
-                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_warrior.png"));
+                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_1,
+                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_1.png"));
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_2,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_warrior_2.png"));
+                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_2.png"));
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_3,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_warrior_3.png"));
+                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_3.png"));
             });
     public KoboldWarriorRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new KoboldWarriorModel());

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public enum KoboldWarriorVariant {
-    KOBOLD_WARRIOR(0),
+    KOBOLD_WARRIOR_1(0),
     KOBOLD_WARRIOR_2(1),
     KOBOLD_WARRIOR_3(2);
 

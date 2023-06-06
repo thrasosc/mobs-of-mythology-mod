@@ -36,6 +36,11 @@ public class EntityRegistry {
             new Identifier(MythicMobs.MOD_ID, "chupacabra"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, ChupacabraEntity::new).dimensions(EntityDimensions.fixed(1.25f,1.0f)).build()
     );
+    public static final EntityType<DrakeEntity> DRAKE_ENTITY = Registry.register(
+            Registry.ENTITY_TYPE,
+            new Identifier(MythicMobs.MOD_ID, "drake"),
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, DrakeEntity::new).dimensions(EntityDimensions.fixed(1.25f,1.0f)).build()
+    );
 
     public EntityRegistry() {
         FabricDefaultAttributeRegistry.register(KOBOLD_ENTITY, KoboldEntity.setAttributes());
@@ -43,5 +48,6 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(WENDIGO_ENTITY, WendigoEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(AUTOMATON_ENTITY, AutomatonEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(CHUPACABRA_ENTITY, ChupacabraEntity.setAttributes());
+        FabricDefaultAttributeRegistry.register(DRAKE_ENTITY, DrakeEntity.setAttributes());
     }
 }

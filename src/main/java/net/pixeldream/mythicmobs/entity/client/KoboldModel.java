@@ -24,7 +24,6 @@ public class KoboldModel extends AnimatedGeoModel<KoboldEntity> {
         return new Identifier(MythicMobs.MOD_ID, "animations/entity/kobold.animation.json");
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void setLivingAnimations(KoboldEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);

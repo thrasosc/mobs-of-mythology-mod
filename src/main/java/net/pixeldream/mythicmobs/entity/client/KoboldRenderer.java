@@ -30,10 +30,11 @@ public class KoboldRenderer extends ExtendedGeoEntityRenderer<KoboldEntity> {
     public static final Map<KoboldVariant, Identifier> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldVariant.class), (map) -> {
                 map.put(KoboldVariant.KOBOLD,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold.png"));
+                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold/kobold.png"));
                 map.put(KoboldVariant.KOBOLD_CLOTHED,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold_cloth.png"));
+                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
             });
+
     public KoboldRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new KoboldModel());
         this.shadowRadius = 0.4f;
