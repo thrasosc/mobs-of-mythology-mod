@@ -123,6 +123,9 @@ public class KoboldEntity extends AbstractKoboldEntity {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 30) {
+            produceParticles(ParticleTypes.POOF);
+            if (random.nextInt(3) == 1)
+                this.dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT));
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

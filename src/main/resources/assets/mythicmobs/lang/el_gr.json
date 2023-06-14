@@ -1,0 +1,25 @@
+{
+  "entity.mythicmobs.wendigo": "Γουέντιγκο",
+  "entity.mythicmobs.kobold": "Καλικάντζαρος",
+  "entity.mythicmobs.kobold_warrior": "Καλικάντζαρος Πολεμιστής",
+  "entity.mythicmobs.automaton": "Ρομπότ",
+  "entity.mythicmobs.chupacabra": "Τσουπακαμπρά",
+
+  "item.mythicmobs.kobold_spear": "Ακόντιο Καλικάντζαρου",
+  "item.mythicmobs.bronze_ingot": "Ράβδος Ορείχαλκου",
+  "item.mythicmobs.automaton_spawn_egg": "Αυγό Γέννησης Ρομπότ",
+  "item.mythicmobs.kobold_spawn_egg": "Αυγό Γέννησης Καλικάντζαρου",
+  "item.mythicmobs.kobold_warrior_spawn_egg": "Αυγό Γέννησης Καλικάντζαρου Πολεμιστή",
+  "item.mythicmobs.chupacabra_spawn_egg": "Αυγό Γέννησης Τσουπακαμπρά",
+  "item.mythicmobs.wendigo_spawn_egg": "Αυγό Γέννησης ",
+  "item.mythicmobs.drake_spawn_egg": "Αυγό Γέννησης Δράκου",
+  "item.mythicmobs.automaton_head": "Κεφάλι Ρομπότ",
+
+  "block.mythicmobs.bronze_block": "Κύβος Ορείχαλκου",
+  "block.mythicmobs.bronze_block_cut": "Κομμένος Ορείχαλκος",
+
+  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+
+  "mythicmobs.midnightconfig.title": "Ρυθμίσεις Mythic Mobs",
+  "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Αντικατάσταση των Iron Golem"
+}

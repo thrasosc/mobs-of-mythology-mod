@@ -4,9 +4,7 @@
   "package": "net.pixeldream.mythicmobs.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MobRememberSpawnReasonMixin",
-    "CarvedPumpkinAutomatonSpawn",
-    "accessor.LivingEntityAccessor"
+    "MobRememberSpawnReasonMixin"
   ],
   "client": [
   ],

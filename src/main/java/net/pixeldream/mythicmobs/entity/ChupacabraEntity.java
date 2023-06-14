@@ -1,40 +1,26 @@
 package net.pixeldream.mythicmobs.entity;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.LeavesBlock;
-import net.minecraft.entity.EntityData;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.data.DataTracker;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.pixeldream.mythicmobs.MythicMobs;
+import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.ParticleRegistry;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -44,9 +30,9 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.Iterator;
+import java.util.Random;
 
-public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Monster {
+public class ChupacabraEntity extends HostileEntity implements IAnimatable, Monster {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
@@ -54,14 +40,14 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
     public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     private long ticksUntilAttackFinish = 0;
 
-    public ChupacabraEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
+    public ChupacabraEntity(EntityType<? extends HostileEntity> entityType, World world) {
         super(entityType, world);
-        this.experiencePoints = STRONG_MONSTER_XP;
+        this.experiencePoints = NORMAL_MONSTER_XP;
     }
 
     @Override
     public int getHandSwingDuration() {
-        return (int) (20*0.44);
+        return (int) (20 * 0.44);
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
@@ -82,6 +68,7 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
         this.goalSelector.add(4, new LookAroundGoal(this));
         this.targetSelector.add(1, new RevengeGoal(this));
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, AnimalEntity.class, true));
+        this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
     }
 
     @Override
@@ -123,7 +110,7 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
     }
 
     protected void produceParticles(ParticleEffect parameters) {
-        for(int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
@@ -133,8 +120,16 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        produceParticles(ParticleTypes.SMOKE);
         super.onDeath(damageSource);
+    }
+
+    @Override
+    public void updatePostDeath() {
+        ++deathTime;
+        if (deathTime == 30) {
+            produceParticles(ParticleTypes.POOF);
+            this.dropXp();
+        }
     }
 
     @Override
@@ -144,19 +139,19 @@ public class ChupacabraEntity extends PathAwareEntity implements IAnimatable, Mo
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_AMBIENT, 1.0f, 0.25f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENTITY_WOLF_HURT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_HURT, 1.0f, 0.25f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.ENTITY_WOLF_DEATH, 1.0f, 3.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_DEATH, 1.0f, 0.25f);
         return null;
     }
 

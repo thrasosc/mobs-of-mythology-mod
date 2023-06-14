@@ -92,19 +92,19 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
     @Override
     public void tick() {
         super.tick();
-        if (getEntityWorld().isNight()) {
-            if (!getStackInHand(Hand.OFF_HAND).isEmpty()) {
-                if (placeTorchCooldown == 30) {
-                    MythicMobs.LOGGER.info("PLACING TORCH");
-                    placeTorchCooldown = 0;
-                }
-            }
-            else {
-                MythicMobs.LOGGER.info("EQUIPPED TORCH");
-                setStackInHand(Hand.OFF_HAND, new ItemStack(Items.TORCH, 64));
-            }
-        }
-//        else if (getEntityWorld().isDay() && !getEntityWorld().isNight()) {
+//        if (getEntityWorld().isNight()) {
+//            if (!getStackInHand(Hand.OFF_HAND).isEmpty()) {
+//                if (placeTorchCooldown == 30) {
+//                    MythicMobs.LOGGER.info("PLACING TORCH");
+//                    placeTorchCooldown = 0;
+//                }
+//            }
+//            else {
+//                MythicMobs.LOGGER.info("EQUIPPED TORCH");
+//                setStackInHand(Hand.OFF_HAND, new ItemStack(Items.TORCH, 64));
+//            }
+//        }
+//        else if (getEntityWorld().isDay() && this.getStackInHand(Hand.OFF_HAND).isOf(Items.TORCH)) {
 //            setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
 //        }
     }

@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class KoboldRevengeGoal extends TrackTargetGoal {
     private static final TargetPredicate VALID_AVOIDABLES_PREDICATE = TargetPredicate.createAttackable().ignoreVisibility().ignoreDistanceScalingFactor();
-    private static final int BOX_VERTICAL_EXPANSION = 10;
     private boolean groupRevenge;
     private int lastAttackedTime;
     private final Class<?>[] noRevengeTypes;

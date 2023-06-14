@@ -206,6 +206,15 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     }
 
     @Override
+    public void updatePostDeath() {
+        ++deathTime;
+        if (deathTime == 30) {
+            produceParticles(ParticleTypes.POOF);
+            this.dropXp();
+        }
+    }
+
+    @Override
     public AnimationFactory getFactory() {
         return factory;
     }

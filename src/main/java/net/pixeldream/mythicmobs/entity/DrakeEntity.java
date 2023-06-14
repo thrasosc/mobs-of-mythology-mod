@@ -135,8 +135,16 @@ public class DrakeEntity extends PathAwareEntity implements IAnimatable {
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        produceParticles(ParticleTypes.POOF);
         super.onDeath(damageSource);
+    }
+
+    @Override
+    public void updatePostDeath() {
+        ++deathTime;
+        if (deathTime == 30) {
+            produceParticles(ParticleTypes.POOF);
+            this.dropXp();
+        }
     }
 
     @Override

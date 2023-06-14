@@ -25,6 +25,8 @@ import net.pixeldream.mythicmobs.goal.KoboldRevengeGoal;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
+
 public class KoboldWarriorEntity extends AbstractKoboldEntity {
     public KoboldWarriorEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world, NORMAL_MONSTER_XP);
@@ -72,7 +74,10 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 30) {
-            this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
+            produceParticles(ParticleTypes.POOF);
+            Random random = new Random();
+            if (random.nextInt(3) == 1)
+                this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

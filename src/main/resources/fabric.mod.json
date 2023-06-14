@@ -29,7 +29,7 @@
 		"mythicmobs.mixins.json"
 	],
 	"depends": {
-		"fabricloader": ">=0.14.19",
+		"fabricloader": ">=0.14.21",
 		"minecraft": "~1.19.2",
 		"java": ">=17",
 		"geckolib3": ">=3.1.40",

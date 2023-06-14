@@ -20,7 +20,6 @@ import net.minecraft.entity.passive.IronGolemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
@@ -167,8 +166,6 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
         super.tickMovement();
         if (this.attackTicksLeft > 0) {
             --this.attackTicksLeft;
-//            MythicMobs.LOGGER.info("ATTACKING");
-//            this.movementMultiplier.multiply(0.001);
         }
         if (this.lookingAtVillagerTicksLeft > 0) {
             --this.lookingAtVillagerTicksLeft;
@@ -357,6 +354,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     @Override
     public void onDeath(DamageSource damageSource) {
         produceParticles(ParticleTypes.POOF);
+        dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, 4));
         super.onDeath(damageSource);
     }
 
