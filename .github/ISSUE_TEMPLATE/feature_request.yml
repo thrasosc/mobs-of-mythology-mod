@@ -1,0 +1,10 @@
+name: "Feature request"
+description: "Make a suggestion."
+labels: [ "enhancement" ]
+body:
+    -   type: textarea
+        attributes:
+            label: "Describe your suggestion"
+            description: "Make a brief description and justification of your suggestion."
+        validations:
+            required: true
