@@ -128,6 +128,7 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
         ++deathTime;
         if (deathTime == 30) {
             produceParticles(ParticleTypes.POOF);
+            this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }
     }
