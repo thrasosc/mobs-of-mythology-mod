@@ -14,7 +14,7 @@ import java.util.Queue;
 
 public class EntityEvents {
     private static final Queue<AutomatonEntity> AUTOMATON_ENTITIES = new LinkedList<>();
-    public static void replaceNaturallySpawningIronGolemsWithClayGolems() {
+    public static void replaceNaturallySpawningIronGolemsWithAutomata() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if(!MythicMobsConfigs.REPLACE_IRON_GOLEMS) return;
             if(entity instanceof IronGolemEntity ironGolem && entity.getClass() == IronGolemEntity.class && ((IMobRememberSpawnReason)ironGolem).getMobSpawnType() != SpawnReason.COMMAND && !ironGolem.isPlayerCreated()) {

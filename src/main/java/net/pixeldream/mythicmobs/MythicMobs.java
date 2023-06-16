@@ -43,7 +43,7 @@ public class MythicMobs implements ModInitializer {
 		LOGGER.info("Registering blocks for " + MOD_NAME);
 		new BlockRegistry();
 		LOGGER.info("Replacing Iron Golems with Automata from " + MOD_NAME);
-		EntityEvents.replaceNaturallySpawningIronGolemsWithClayGolems();
+		EntityEvents.replaceNaturallySpawningIronGolemsWithAutomata();
 		EntityEvents.checkForUnSpawnedGolem();
 		LOGGER.info("Generating world-gen for " + MOD_NAME);
 		WorldGen.generateWorldGen();
