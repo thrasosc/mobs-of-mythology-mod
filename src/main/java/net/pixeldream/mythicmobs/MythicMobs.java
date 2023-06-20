@@ -47,6 +47,5 @@ public class MythicMobs implements ModInitializer {
 		EntityEvents.checkForUnSpawnedGolem();
 		LOGGER.info("Generating world-gen for " + MOD_NAME);
 		WorldGen.generateWorldGen();
-
 	}
 }
