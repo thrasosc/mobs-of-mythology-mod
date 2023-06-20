@@ -22,7 +22,7 @@ Mythic Mobs is an exciting Minecraft mod that brings mythical creatures and powe
 
 ## 👍 Recommended Dependencies
 <a href="https://modrinth.com/mod/better-combat">
-  <img src="https://media.forgecdn.net/avatars/566/413/637925434672465483.png" width="100" height="100" />
+  <img src="https://cdn.modrinth.com/data/5sy6g3kz/icon.png" width="100" height="100" />
 </a>
 
 ## 💼 Affiliate
