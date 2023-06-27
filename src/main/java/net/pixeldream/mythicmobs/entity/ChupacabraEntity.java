@@ -44,24 +44,14 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
         this.experiencePoints = NORMAL_MONSTER_XP;
     }
 
-    @Override
-    public int getHandSwingDuration() {
-        return (int) (20 * 0.44);
-    }
-
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 1.25f)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 16).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 6).add(EntityAttributes.GENERIC_ATTACK_SPEED, 1.25f).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.25f, true));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.5f, true));
         this.goalSelector.add(2, new WanderAroundFarGoal(this, 0.75f));
         this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
         this.goalSelector.add(4, new LookAroundGoal(this));
@@ -73,7 +63,7 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
     static {
         DIET = (entity) -> {
             EntityType<?> entityType = entity.getType();
-            return entityType == EntityType.SHEEP || entityType == EntityType.COW || entityType == EntityType.HORSE || entityType == EntityType.DONKEY || entityType == EntityType.PIG || entityType == EntityType.CHICKEN || entityType == EntityType.RABBIT;
+            return entityType == EntityType.SHEEP || entityType == EntityType.COW || entityType == EntityType.PIG || entityType == EntityType.CHICKEN || entityType == EntityType.RABBIT;
         };
     }
 

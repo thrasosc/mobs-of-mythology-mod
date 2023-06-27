@@ -9,12 +9,10 @@ import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
@@ -41,12 +39,7 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 2)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 20).add(EntityAttributes.GENERIC_ARMOR, 6).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.5f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 2).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override
@@ -76,8 +69,7 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
         if (deathTime == 30) {
             produceParticles(ParticleTypes.POOF);
             Random random = new Random();
-            if (random.nextInt(3) == 1)
-                this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
+            if (random.nextInt(3) == 1) this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

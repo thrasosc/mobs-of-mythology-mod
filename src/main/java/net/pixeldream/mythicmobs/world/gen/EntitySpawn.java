@@ -28,7 +28,7 @@ public class EntitySpawn {
                 HostileEntity::canSpawnInDark);
 
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE,
-                EntityRegistry.DRAKE_ENTITY, 15, 1, 4);
+                EntityRegistry.DRAKE_ENTITY, 10, 1, 4);
         SpawnRestriction.register(EntityRegistry.DRAKE_ENTITY, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
                 TameableEntity::canMobSpawn);
     }

@@ -1,19 +1,20 @@
 package net.pixeldream.mythicmobs.entity;
 
-import net.minecraft.client.particle.Particle;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityData;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
-import net.minecraft.entity.ai.brain.task.LookTargetUtil;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
@@ -27,7 +28,7 @@ import net.pixeldream.mythicmobs.goal.KoboldRevengeGoal;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Iterator;
+import java.util.Random;
 
 public class KoboldEntity extends AbstractKoboldEntity {
     private int heldCounter = 0;
@@ -69,10 +70,11 @@ public class KoboldEntity extends AbstractKoboldEntity {
         if (isHoldingItem()) {
             heldCounter++;
             if (heldCounter == 20 * 3) {
-                if (this.getStackInHand(Hand.MAIN_HAND).isOf(Items.NETHERITE_INGOT)) {
+                if (this.getStackInHand(Hand.MAIN_HAND).isOf(Items.DIAMOND)) {
                     this.playSound(SoundEvents.ENTITY_VILLAGER_YES, 1.0f, 1.5f);
                     this.produceParticles(ParticleTypes.HAPPY_VILLAGER);
-                    this.dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, 3));
+                    Random random = new Random();
+                    this.dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextInt(3)));
                     this.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
                     this.getBrain().forget(MemoryModuleType.LIKED_PLAYER);
                     heldCounter = 0;

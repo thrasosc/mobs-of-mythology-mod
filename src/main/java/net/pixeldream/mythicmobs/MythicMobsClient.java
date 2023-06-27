@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.pixeldream.mythicmobs.block.client.DrakeEggRenderer;
 import net.pixeldream.mythicmobs.block.client.RitualStoneRenderer;
 import net.pixeldream.mythicmobs.entity.client.*;
 import net.pixeldream.mythicmobs.particle.BloodParticle;
@@ -27,5 +28,6 @@ public class MythicMobsClient implements ClientModInitializer {
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.BLOOD_PARTICLE, BloodParticle.Factory::new);
 
         BlockEntityRendererRegistry.register(BlockEntityRegistry.RITUAL_STONE_BLOCK_ENTITY, RitualStoneRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntityRegistry.DRAKE_EGG_BLOCK_ENTITY, DrakeEggRenderer::new);
     }
 }

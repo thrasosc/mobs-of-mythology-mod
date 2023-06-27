@@ -104,14 +104,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes()
-                .add(EntityAttributes.GENERIC_MAX_HEALTH, 50)
-                .add(EntityAttributes.GENERIC_ARMOR, 25)
-                .add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10)
-                .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
-                .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 250).add(EntityAttributes.GENERIC_ARMOR, 26).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5f).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override
@@ -191,7 +184,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     }
 
     protected void produceParticles(ParticleEffect parameters) {
-        for(int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 5; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
