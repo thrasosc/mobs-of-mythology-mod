@@ -4,6 +4,7 @@
   "entity.mythicmobs.kobold_warrior": "Καλικάντζαρος Πολεμιστής",
   "entity.mythicmobs.automaton": "Ρομπότ",
   "entity.mythicmobs.chupacabra": "Τσουπακαμπρά",
+  "entity.mythicmobs.drake": "Δράκος",
 
   "item.mythicmobs.kobold_spear": "Ακόντιο Καλικάντζαρου",
   "item.mythicmobs.bronze_ingot": "Ράβδος Ορείχαλκου",
@@ -16,7 +17,7 @@
   "item.mythicmobs.automaton_head": "Κεφάλι Ρομπότ",
 
   "block.mythicmobs.bronze_block": "Κύβος Ορείχαλκου",
-  "block.mythicmobs.bronze_block_cut": "Κομμένος Ορείχαλκος",
+  "block.mythicmobs.cut_bronze_block": "Κομμένος Ορείχαλκος",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 

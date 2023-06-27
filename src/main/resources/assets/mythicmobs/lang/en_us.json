@@ -4,6 +4,7 @@
   "entity.mythicmobs.kobold_warrior": "Kobold Warrior",
   "entity.mythicmobs.automaton": "Automaton",
   "entity.mythicmobs.chupacabra": "Chupacabra",
+  "entity.mythicmobs.drake": "Drake",
 
   "item.mythicmobs.kobold_spear": "Kobold Spear",
   "item.mythicmobs.bronze_ingot": "Bronze Ingot",
@@ -16,7 +17,7 @@
   "item.mythicmobs.automaton_head": "Automaton Head",
 
   "block.mythicmobs.bronze_block": "Bronze Block",
-  "block.mythicmobs.bronze_block_cut": "Cut Bronze Block",
+  "block.mythicmobs.cut_bronze_block": "Cut Bronze Block",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 

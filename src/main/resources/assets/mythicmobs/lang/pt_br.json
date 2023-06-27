@@ -1,0 +1,26 @@
+{
+  "entity.mythicmobs.wendigo": "Wendigo",
+  "entity.mythicmobs.kobold": "Kobold",
+  "entity.mythicmobs.kobold_warrior": "Guerreiro Kobold",
+  "entity.mythicmobs.automaton": "Autômato",
+  "entity.mythicmobs.chupacabra": "Chupa-cabra",
+  "entity.mythicmobs.drake": "Drake",
+
+  "item.mythicmobs.kobold_spear": "Lança kobold",
+  "item.mythicmobs.bronze_ingot": "Barra de bronze",
+  "item.mythicmobs.automaton_spawn_egg": "Ovo gerador de Autômato",
+  "item.mythicmobs.kobold_spawn_egg": "Ovo gerador de Kabold",
+  "item.mythicmobs.kobold_warrior_spawn_egg": "Ovo gerador de guerreiro Kabold",
+  "item.mythicmobs.chupacabra_spawn_egg": "Ovo gerador de Chupa-cabra",
+  "item.mythicmobs.wendigo_spawn_egg": "Ovo gerador de Wendigo",
+  "item.mythicmobs.drake_spawn_egg": "Ovo gerador de Drake",
+  "item.mythicmobs.automaton_head": "Cabeça de Autômato",
+
+  "block.mythicmobs.bronze_block": "Bloco de bronze",
+  "block.mythicmobs.cut_bronze_block": "Bloco de bronze talhado",
+
+  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+
+  "mythicmobs.midnightconfig.title": "Opções de Mythic Mobs",
+  "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Substituir Golens de ferro"
+}

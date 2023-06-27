@@ -1,0 +1,19 @@
+{
+  "name": "Chupacabra",
+  "icon": "mythicmobs:chupacabra_spawn_egg",
+  "category": "mythicmobs:mobs",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Kokos"
+    },
+    {
+      "type": "image",
+      "title": "Chupacabra",
+      "images": [
+        "mythicmobs:images/chupacabra.png"
+      ],
+      "border": true
+    }
+  ]
+}

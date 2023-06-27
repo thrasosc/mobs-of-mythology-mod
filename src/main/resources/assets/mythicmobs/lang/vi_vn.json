@@ -4,6 +4,7 @@
   "entity.mythicmobs.kobold_warrior": "Chiến binh Kobold",
   "entity.mythicmobs.automaton": "Máy tự động",
   "entity.mythicmobs.chupacabra": "Quỷ hút máu dê",
+  "entity.mythicmobs.drake": "Drake",
 
   "item.mythicmobs.kobold_spear": "Giáo Kobold",
   "item.mythicmobs.bronze_ingot": "Thỏi đồng",
@@ -16,7 +17,7 @@
   "item.mythicmobs.automaton_head": "Đầu máy tự động",
 
   "block.mythicmobs.bronze_block": "Khối Đồng",
-  "block.mythicmobs.bronze_block_cut": "Cut Bronze Block",
+  "block.mythicmobs.cut_bronze_block": "Cut Bronze Block",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 

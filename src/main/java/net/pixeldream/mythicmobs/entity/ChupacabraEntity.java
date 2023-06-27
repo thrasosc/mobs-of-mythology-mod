@@ -3,23 +3,21 @@ package net.pixeldream.mythicmobs.entity;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.ParticleRegistry;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -30,7 +28,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
-import java.util.Random;
+import java.util.function.Predicate;
 
 public class ChupacabraEntity extends HostileEntity implements IAnimatable, Monster {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
@@ -38,6 +36,7 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
     public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+    private static final Predicate<LivingEntity> DIET;
     private long ticksUntilAttackFinish = 0;
 
     public ChupacabraEntity(EntityType<? extends HostileEntity> entityType, World world) {
@@ -54,7 +53,7 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
         return HostileEntity.createMobAttributes()
                 .add(EntityAttributes.GENERIC_MAX_HEALTH, 20)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 4)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 2)
+                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 1.25f)
                 .add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
@@ -67,8 +66,15 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
         this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
         this.goalSelector.add(4, new LookAroundGoal(this));
         this.targetSelector.add(1, new RevengeGoal(this));
-        this.targetSelector.add(2, new ActiveTargetGoal<>(this, AnimalEntity.class, true));
+        this.targetSelector.add(4, new ActiveTargetGoal(this, AnimalEntity.class, false, DIET));
         this.targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+    }
+
+    static {
+        DIET = (entity) -> {
+            EntityType<?> entityType = entity.getType();
+            return entityType == EntityType.SHEEP || entityType == EntityType.COW || entityType == EntityType.HORSE || entityType == EntityType.DONKEY || entityType == EntityType.PIG || entityType == EntityType.CHICKEN || entityType == EntityType.RABBIT;
+        };
     }
 
     @Override
@@ -79,7 +85,7 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             if (getHealth() < getMaxHealth()) {
-                this.heal(5.0f);
+                this.heal(2.5f);
                 produceParticles(ParticleTypes.HAPPY_VILLAGER);
             }
         }

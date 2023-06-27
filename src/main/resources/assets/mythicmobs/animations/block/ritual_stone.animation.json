@@ -1,0 +1,87 @@
+{
+	"format_version": "1.8.0",
+	"animations": {
+		"animation.ritual_stone.idle": {
+			"loop": true,
+			"animation_length": 10,
+			"bones": {
+				"floating_block1": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"10.0": {
+							"vector": [0, -360, 0]
+						}
+					}
+				},
+				"floating_block2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"10.0": {
+							"vector": [0, 360, 0]
+						}
+					}
+				},
+				"bone": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"10.0": {
+							"vector": [-360, -360, -360]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [-2, -1, 0]
+						},
+						"4.9167": {
+							"vector": [-4, -5, 0]
+						},
+						"6.125": {
+							"vector": [-6.05, -3.81, 0]
+						},
+						"7.7917": {
+							"vector": [-6.45, -2.17, 0]
+						},
+						"10.0": {
+							"vector": [-2, -1, 0]
+						}
+					}
+				},
+				"bone2": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"10.0": {
+							"vector": [360, 360, 360]
+						}
+					},
+					"position": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.3333": {
+							"vector": [0, -0.36, 2],
+							"easing": "easeInSine"
+						},
+						"3.5": {
+							"vector": [0, -9, 0]
+						},
+						"7.2917": {
+							"vector": [0, -4.6, 0]
+						},
+						"10.0": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
+		}
+	},
+	"geckolib_format_version": 2
+}
