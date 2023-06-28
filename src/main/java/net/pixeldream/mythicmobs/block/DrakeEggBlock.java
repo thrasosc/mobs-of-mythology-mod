@@ -9,7 +9,10 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
@@ -50,6 +53,18 @@ public class DrakeEggBlock extends BlockWithEntity {
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        world.playSound((PlayerEntity) null, pos, SoundEvents.ENTITY_TURTLE_EGG_HATCH, SoundCategory.BLOCKS, 0.7F, 0.9F);
+        world.removeBlock(pos, false);
+//        world.syncWorldEvent(2001, pos, Block.getRawIdFromState(state));
+        DrakeEntity drakeEntity = EntityRegistry.DRAKE_ENTITY.create(world);
+        drakeEntity.setBreedingAge(-24000);
+        drakeEntity.refreshPositionAndAngles((double) pos.getX() + 0.3, (double) pos.getY(), (double) pos.getZ() + 0.3, 0.0F, 0.0F);
+        world.spawnEntity(drakeEntity);
+        return ActionResult.CONSUME;
     }
 
     private boolean shouldHatchProgress(World world) {

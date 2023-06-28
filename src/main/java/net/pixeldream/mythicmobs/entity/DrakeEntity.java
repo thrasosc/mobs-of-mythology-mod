@@ -85,7 +85,8 @@ public class DrakeEntity extends TameableEntity implements IAnimatable {
 
 //        DrakeVariant variant = Util.getRandom(DrakeVariant.values(), this.random);
 //        baby.setVariant(variant);
-        PassiveEntity baby = (PassiveEntity) EntityRegistry.DRAKE_ENTITY.create(world);
+        DrakeEntity baby = EntityRegistry.DRAKE_ENTITY.create(world);
+        baby.setVariant(Util.getRandom(DrakeVariant.values(), this.random));
         return baby;
     }
 
