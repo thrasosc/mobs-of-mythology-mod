@@ -29,10 +29,12 @@ public class DrakeRenderer extends GeoEntityRenderer<DrakeEntity> {
     public DrakeRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DrakeModel());
         this.shadowRadius = 0.35f;
+//        this.addLayer(new DrakeLayer<>(this));  //GLOW LAYER
     }
 
     @Override
     public Identifier getTextureResource(DrakeEntity instance) {
+        this.addLayer(new DrakeLayer<>(this, instance));  //GLOW LAYER
         return LOCATION_BY_VARIANT.get(instance.getVariant());
     }
 

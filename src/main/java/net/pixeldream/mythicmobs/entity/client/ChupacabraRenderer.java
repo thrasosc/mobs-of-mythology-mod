@@ -9,7 +9,6 @@ import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.ChupacabraEntity;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
-import software.bernie.geckolib3.renderers.geo.layer.LayerGlowingAreasGeo;
 
 public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
     public ChupacabraRenderer(EntityRendererFactory.Context ctx) {
@@ -20,7 +19,7 @@ public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
 
     @Override
     public Identifier getTextureResource(ChupacabraEntity instance) {
-        return new Identifier(MythicMobs.MOD_ID, "textures/entity/automaton.png");
+        return new Identifier(MythicMobs.MOD_ID, "textures/entity/chupacabra.png");
     }
 
     @Override
