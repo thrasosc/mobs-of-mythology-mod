@@ -5,6 +5,7 @@
   "entity.mythicmobs.automaton": "Automat",
   "entity.mythicmobs.chupacabra": "Chupacabra",
   "entity.mythicmobs.drake": "Drake",
+  "entity.mythicmobs.mushroom_thing": "Sporenling",
 
   "item.mythicmobs.kobold_spear": "Kobold Speer",
   "item.mythicmobs.bronze_ingot": "Bronze Barren",
@@ -12,8 +13,9 @@
   "item.mythicmobs.kobold_spawn_egg": "Kobold Spawn Ei",
   "item.mythicmobs.kobold_warrior_spawn_egg": "Kobold Krieger Spawn Ei",
   "item.mythicmobs.chupacabra_spawn_egg": "Chupacabra Spawn Ei",
-  "item.mythicmobs.wendigo_spawn_egg": "Wendigo Spawn EI",
-  "item.mythicmobs.drake_spawn_egg": "Drake Spawn EI",
+  "item.mythicmobs.wendigo_spawn_egg": "Wendigo Spawn Ei",
+  "item.mythicmobs.drake_spawn_egg": "Drake Spawn Ei",
+  "item.mythicmobs.mushroom_spawn_egg": "Sporenling Spawn Ei",
   "item.mythicmobs.automaton_head": "Automat Kopf",
 
   "block.mythicmobs.bronze_block": "Bronze Block",

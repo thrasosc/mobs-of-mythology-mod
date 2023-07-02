@@ -5,6 +5,7 @@
   "entity.mythicmobs.automaton": "Automaton",
   "entity.mythicmobs.chupacabra": "Chupacabra",
   "entity.mythicmobs.drake": "Drake",
+  "entity.mythicmobs.mushroom_thing": "Sporeling",
 
   "item.mythicmobs.kobold_spear": "Kobold Spear",
   "item.mythicmobs.bronze_ingot": "Bronze Ingot",
@@ -14,6 +15,7 @@
   "item.mythicmobs.chupacabra_spawn_egg": "Chupacabra Spawn Egg",
   "item.mythicmobs.wendigo_spawn_egg": "Wendigo Spawn Egg",
   "item.mythicmobs.drake_spawn_egg": "Drake Spawn Egg",
+  "item.mythicmobs.mushroom_spawn_egg": "Sporeling Spawn Egg",
   "item.mythicmobs.automaton_head": "Automaton Head",
 
   "block.mythicmobs.bronze_block": "Bronze Block",

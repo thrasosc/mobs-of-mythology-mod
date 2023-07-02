@@ -5,15 +5,13 @@
   "pages": [
     {
       "type": "text",
-      "text": "Kokos"
+      "text": "The Chupacabra is a legendary creature that roams the night. With glowing red eyes and sharp fangs, it preys on livestock. Beware its swift and silent attacks, as it lurks in dark corners and remote areas."
     },
     {
-      "type": "image",
-      "title": "Chupacabra",
-      "images": [
-        "mythicmobs:images/chupacabra.png"
-      ],
-      "border": true
+      "type": "entity",
+      "entity": "mythicmobs:chupacabra",
+      "name": "Chupacabra",
+      "scale": "0.5"
     }
   ]
 }

@@ -5,6 +5,7 @@
   "entity.mythicmobs.automaton": "Máy tự động",
   "entity.mythicmobs.chupacabra": "Quỷ hút máu dê",
   "entity.mythicmobs.drake": "Drake",
+  "entity.mythicmobs.mushroom_thing": "Bào tử con",
 
   "item.mythicmobs.kobold_spear": "Giáo Kobold",
   "item.mythicmobs.bronze_ingot": "Thỏi đồng",
@@ -14,6 +15,7 @@
   "item.mythicmobs.chupacabra_spawn_egg": "Trứng Qủy hút máu dê",
   "item.mythicmobs.wendigo_spawn_egg": "Trứng Wendigo",
   "item.mythicmobs.drake_spawn_egg": "Trứng Drake",
+  "item.mythicmobs.mushroom_spawn_egg": "Trứng Bào tử con",
   "item.mythicmobs.automaton_head": "Đầu máy tự động",
 
   "block.mythicmobs.bronze_block": "Khối Đồng",

@@ -1,6 +1,7 @@
 package net.pixeldream.mythicmobs.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -12,7 +13,8 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.CowEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -25,7 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.pixeldream.mythicmobs.MythicMobs;
+import net.pixeldream.mythicmobs.goal.DelayedAttackGoal;
 import net.pixeldream.mythicmobs.goal.RoarGoal;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -75,6 +77,18 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("Variant", this.getTypeVariant());
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.dataTracker.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
+    }
+
     public WendigoVariant getVariant() {
         return WendigoVariant.byId(this.getTypeVariant() & 255);
     }
@@ -98,11 +112,6 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
         }
     }
 
-    @Override
-    public int getHandSwingDuration() {
-        return 17;
-    }
-
     public static DefaultAttributeContainer.Builder setAttributes() {
         return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 250).add(EntityAttributes.GENERIC_ARMOR, 26).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5f).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
@@ -111,7 +120,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     protected void initGoals() {
         goalSelector.add(0, new SwimGoal(this));
         goalSelector.add(1, new RoarGoal(this));
-        goalSelector.add(2, new MeleeAttackGoal(this, 1.25f, true));
+        goalSelector.add(2, new DelayedAttackGoal(this, 1.5f, true));
         goalSelector.add(3, new WanderAroundFarGoal(this, 0.75f));
         goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         goalSelector.add(5, new LookAroundGoal(this));
@@ -131,18 +140,19 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     public void registerControllers(AnimationData animationData) {
         setAnim();
         animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
-            if (getRoaring() && isAttacking() && !handSwinging) {
-                animationEvent.getController().setAnimation(ROAR);
-                MythicMobs.LOGGER.info("ROARING CURRENTLY");
-                return PlayState.CONTINUE;
-            } else if (animationEvent.isMoving() && !handSwinging) {
+//            if (getRoaring()) {
+//                animationEvent.getController().setAnimation(ROAR);
+//                MythicMobs.LOGGER.info("ROARING CURRENTLY");
+//                return PlayState.CONTINUE;
+//            } else
+                if (animationEvent.isMoving() && !handSwinging) {
                 if (isAttacking() && !handSwinging) {
                     animationEvent.getController().setAnimation(RUN);
                     return PlayState.CONTINUE;
                 }
                 animationEvent.getController().setAnimation(WALK);
                 return PlayState.CONTINUE;
-            } else if (handSwinging) {
+            } else if (isAttacking()) {
                 animationEvent.getController().setAnimation(ATTACK);
                 ticksUntilAttackFinish++;
                 if (ticksUntilAttackFinish > 17 * 6) {
@@ -203,6 +213,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
         ++deathTime;
         if (deathTime == 30) {
             produceParticles(ParticleTypes.POOF);
+            this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }
     }

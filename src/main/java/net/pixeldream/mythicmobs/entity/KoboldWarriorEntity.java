@@ -13,7 +13,6 @@ import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraft.world.LocalDifficulty;
@@ -66,8 +65,7 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     @Override
     public void updatePostDeath() {
         ++deathTime;
-        if (deathTime == 30) {
-            produceParticles(ParticleTypes.POOF);
+        if (deathTime == 15) {
             Random random = new Random();
             if (random.nextInt(3) == 1) this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
             this.remove(Entity.RemovalReason.KILLED);

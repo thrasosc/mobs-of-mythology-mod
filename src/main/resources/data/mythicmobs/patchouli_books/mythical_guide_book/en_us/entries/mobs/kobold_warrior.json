@@ -8,14 +8,9 @@
       "text": "The Kobolds Warriors are the protectors of the Kobold race. Their sharp spears and swift legs make sure that if one messes with the Kobolds, they will pay for it. Although, if one manages to take down a Kobold Warrior, they have a chance of being rewarded with the light and powerful Kobold Spear."
     },
     {
-      "type": "image",
-      "title": "Kobold Warrior",
-      "images": [
-        "mythicmobs:images/kobold_warrior_1.png",
-        "mythicmobs:images/kobold_warrior_2.png",
-        "mythicmobs:images/kobold_warrior_3.png"
-      ],
-      "border": true
+      "type": "entity",
+      "entity": "mythicmobs:kobold_warrior",
+      "name": "Kobold Warrior"
     }
   ]
 }

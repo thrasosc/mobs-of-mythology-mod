@@ -5,6 +5,7 @@
   "entity.mythicmobs.automaton": "Autômato",
   "entity.mythicmobs.chupacabra": "Chupa-cabra",
   "entity.mythicmobs.drake": "Drake",
+  "entity.mythicmobs.mushroom_thing": "Esporos",
 
   "item.mythicmobs.kobold_spear": "Lança kobold",
   "item.mythicmobs.bronze_ingot": "Barra de bronze",
@@ -14,6 +15,7 @@
   "item.mythicmobs.chupacabra_spawn_egg": "Ovo gerador de Chupa-cabra",
   "item.mythicmobs.wendigo_spawn_egg": "Ovo gerador de Wendigo",
   "item.mythicmobs.drake_spawn_egg": "Ovo gerador de Drake",
+  "item.mythicmobs.mushroom_spawn_egg": "Ovo gerador de Esporos",
   "item.mythicmobs.automaton_head": "Cabeça de Autômato",
 
   "block.mythicmobs.bronze_block": "Bloco de bronze",

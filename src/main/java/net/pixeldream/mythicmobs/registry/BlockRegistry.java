@@ -7,16 +7,15 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.block.CutBronzeBlock;
-import net.pixeldream.mythicmobs.block.DrakeEggBlock;
-import net.pixeldream.mythicmobs.block.RitualStoneBlock;
+
 
 import static net.pixeldream.mythicmobs.MythicMobs.MOD_ID;
 
 public class BlockRegistry {
     public static final Block BRONZE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL).strength(4.0f).requiresTool());
     public static final Block CUT_BRONZE_BLOCK = new CutBronzeBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f).requiresTool());
-    public static final Block RITUAL_STONE_BLOCK = registerBlockWithoutItem("ritual_stone_block", new RitualStoneBlock(FabricBlockSettings.of(Material.STONE).nonOpaque()));
-    public static final Block DRAKE_EGG_BLOCK = registerBlockWithoutItem("drake_egg_block", new DrakeEggBlock(FabricBlockSettings.of(Material.STONE).nonOpaque()));
+//    public static final Block RITUAL_STONE_BLOCK = registerBlockWithoutItem("ritual_stone_block", new RitualStoneBlock(FabricBlockSettings.of(Material.STONE).nonOpaque()));
+//    public static final Block DRAKE_EGG_BLOCK = registerBlockWithoutItem("drake_egg_block", new DrakeEggBlock(FabricBlockSettings.of(Material.STONE).nonOpaque()));
 
     public BlockRegistry() {
         Registry.register(Registry.BLOCK, new Identifier(MOD_ID, "bronze_block"), BRONZE_BLOCK);

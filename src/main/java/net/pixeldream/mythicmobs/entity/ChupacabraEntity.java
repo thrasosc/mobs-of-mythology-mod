@@ -116,14 +116,14 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
 
     @Override
     public void onDeath(DamageSource damageSource) {
+        produceParticles(ParticleTypes.POOF);
         super.onDeath(damageSource);
     }
 
     @Override
     public void updatePostDeath() {
         ++deathTime;
-        if (deathTime == 30) {
-            produceParticles(ParticleTypes.POOF);
+        if (deathTime == 15) {
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

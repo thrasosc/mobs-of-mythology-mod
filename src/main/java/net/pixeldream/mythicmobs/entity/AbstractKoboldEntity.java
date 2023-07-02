@@ -41,11 +41,6 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements IA
     }
 
     @Override
-    public int getHandSwingDuration() {
-        return (int) (20*0.44);
-    }
-
-    @Override
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(DATA_ID_TYPE_VARIANT, 0);

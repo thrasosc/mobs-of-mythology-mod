@@ -5,15 +5,17 @@
   "entity.mythicmobs.automaton": "Ρομπότ",
   "entity.mythicmobs.chupacabra": "Τσουπακαμπρά",
   "entity.mythicmobs.drake": "Δράκος",
+  "entity.mythicmobs.mushroom_thing": "Σπορίδιο",
 
   "item.mythicmobs.kobold_spear": "Ακόντιο Καλικάντζαρου",
   "item.mythicmobs.bronze_ingot": "Ράβδος Ορείχαλκου",
   "item.mythicmobs.automaton_spawn_egg": "Αυγό Γέννησης Ρομπότ",
   "item.mythicmobs.kobold_spawn_egg": "Αυγό Γέννησης Καλικάντζαρου",
   "item.mythicmobs.kobold_warrior_spawn_egg": "Αυγό Γέννησης Καλικάντζαρου Πολεμιστή",
-  "item.mythicmobs.chupacabra_spawn_egg": "Αυγό Γέννησης Τσουπακαμπρά",
+  "item.mythicmobs.chupacabra_spawn_egg": "Αυγό Γέννησης Τσουπακάμπρα",
   "item.mythicmobs.wendigo_spawn_egg": "Αυγό Γέννησης ",
   "item.mythicmobs.drake_spawn_egg": "Αυγό Γέννησης Δράκου",
+  "item.mythicmobs.mushroom_spawn_egg": "Αυγό Γέννησης Σπορίδιου",
   "item.mythicmobs.automaton_head": "Κεφάλι Ρομπότ",
 
   "block.mythicmobs.bronze_block": "Κύβος Ορείχαλκου",

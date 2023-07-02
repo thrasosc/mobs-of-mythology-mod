@@ -5,15 +5,12 @@
   "pages": [
     {
       "type": "text",
-      "text": "Kokos"
+      "text": "Automatons are the new protectors of villages. These intricate and sentient creations are built with precision and purpose. They are stronger and fiercer than Iron Golems, and can be repaired using Bronze Ingots."
     },
     {
-      "type": "image",
-      "title": "Automaton",
-      "images": [
-        "mythicmobs:images/automaton.png"
-      ],
-      "border": true
+      "type": "entity",
+      "entity": "mythicmobs:automaton",
+      "name": "Automaton"
     }
   ]
 }
