@@ -54,6 +54,6 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(AUTOMATON_ENTITY, AutomatonEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(CHUPACABRA_ENTITY, ChupacabraEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(DRAKE_ENTITY, DrakeEntity.setAttributes());
-        FabricDefaultAttributeRegistry.register(MUSHROOM_ENTITY, DrakeEntity.setAttributes());
+        FabricDefaultAttributeRegistry.register(MUSHROOM_ENTITY, MushroomEntity.setAttributes());
     }
 }
