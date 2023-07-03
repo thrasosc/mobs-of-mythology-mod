@@ -36,6 +36,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
+import net.pixeldream.mythicmobs.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -294,19 +295,19 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.ENTITY_ENDER_DRAGON_AMBIENT, 1.0f, 50.0f);
+        this.playSound(SoundRegistry.DRAKE_ROAR, 0.5f, 1.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 50.0f);
+        this.playSound(SoundRegistry.DRAKE_ROAR, 0.75f, 1.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 10.0f);
+        this.playSound(SoundRegistry.DRAKE_DEATH, 0.75f, 1.0f);
         return null;
     }
 
