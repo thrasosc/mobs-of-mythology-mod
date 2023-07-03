@@ -1,0 +1,17 @@
+{
+  "name": "Споровичок",
+  "icon": "mythicmobs:mushroom_spawn_egg",
+  "category": "mythicmobs:mobs",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Це гриб, нічого не скажеш."
+    },
+    {
+      "type": "entity",
+      "entity": "mythicmobs:mushroom_thing",
+      "name": "Споровичок",
+      "scale": "0.75"
+    }
+  ]
+}
