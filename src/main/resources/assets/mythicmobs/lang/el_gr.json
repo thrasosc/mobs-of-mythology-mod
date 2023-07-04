@@ -1,4 +1,12 @@
 {
+  "advancements.mythicmobs.title": "Mythic Mobs",
+  "advancements.mythicmobs.description": "Ένας μυθικός κόσμος!",
+  "advancements.kobold_trade.title": "Προσφορά για τα Λέπια",
+  "advancements.kobold_trade.description": "Κράτα τους φίλους σου κοντά και τους εχθρούς σου κοντύτερα!",
+
+  "book.mythicmobs.description": "Step into the realm of Mythic Mobs, where a multitude of legendary creatures awaits your discovery. Embark on thrilling adventures as you encounter an array of mythical beings, some of which will be allies while others may pose challenges. Keep this book close at hand, offering a captivating compendium of knowledge whenever you seek to delve into the fascinating tales of the creatures that cross your path.",
+  "book.mythicmobs.title": "Mythical Guide Book",
+
   "entity.mythicmobs.wendigo": "Γουέντιγκο",
   "entity.mythicmobs.kobold": "Καλικάντζαρος",
   "entity.mythicmobs.kobold_warrior": "Καλικάντζαρος Πολεμιστής",
@@ -19,7 +27,7 @@
   "item.mythicmobs.automaton_head": "Κεφάλι Ρομπότ",
 
   "block.mythicmobs.bronze_block": "Κύβος Ορείχαλκου",
-  "block.mythicmobs.cut_bronze_block": "Κομμένος Ορείχαλκος",
+  "block.mythicmobs.bronze_block_cut": "Κομμένος Ορείχαλκος",
 
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 
