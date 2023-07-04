@@ -3,8 +3,12 @@
     "icon": {
       "item": "mythicmobs:bronze_ingot"
     },
-    "title": "advancements.kobold_trade.title",
-    "description": "advancements.kobold_trade.description",
+    "title": {
+      "translate": "advancements.kobold_trade.title"
+    },
+    "description": {
+      "translate": "advancements.kobold_trade.description"
+    },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true

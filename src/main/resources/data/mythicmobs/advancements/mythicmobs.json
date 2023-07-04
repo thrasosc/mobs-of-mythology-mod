@@ -3,8 +3,12 @@
     "icon": {
       "item": "mythicmobs:automaton_head"
     },
-    "title": "advancements.mythicmobs.title",
-    "description": "advancements.mythicmobs.description",
+    "title": {
+      "translate": "advancements.mythicmobs.title"
+    },
+    "description": {
+      "translate": "advancements.mythicmobs.description"
+    },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true,
