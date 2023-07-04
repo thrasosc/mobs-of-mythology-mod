@@ -250,6 +250,32 @@
 					}
 				}
 			}
+		},
+		"bounce": {
+			"animation_length": 1,
+			"bones": {
+				"head": {
+					"scale": {
+						"0.0": {
+							"vector": [1, 1, 1]
+						},
+						"0.25": {
+							"vector": [1.05, 1, 1.075],
+							"easing": "easeInOutCirc"
+						},
+						"0.5": {
+							"vector": [1, 1, 1]
+						},
+						"0.75": {
+							"vector": [1.05, 1, 1.075],
+							"easing": "easeInOutCirc"
+						},
+						"1.0": {
+							"vector": [1, 1, 1]
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

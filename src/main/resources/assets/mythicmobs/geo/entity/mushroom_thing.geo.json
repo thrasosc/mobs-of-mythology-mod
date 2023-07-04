@@ -20,7 +20,14 @@
 					"parent": "mushroom_thing",
 					"pivot": [0, 3, 0],
 					"cubes": [
-						{"origin": [-4, 3, -4], "size": [8, 6, 8], "uv": [0, 0]},
+						{"origin": [-4, 3, -4], "size": [8, 6, 8], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "body",
+					"pivot": [0, 11, 0],
+					"cubes": [
 						{"origin": [-7, 9, -7], "size": [14, 4, 14], "uv": [0, 14]}
 					]
 				},
