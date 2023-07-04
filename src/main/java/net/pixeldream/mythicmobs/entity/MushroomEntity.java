@@ -19,8 +19,11 @@ import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.pixeldream.mythicmobs.util.MushroomLines;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -34,6 +37,9 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
+    public static final AnimationBuilder BOUNCE = new AnimationBuilder().addAnimation("bounce", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+    private boolean touched = false;
+    private final MushroomLines lines = new MushroomLines();
 
     public MushroomEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
@@ -53,6 +59,11 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+    }
+
+    @Override
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
             if (animationEvent.isMoving()) {
@@ -62,6 +73,22 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
             animationEvent.getController().setAnimation(IDLE);
             return PlayState.CONTINUE;
         }));
+
+        animationData.addAnimationController(new AnimationController(this, "bounceController", 0, animationEvent -> {
+            if (touched) {
+                animationEvent.getController().markNeedsReload();
+                animationEvent.getController().setAnimation(BOUNCE);
+                touched = false;
+            }
+            return PlayState.CONTINUE;
+        }));
+    }
+
+    @Override
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        touched = true;
+        player.sendMessage(lines.getLine(), true);
+        return super.interactMob(player, hand);
     }
 
     @Override

@@ -20,7 +20,8 @@ public class BronzeBlock extends Block {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         Item item = player.getStackInHand(Hand.MAIN_HAND).getItem();
-        if (item == Items.SHEARS) {
+        if (item == Items.IRON_PICKAXE || item == Items.GOLDEN_PICKAXE || item == Items.DIAMOND_PICKAXE || item == Items.NETHERITE_PICKAXE) {
+            item.use(world, player, hand);
             world.addBlockBreakParticles(pos, this.getDefaultState());
             world.setBlockState(pos, BlockRegistry.CUT_BRONZE_BLOCK.getDefaultState());
             return ActionResult.SUCCESS;
