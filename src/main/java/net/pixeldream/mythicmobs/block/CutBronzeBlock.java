@@ -21,7 +21,6 @@ public class CutBronzeBlock extends Block {
         if(!world.isClient() && hand == Hand.MAIN_HAND) {
             world.spawnEntity(EntityRegistry.AUTOMATON_ENTITY.create(world));
             MythicMobs.LOGGER.info("TOUCHING");
-//            EntityRegistry.AUTOMATON_ENTITY.create(world);
         }
 
         return super.onUse(state, world, pos, player, hand, hit);
