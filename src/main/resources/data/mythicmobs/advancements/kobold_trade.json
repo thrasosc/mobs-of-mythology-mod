@@ -3,8 +3,8 @@
     "icon": {
       "item": "mythicmobs:bronze_ingot"
     },
-    "title": "Scaly Bargain",
-    "description": "Keep your friends close, and your enemies closer!",
+    "title": "advancements.kobold_trade.title",
+    "description": "advancements.kobold_trade.description",
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true

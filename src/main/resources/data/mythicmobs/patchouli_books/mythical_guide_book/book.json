@@ -1,6 +1,6 @@
 {
-  "name": "Mythical Guide Book",
-  "landing_text": "Step into the realm of Mythic Mobs, where a multitude of legendary creatures awaits your discovery. Embark on thrilling adventures as you encounter an array of mythical beings, some of which will be allies while others may pose challenges. Keep this book close at hand, offering a captivating compendium of knowledge whenever you seek to delve into the fascinating tales of the creatures that cross your path.",
+  "name": "book.mythicmobs.title",
+  "landing_text": "book.mythicmobs.description",
   "version": 1,
   "use_blocky_font": false,
   "creative_tab": "mythicmobs.item_group",
