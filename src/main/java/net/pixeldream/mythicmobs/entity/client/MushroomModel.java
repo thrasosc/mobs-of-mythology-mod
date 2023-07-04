@@ -14,7 +14,7 @@ public class MushroomModel extends AnimatedGeoModel<MushroomEntity> {
 
     @Override
     public Identifier getTextureResource(MushroomEntity object) {
-        return new Identifier(MythicMobs.MOD_ID, "textures/entity/mushroom_thing.png");
+        return MushroomRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
     }
 
     @Override

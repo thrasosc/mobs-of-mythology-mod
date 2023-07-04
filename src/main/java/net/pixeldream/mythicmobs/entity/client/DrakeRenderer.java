@@ -28,7 +28,7 @@ public class DrakeRenderer extends GeoEntityRenderer<DrakeEntity> {
 
     public DrakeRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DrakeModel());
-        this.shadowRadius = 0.35f;
+        this.shadowRadius = 0.75f;
 //        this.addLayer(new DrakeLayer<>(this));  //GLOW LAYER
     }
 

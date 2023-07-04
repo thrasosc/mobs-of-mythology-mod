@@ -2,28 +2,38 @@ package net.pixeldream.mythicmobs.entity;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.WanderAroundGoal;
+import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerTask;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.util.MushroomLines;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -38,8 +48,17 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder BOUNCE = new AnimationBuilder().addAnimation("bounce", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+    protected static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(MushroomEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private MushroomLines lines;
+    private Text currentLine;
+    private int lineCooldown = 60;
     private boolean touched = false;
-    private final MushroomLines lines = new MushroomLines();
+
+    private boolean startCountdown = false;
+    private boolean talk = true;
+    private boolean linesSetup = false;
+    private int pitch;
+    private SoundEvent interactSound;
 
     public MushroomEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
@@ -51,16 +70,64 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     }
 
     @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        MushroomVariant variant = Util.getRandom(MushroomVariant.values(), this.random);
+        setVariant(variant);
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    }
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(DATA_ID_TYPE_VARIANT, 0);
+    }
+
+    public MushroomVariant getVariant() {
+        return MushroomVariant.byId(this.getTypeVariant() & 255);
+    }
+
+    private void setVariant(MushroomVariant variant) {
+        this.dataTracker.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+        pitch = getVariant().equals(MushroomVariant.RED) ? 15 : 10;
+        interactSound = getVariant().equals(MushroomVariant.RED) ? SoundEvents.ENTITY_VILLAGER_YES : SoundEvents.ENTITY_VILLAGER_NO;
+    }
+
+    private int getTypeVariant() {
+        return this.dataTracker.get(DATA_ID_TYPE_VARIANT);
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putInt("Variant", this.getTypeVariant());
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.dataTracker.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
+    }
+
+    @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new WanderAroundGoal(this, 0.75f));
-        this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
-        this.goalSelector.add(3, new LookAroundGoal(this));
+        this.goalSelector.add(1, new EscapeDangerGoal(this, 0.80f));
+        this.goalSelector.add(2, new WanderAroundGoal(this, 0.75f));
+        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
+        this.goalSelector.add(4, new LookAroundGoal(this));
     }
 
     @Override
     public void tick() {
         super.tick();
+        if (startCountdown) {
+            lineCooldown--;
+            if (lineCooldown <= 0) {
+                startCountdown = false;
+                talk = true;
+                lineCooldown = 60;
+            }
+        }
     }
 
     @Override
@@ -73,7 +140,6 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
             animationEvent.getController().setAnimation(IDLE);
             return PlayState.CONTINUE;
         }));
-
         animationData.addAnimationController(new AnimationController(this, "bounceController", 0, animationEvent -> {
             if (touched) {
                 animationEvent.getController().markNeedsReload();
@@ -86,8 +152,25 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
 
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
-        touched = true;
-        player.sendMessage(lines.getLine(), true);
+        if (!linesSetup) {
+            lines = new MushroomLines(getVariant());
+            currentLine = lines.getLine();
+            linesSetup = true;
+        }
+        if (talk) {
+            touched = true;
+            talk = false;
+            startCountdown = true;
+            Text previousLine = currentLine;
+            do {
+                currentLine = getVariant().equals(MushroomVariant.RED) ? lines.getLine(player) : lines.getLine();
+            } while (currentLine.equals(previousLine));
+            MinecraftServer server = player.getServer();
+            if (server != null) {
+                this.playSound(interactSound, 1.0f, pitch);
+                server.send(new ServerTask(0, () -> player.sendMessage(currentLine, true)));
+            }
+        }
         return super.interactMob(player, hand);
     }
 
@@ -123,24 +206,24 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.ENTITY_VILLAGER_AMBIENT, 1.0f, 15.0f);
+        this.playSound(SoundEvents.ENTITY_VILLAGER_AMBIENT, 1.0f, pitch);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENTITY_VILLAGER_HURT, 1.0f, 15.0f);
+        this.playSound(SoundEvents.ENTITY_VILLAGER_HURT, 1.0f, pitch);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.ENTITY_VILLAGER_DEATH, 1.0f, 15.0f);
+        this.playSound(SoundEvents.ENTITY_VILLAGER_DEATH, 1.0f, pitch);
         return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.25f, 1.0f);
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.25f, pitch);
     }
 }

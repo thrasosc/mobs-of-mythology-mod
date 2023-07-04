@@ -4,11 +4,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public enum WendigoVariant {
-    WENDIGO(0),
-    WENDIGO_STANDING(1);
+    WENDIGO(0), WENDIGO_STANDING(1);
 
-    private static final WendigoVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.
-            comparingInt(WendigoVariant::getId)).toArray(WendigoVariant[]::new);
+    private static final WendigoVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(WendigoVariant::getId)).toArray(WendigoVariant[]::new);
     private final int id;
 
     WendigoVariant(int id) {

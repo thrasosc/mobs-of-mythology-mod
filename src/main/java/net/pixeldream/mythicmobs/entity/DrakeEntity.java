@@ -125,7 +125,7 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putBoolean("isSitting", this.dataTracker.get(SITTING));
+        nbt.putBoolean("IsSitting", this.dataTracker.get(SITTING));
         nbt.putInt("Variant", this.getTypeVariant());
         nbt.putBoolean("HasEgg", this.hasEgg());
     }
@@ -133,7 +133,7 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.dataTracker.set(SITTING, nbt.getBoolean("isSitting"));
+        this.dataTracker.set(SITTING, nbt.getBoolean("IsSitting"));
         this.dataTracker.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
         this.setHasEgg(nbt.getBoolean("HasEgg"));
     }
