@@ -11,7 +11,7 @@
 	"contact": {
 		"homepage": "https://pixeldreamstudios.github.io"
 	},
-	"license": "All Rights Reserved",
+	"license": "GNU GPLv3",
 	"icon": "assets/mythicmobs/icon.png",
 	"environment": "*",
 	"entrypoints": {
