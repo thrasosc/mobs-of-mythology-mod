@@ -1,4 +1,12 @@
 {
+  "advancements.mythicmobs.title": "Mythische Mobs",
+  "advancements.mythicmobs.description": "Eine mythische Welt!",
+  "advancements.kobold_trade.title": "Schuppiges Schnäppchen",
+  "advancements.kobold_trade.description": "Halten Sie Ihre Freunde nah und Ihre Feinde näher!",
+
+  "book.mythicmobs.description": "Betreten Sie das Reich der Mythic Mobs, wo eine Vielzahl legendärer Kreaturen auf Ihre Entdeckung wartet. Begeben Sie sich auf spannende Abenteuer, während Sie einer Reihe mythischer Wesen begegnen, von denen einige Verbündete sein werden, während andere möglicherweise Herausfordernd sind. Behalten Sie dieses Buch immer griffbereit, denn es bietet Ihnen ein fesselndes Wissenskompendium, wann immer Sie in die faszinierenden Geschichten der Kreaturen eintauchen möchten, die Ihren Weg kreuzen.",
+  "book.mythicmobs.title": "Mythischer Reiseführer",
+
   "entity.mythicmobs.wendigo": "Wendigo",
   "entity.mythicmobs.kobold": "Kobold",
   "entity.mythicmobs.kobold_warrior": "Kobold Krieger",

@@ -1,4 +1,12 @@
 {
+  "advancements.mythicmobs.title": "Mythic Mobs",
+  "advancements.mythicmobs.description": "Um mundo místico!",
+  "advancements.kobold_trade.title": "Barganha Escamosa",
+  "advancements.kobold_trade.description": "Mantenha seus amigos perto, e seus inimigos mais perto ainda!",
+
+  "book.mythicmobs.description": "Embarque-se no reino de Mythic Mobs, aonde uma multitude de criaturas lendárias esperam sua descoberta. Embarque-se em aventuras emocionantes ao encontrar uma série de criaturas místicas, alguns os quais serão aliados e outros desafios. Mantenha esse livro em sua mão, ele irá oferecer um compêndio cativante de conhecimento sempre que você quiser mergulhar nos contos das criaturas que cruzam seu caminho.",
+  "book.mythicmobs.title": "Livro de Guia Místico",
+
   "entity.mythicmobs.wendigo": "Wendigo",
   "entity.mythicmobs.kobold": "Kobold",
   "entity.mythicmobs.kobold_warrior": "Guerreiro Kobold",

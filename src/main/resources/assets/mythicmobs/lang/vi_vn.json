@@ -1,4 +1,12 @@
 {
+  "advancements.mythicmobs.title": "Mythic Mobs",
+  "advancements.mythicmobs.description": "Một thế giới thần thoại!",
+  "advancements.kobold_trade.title": "Scaly Bargain",
+  "advancements.kobold_trade.description": "Giữ bạn bè của bạn gần gũi và kẻ thù của bạn gần gũi hơn!",
+
+  "book.mythicmobs.description": "Bước vào vương quốc của Mythic Mobs, nơi có vô số sinh vật huyền thoại đang chờ bạn khám phá. Tham gia vào những cuộc phiêu lưu ly kỳ khi bạn chạm trán với một loạt các sinh vật thần thoại, một số sẽ là đồng minh trong khi những người khác có thể đặt ra thử thách. Giữ cuốn sách này bên mình, cung cấp một bản tóm tắt kiến thức hấp dẫn bất cứ khi nào bạn muốn tìm hiểu sâu về những câu chuyện hấp dẫn về những sinh vật đi ngang qua con đường của bạn.",
+  "book.mythicmobs.title": "Sách hướng dẫn Mythic Mobs",
+
   "entity.mythicmobs.wendigo": "Wendigo",
   "entity.mythicmobs.kobold": "Kobold",
   "entity.mythicmobs.kobold_warrior": "Chiến binh Kobold",
