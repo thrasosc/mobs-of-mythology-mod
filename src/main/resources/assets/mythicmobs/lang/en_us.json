@@ -25,6 +25,9 @@
   "item.mythicmobs.drake_spawn_egg": "Drake Spawn Egg",
   "item.mythicmobs.mushroom_spawn_egg": "Sporeling Spawn Egg",
   "item.mythicmobs.automaton_head": "Automaton Head",
+  "item.mythicmobs.chupacabra_raw_meat": "Raw Chupacabra Meat",
+  "item.mythicmobs.chupacabra_cooked_meat_skewer": "Chupacabra Skewer",
+  "item.mythicmobs.gear": "Automaton Gear",
 
   "block.mythicmobs.bronze_block": "Bronze Block",
   "block.mythicmobs.bronze_block_cut": "Cut Bronze Block",
