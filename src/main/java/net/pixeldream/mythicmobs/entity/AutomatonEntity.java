@@ -350,7 +350,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     @Override
     public void onDeath(DamageSource damageSource) {
         produceParticles(ParticleTypes.POOF);
-        dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, 4));
+        dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 5)));
         super.onDeath(damageSource);
     }
 

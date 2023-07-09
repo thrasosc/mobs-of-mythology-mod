@@ -192,7 +192,12 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 15) {
-            this.dropStack(new ItemStack(Items.RED_MUSHROOM));
+            if (this.getVariant().equals(MushroomVariant.RED)) {
+                this.dropStack(new ItemStack(Items.RED_MUSHROOM));
+            }
+            else {
+                this.dropStack(new ItemStack(Items.BROWN_MUSHROOM));
+            }
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

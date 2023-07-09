@@ -27,8 +27,8 @@ public class ItemRegistry {
     public static final BlockItem BRONZE_BLOCK_CUT = new BlockItem(BlockRegistry.CUT_BRONZE_BLOCK, new FabricItemSettings().group(ITEM_GROUP).maxCount(64));
 //    public static final BlockItem DRAKE_EGG_BLOCK = new BlockItem(BlockRegistry.DRAKE_EGG_BLOCK, new FabricItemSettings().group(ITEM_GROUP).maxCount(16));
     public static final Item AUTOMATON_HEAD = new Item(new FabricItemSettings().maxCount(1));
-    public static final Item CHUPACABRA_MEAT = new Item(new FabricItemSettings().group(ITEM_GROUP).maxCount(64).food(new FoodComponent.Builder().hunger(4).saturationModifier(0.1F).statusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 600, 0), 0.8F).meat().build()));
-    public static final Item CHUPACABRA_SKEWER = new Item(new FabricItemSettings().group(ITEM_GROUP).maxCount(64).food(new FoodComponent.Builder().hunger(6).saturationModifier(0.8F).meat().build()));
+    public static final Item CHUPACABRA_RAW_MEAT = new Item(new FabricItemSettings().group(ITEM_GROUP).maxCount(64).food(new FoodComponent.Builder().hunger(4).saturationModifier(0.1F).statusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 600, 0), 0.8F).meat().build()));
+    public static final Item CHUPACABRA_COOKED_MEAT_SKEWER = new Item(new FabricItemSettings().group(ITEM_GROUP).maxCount(64).food(new FoodComponent.Builder().hunger(6).saturationModifier(0.8F).meat().build()));
     public static final Item GEAR = new Item(new FabricItemSettings().maxCount(64).group(ITEM_GROUP));
 
     public ItemRegistry() {
@@ -36,8 +36,8 @@ public class ItemRegistry {
 //        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "automaton_axe"), AUTOMATON_AXE);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "automaton_head"), AUTOMATON_HEAD);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_ingot"), BRONZE_INGOT);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "chupacabra_meat"), CHUPACABRA_MEAT);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "chupacabra_skewer"), CHUPACABRA_SKEWER);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "chupacabra_raw_meat"), CHUPACABRA_RAW_MEAT);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "chupacabra_cooked_meat_skewer"), CHUPACABRA_COOKED_MEAT_SKEWER);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "gear"), GEAR);
 
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bronze_block"), BRONZE_BLOCK);

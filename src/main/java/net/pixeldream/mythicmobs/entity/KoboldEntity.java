@@ -32,6 +32,7 @@ import java.util.Random;
 
 public class KoboldEntity extends AbstractKoboldEntity {
     private int heldCounter = 0;
+
     public KoboldEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world, SMALL_MONSTER_XP);
     }
@@ -78,8 +79,7 @@ public class KoboldEntity extends AbstractKoboldEntity {
                     this.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
                     this.getBrain().forget(MemoryModuleType.LIKED_PLAYER);
                     heldCounter = 0;
-                }
-                else {
+                } else {
                     this.playSound(SoundEvents.ENTITY_VILLAGER_NO, 1.0f, 1.5f);
                     this.produceParticles(ParticleTypes.ANGRY_VILLAGER);
                     this.dropStack(getStackInHand(Hand.MAIN_HAND));
@@ -125,8 +125,7 @@ public class KoboldEntity extends AbstractKoboldEntity {
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 15) {
-            if (random.nextInt(3) == 1)
-                this.dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT));
+            this.dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextInt(4)));
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

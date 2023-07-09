@@ -67,7 +67,9 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
         ++deathTime;
         if (deathTime == 15) {
             Random random = new Random();
-            if (random.nextInt(3) == 1) this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
+            if (random.nextInt(5) == 1) {
+                this.dropStack(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
+            }
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }

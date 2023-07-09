@@ -19,7 +19,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.SmallFireballEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -36,6 +35,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
+import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -157,9 +157,10 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
         this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
         this.targetSelector.add(2, new AttackWithOwnerGoal(this));
         this.targetSelector.add(3, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
-        this.targetSelector.add(4, new UntamedActiveTargetGoal(this, AnimalEntity.class, false, UNTAMED_DIET));
-        this.targetSelector.add(4, new ActiveTargetGoal(this, ChickenEntity.class, false));
-        this.targetSelector.add(6, new UniversalAngerGoal(this, true));
+        this.targetSelector.add(4, new ActiveTargetGoal(this, ChupacabraEntity.class, false));
+        this.targetSelector.add(5, new ActiveTargetGoal(this, ChickenEntity.class, false));
+        this.targetSelector.add(6, new UntamedActiveTargetGoal(this, AnimalEntity.class, false, UNTAMED_DIET));
+        this.targetSelector.add(7, new UniversalAngerGoal(this, true));
     }
 
     static {
@@ -209,7 +210,7 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getStackInHand(hand);
         Item item = itemstack.getItem();
-        Item tameItem = Items.ROTTEN_FLESH;
+        Item tameItem = ItemRegistry.CHUPACABRA_COOKED_MEAT_SKEWER;
         if (isBreedingItem(itemstack)) {
             return super.interactMob(player, hand);
         }
@@ -221,11 +222,16 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
                     itemstack.decrement(1);
                 }
                 if (!this.world.isClient()) {
-                    super.setOwner(player);
-                    this.navigation.recalculatePath();
-                    this.setTarget(null);
-                    this.world.sendEntityStatus(this, (byte) 7);
-                    setSit(true);
+                    if (random.nextInt(3) == 2) {
+                        super.setOwner(player);
+                        this.navigation.recalculatePath();
+                        this.setTarget(null);
+                        this.world.sendEntityStatus(this, (byte) 7);
+                        setSit(true);
+                    }
+                    else {
+                        produceParticles(ParticleTypes.SMOKE);
+                    }
                 }
                 return ActionResult.SUCCESS;
             }
