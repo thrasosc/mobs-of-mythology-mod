@@ -25,16 +25,27 @@ public class DrakeRenderer extends GeoEntityRenderer<DrakeEntity> {
         map.put(DrakeVariant.DRAKE_6, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_6.png"));
         map.put(DrakeVariant.DRAKE_7, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_7.png"));
     });
+    public static final Map<DrakeVariant, Identifier> EYES_LOCATION_BY_VARIANT = Util.make(Maps.newEnumMap(DrakeVariant.class), (map) -> {
+        map.put(DrakeVariant.DRAKE_1, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_1_eyes.png"));
+        map.put(DrakeVariant.DRAKE_2, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_2_eyes.png"));
+        map.put(DrakeVariant.DRAKE_3, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_3_eyes.png"));
+        map.put(DrakeVariant.DRAKE_4, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_4_eyes.png"));
+        map.put(DrakeVariant.DRAKE_5, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_5_eyes.png"));
+        map.put(DrakeVariant.DRAKE_6, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_6_eyes.png"));
+        map.put(DrakeVariant.DRAKE_7, new Identifier(MythicMobs.MOD_ID, "textures/entity/drake/drake_7_eyes.png"));
+    });
 
     public DrakeRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DrakeModel());
         this.shadowRadius = 0.75f;
-//        this.addLayer(new DrakeLayer<>(this));  //GLOW LAYER
+        if (animatable != null) {
+            this.addLayer(new DrakeLayer<>(this, EYES_LOCATION_BY_VARIANT.get(animatable.getVariant())));  //GLOW LAYER
+        }
     }
 
     @Override
     public Identifier getTextureResource(DrakeEntity instance) {
-        this.addLayer(new DrakeLayer<>(this, instance));  //GLOW LAYER
+
         return LOCATION_BY_VARIANT.get(instance.getVariant());
     }
 

@@ -12,7 +12,6 @@ import software.bernie.geckolib3.renderers.geo.IGeoRenderer;
 
 public class ChupacabraLayer<T extends ChupacabraEntity> extends GeoLayerRenderer<T> {
     protected static final Identifier CHUPACABRA_EYES_TEXTURE = new Identifier(MythicMobs.MOD_ID, "textures/entity/chupacabra_eyes.png");
-
     protected static final Identifier CHUPACABRA_GEO = new Identifier(MythicMobs.MOD_ID, "geo/entity/chupacabra.geo.json");
 
     public ChupacabraLayer(IGeoRenderer<T> entityRendererIn) {

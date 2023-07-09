@@ -23,9 +23,7 @@ public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
     }
 
     @Override
-    public RenderLayer getRenderType(ChupacabraEntity animatable, float partialTicks, MatrixStack stack,
-                                     VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
-                                     int packedLightIn, Identifier textureLocation) {
+    public RenderLayer getRenderType(ChupacabraEntity animatable, float partialTicks, MatrixStack stack, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
         return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
     }
 }
