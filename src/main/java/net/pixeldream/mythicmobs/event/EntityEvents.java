@@ -16,7 +16,7 @@ public class EntityEvents {
     private static final Queue<AutomatonEntity> AUTOMATON_ENTITIES = new LinkedList<>();
     public static void replaceNaturallySpawningIronGolemsWithAutomata() {
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
-            if(!MythicMobsConfigs.REPLACE_IRON_GOLEMS) return;
+            if(!MythicMobsConfigs.replaceIronGolems) return;
             if(entity instanceof IronGolemEntity ironGolem && entity.getClass() == IronGolemEntity.class && ((IMobRememberSpawnReason)ironGolem).getMobSpawnType() != SpawnReason.COMMAND && !ironGolem.isPlayerCreated()) {
                 AutomatonEntity automatonEntity = EntityRegistry.AUTOMATON_ENTITY.create(level);
                 if(automatonEntity == null) return;
@@ -29,7 +29,7 @@ public class EntityEvents {
 
     public static void checkForUnSpawnedGolem() {
         ServerTickEvents.END_WORLD_TICK.register(level -> {
-            if(!MythicMobsConfigs.REPLACE_IRON_GOLEMS) return;
+            if(!MythicMobsConfigs.replaceIronGolems) return;
             Queue<AutomatonEntity> automatonEntityQueue = new LinkedList<>();
             for(AutomatonEntity automatonEntity : AUTOMATON_ENTITIES) {
                 level.spawnEntity(automatonEntity);

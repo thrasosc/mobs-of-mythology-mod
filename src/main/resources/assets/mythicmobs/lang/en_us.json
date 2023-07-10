@@ -35,5 +35,34 @@
   "itemGroup.mythicmobs.item_group": "Mythic Mobs",
 
   "mythicmobs.midnightconfig.title": "Mythic Mobs Options",
-  "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Replace Iron Golems"
+
+  "mythicmobs.midnightconfig.mobSpawnRates": "Mob Spawn Rates",
+  "mythicmobs.midnightconfig.koboldSpawnWeight": "Kobold Spawn Weight",
+  "mythicmobs.midnightconfig.koboldWarriorSpawnWeight": "Kobold Warrior Spawn Weight",
+  "mythicmobs.midnightconfig.chupacabraSpawnWeight": "Chupacabra Spawn Weight",
+  "mythicmobs.midnightconfig.drakeSpawnWeight": "Drake Spawn Weight",
+  "mythicmobs.midnightconfig.mushroomSpawnWeight": "Sporeling Spawn Weight",
+
+  "mythicmobs.midnightconfig.mobAttributes": "Mob Attributes",
+  "mythicmobs.midnightconfig.automatonHealth": "Automaton Health",
+  "mythicmobs.midnightconfig.automatonAttackDamage": "Automaton Attack Damage",
+  "mythicmobs.midnightconfig.chupacabraHealth": "Chupacabra Health",
+  "mythicmobs.midnightconfig.chupacabraAttackDamage": "Chupacabra Attack Damage",
+  "mythicmobs.midnightconfig.drakeHealth": "Drake Health",
+  "mythicmobs.midnightconfig.drakeAttackDamage": "Drake Attack Damage",
+  "mythicmobs.midnightconfig.koboldHealth": "Kobold Health",
+  "mythicmobs.midnightconfig.koboldAttackDamage": "Kobold Attack Damage",
+  "mythicmobs.midnightconfig.koboldWarriorHealth": "Kobold Warrior Health",
+  "mythicmobs.midnightconfig.koboldWarriorArmor": "Kobold Warrior Armor",
+  "mythicmobs.midnightconfig.koboldWarriorAttackDamage": "Kobold Warrior Attack Damage",
+  "mythicmobs.midnightconfig.mushroomHealth": "Sporeling Health",
+  "mythicmobs.midnightconfig.wendigoHealth": "Wendigo Health",
+  "mythicmobs.midnightconfig.wendigoArmor": "Wendigo Armor",
+  "mythicmobs.midnightconfig.wendigoAttackDamage": "Wendigo Attack Damage",
+
+
+  "mythicmobs.midnightconfig.miscellaneous": "Miscellaneous",
+  "mythicmobs.midnightconfig.replaceIronGolems": "Replace Iron Golems",
+  "mythicmobs.midnightconfig.redMushroomLines": "Red Sporeling Lines",
+  "mythicmobs.midnightconfig.brownMushroomLines": "Brown Sporeling Lines"
 }

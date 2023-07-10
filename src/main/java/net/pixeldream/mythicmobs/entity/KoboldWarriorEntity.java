@@ -18,6 +18,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.goal.KoboldRevengeGoal;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;
@@ -38,7 +39,7 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 20).add(EntityAttributes.GENERIC_ARMOR, 6).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.5f).add(EntityAttributes.GENERIC_ATTACK_SPEED, 2).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, MythicMobsConfigs.koboldWarriorHealth).add(EntityAttributes.GENERIC_ARMOR, MythicMobsConfigs.koboldWarriorArmor).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, MythicMobsConfigs.koboldWarriorAttackDamage).add(EntityAttributes.GENERIC_ATTACK_SPEED, 2).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override

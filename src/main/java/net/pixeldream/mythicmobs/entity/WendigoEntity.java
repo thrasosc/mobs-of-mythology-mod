@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.goal.DelayedAttackGoal;
 import net.pixeldream.mythicmobs.goal.RoarGoal;
 import org.jetbrains.annotations.Nullable;
@@ -113,7 +114,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 250).add(EntityAttributes.GENERIC_ARMOR, 26).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 8).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5f).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, MythicMobsConfigs.wendigoHealth).add(EntityAttributes.GENERIC_ARMOR, MythicMobsConfigs.wendigoArmor).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, MythicMobsConfigs.wendigoAttackDamage).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5f).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override

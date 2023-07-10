@@ -32,7 +32,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
-import net.pixeldream.mythicmobs.util.MushroomLines;
+import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
@@ -43,14 +43,18 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     private AnimationFactory factory = GeckoLibUtil.createFactory(this);
     public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
     public static final AnimationBuilder BOUNCE = new AnimationBuilder().addAnimation("bounce", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
     protected static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(MushroomEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private MushroomLines lines;
     private Text currentLine;
+    private List<String> lines;
+    private List<String> greetings;
     private int lineCooldown = 60;
     private boolean touched = false;
 
@@ -66,7 +70,7 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 6).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, MythicMobsConfigs.mushroomHealth).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
     @Override
@@ -153,8 +157,21 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         if (!linesSetup) {
-            lines = new MushroomLines(getVariant());
-            currentLine = lines.getLine();
+            if (getVariant().equals(MushroomVariant.RED)) {
+                lines = MythicMobsConfigs.redMushroomLines;
+                greetings = Arrays.asList(
+                        "Hello there, ",
+                        "Hey there, ",
+                        "Howdy, ",
+                        "Howdy-do, ",
+                        "Salutations, ",
+                        "Hiya, ",
+                        "Godspeed, "
+                );
+            } else {
+                lines = MythicMobsConfigs.brownMushroomLines;
+            }
+            currentLine = Text.literal(lines.get(random.nextInt(lines.size())));
             linesSetup = true;
         }
         if (talk) {
@@ -163,7 +180,10 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
             startCountdown = true;
             Text previousLine = currentLine;
             do {
-                currentLine = getVariant().equals(MushroomVariant.RED) ? lines.getLine(player) : lines.getLine();
+                currentLine = Text.literal(lines.get(random.nextInt(lines.size())));
+                if (currentLine.equals(Text.literal("playerGreeting"))) {
+                    currentLine = Text.literal(greetings.get(random.nextInt(greetings.size())) + player.getEntityName() + '!');
+                }
             } while (currentLine.equals(previousLine));
             MinecraftServer server = player.getServer();
             if (server != null) {
@@ -194,8 +214,7 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
         if (deathTime == 15) {
             if (this.getVariant().equals(MushroomVariant.RED)) {
                 this.dropStack(new ItemStack(Items.RED_MUSHROOM));
-            }
-            else {
+            } else {
                 this.dropStack(new ItemStack(Items.BROWN_MUSHROOM));
             }
             this.remove(Entity.RemovalReason.KILLED);
