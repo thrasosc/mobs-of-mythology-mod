@@ -45,7 +45,6 @@ public class DrakeRenderer extends GeoEntityRenderer<DrakeEntity> {
 
     @Override
     public Identifier getTextureResource(DrakeEntity instance) {
-
         return LOCATION_BY_VARIANT.get(instance.getVariant());
     }
 
