@@ -60,7 +60,6 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
 
     private boolean startCountdown = false;
     private boolean talk = true;
-    private boolean linesSetup = false;
     private int pitch;
     private SoundEvent interactSound;
 
@@ -92,8 +91,6 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
 
     private void setVariant(MushroomVariant variant) {
         this.dataTracker.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-        pitch = getVariant().equals(MushroomVariant.RED) ? 15 : 10;
-        interactSound = getVariant().equals(MushroomVariant.RED) ? SoundEvents.ENTITY_VILLAGER_YES : SoundEvents.ENTITY_VILLAGER_NO;
     }
 
     private int getTypeVariant() {
@@ -156,24 +153,25 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
 
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
-        if (!linesSetup) {
-            if (getVariant().equals(MushroomVariant.RED)) {
-                lines = MythicMobsConfigs.redMushroomLines;
-                greetings = Arrays.asList(
-                        "Hello there, ",
-                        "Hey there, ",
-                        "Howdy, ",
-                        "Howdy-do, ",
-                        "Salutations, ",
-                        "Hiya, ",
-                        "Godspeed, "
-                );
-            } else {
-                lines = MythicMobsConfigs.brownMushroomLines;
-            }
-            currentLine = Text.literal(lines.get(random.nextInt(lines.size())));
-            linesSetup = true;
+        if (getVariant().equals(MushroomVariant.RED)) {
+            pitch = 15;
+            interactSound = SoundEvents.ENTITY_VILLAGER_YES;
+            lines = MythicMobsConfigs.redMushroomLines;
+            greetings = Arrays.asList(
+                    "Hello there, ",
+                    "Hey there, ",
+                    "Howdy, ",
+                    "Howdy-do, ",
+                    "Salutations, ",
+                    "Hiya, ",
+                    "Godspeed, "
+            );
+        } else {
+            pitch = 10;
+            interactSound = SoundEvents.ENTITY_VILLAGER_NO;
+            lines = MythicMobsConfigs.brownMushroomLines;
         }
+        currentLine = Text.literal(lines.get(random.nextInt(lines.size())));
         if (talk) {
             touched = true;
             talk = false;
