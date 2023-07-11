@@ -212,27 +212,26 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
         ItemStack itemstack = player.getStackInHand(hand);
         Item item = itemstack.getItem();
         Item tameItem = ItemRegistry.CHUPACABRA_COOKED_MEAT_SKEWER;
+        boolean b1 = random.nextInt(3) == 2;
         if (isBreedingItem(itemstack)) {
             return super.interactMob(player, hand);
         }
         if (item == tameItem && !isTamed()) {
             if (this.world.isClient()) {
+                if (!b1) {
+                    produceParticles(ParticleTypes.SMOKE);
+                }
                 return ActionResult.CONSUME;
             } else {
                 if (!player.getAbilities().creativeMode) {
                     itemstack.decrement(1);
                 }
-                if (!this.world.isClient()) {
-                    if (random.nextInt(3) == 2) {
-                        super.setOwner(player);
-                        this.navigation.recalculatePath();
-                        this.setTarget(null);
-                        this.world.sendEntityStatus(this, (byte) 7);
-                        setSit(true);
-                    }
-                    else {
-                        produceParticles(ParticleTypes.SMOKE);
-                    }
+                if (!this.world.isClient() && b1) {
+                    super.setOwner(player);
+                    this.navigation.recalculatePath();
+                    this.setTarget(null);
+                    this.world.sendEntityStatus(this, (byte) 7);
+                    setSit(true);
                 }
                 return ActionResult.SUCCESS;
             }
