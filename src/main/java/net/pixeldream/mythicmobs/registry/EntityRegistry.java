@@ -44,7 +44,7 @@ public class EntityRegistry {
     public static final EntityType<MushroomEntity> MUSHROOM_ENTITY = Registry.register(
             Registry.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "mushroom_thing"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, MushroomEntity::new).dimensions(EntityDimensions.fixed(1.0f,1.0f)).build()
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, MushroomEntity::new).dimensions(EntityDimensions.fixed(1.0f,0.8f)).build()
     );
 
     public EntityRegistry() {
