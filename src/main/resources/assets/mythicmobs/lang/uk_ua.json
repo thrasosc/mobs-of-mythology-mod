@@ -4,12 +4,12 @@
   "advancements.kobold_trade.title": "Луската угода",
   "advancements.kobold_trade.description": "Тримай друзів близько, а ворогів ще ближче!",
 
-  "book.mythicmobs.description": "Пориньте в світ мітичних мобів, де безліч легендарних істот чекає на ваші відкриття. Вирушайте назустріч захопливим пригодам, зустрічаючись з безліччю мітичних істот, деякі з яких стануть вашими союзниками, а інші наламають дров. Тримайте цю книжку при собі, адже вона запропонує захоплюючу скриньку знань щоразу, коли ви забажаєте заглибитися в захопливі історії істот, що перетинають ваш шлях.",
+  "book.mythicmobs.description": "Зробіть крок у світ мітичних мобів, де безліч легендарних істот чекає на ваші відкриття. Вирушайте назустріч захопливим пригодам, зустрічаючись з безліччю мітичних істот, деякі з яких стануть вашими союзниками, а інші наламають дров. Тримайте цю книжку при собі, адже вона запропонує захоплюючу скриньку знань щоразу, коли ви забажаєте заглибитися в захопливі історії істот, що перетинають ваш шлях.",
   "book.mythicmobs.title": "Мітичний путівник",
 
-  "entity.mythicmobs.wendigo": "Вендиго",
+  "entity.mythicmobs.wendigo": "Вендиґо",
   "entity.mythicmobs.kobold": "Кобольд",
-  "entity.mythicmobs.kobold_warrior": "Воїн-кобольд",
+  "entity.mythicmobs.kobold_warrior": "Бойовий кобольд",
   "entity.mythicmobs.automaton": "Автоматон",
   "entity.mythicmobs.chupacabra": "Чупакабра",
   "entity.mythicmobs.drake": "Дракончик",
@@ -19,18 +19,50 @@
   "item.mythicmobs.bronze_ingot": "Бронзовий злиток",
   "item.mythicmobs.automaton_spawn_egg": "Яйце виклику автоматона",
   "item.mythicmobs.kobold_spawn_egg": "Яйце виклику кобольда",
-  "item.mythicmobs.kobold_warrior_spawn_egg": "Яйце виклику воїна-кобольда",
+  "item.mythicmobs.kobold_warrior_spawn_egg": "Яйце виклику бойового кобольда",
   "item.mythicmobs.chupacabra_spawn_egg": "Яйце виклику чупакабри",
-  "item.mythicmobs.wendigo_spawn_egg": "Яйце виклику вендиго",
+  "item.mythicmobs.wendigo_spawn_egg": "Яйце виклику вендиґо",
   "item.mythicmobs.drake_spawn_egg": "Яйце виклику дракончика",
   "item.mythicmobs.mushroom_spawn_egg": "Яйце виклика споровичка",
   "item.mythicmobs.automaton_head": "Голова автоматона",
+  "item.mythicmobs.chupacabra_raw_meat": "Сире м'ясо чупакабри",
+  "item.mythicmobs.chupacabra_cooked_meat_skewer": "Чупакабра на рожні",
+  "item.mythicmobs.gear": "Шестірня автоматона",
 
   "block.mythicmobs.bronze_block": "Бронзовий блок",
   "block.mythicmobs.bronze_block_cut": "Тесаний бронзовий блок",
 
   "itemGroup.mythicmobs.item_group": "Мітичні моби",
 
-  "mythicmobs.midnightconfig.title": "Параметри мітичних моб",
-  "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Замінити залізних ґолемів"
+  "mythicmobs.midnightconfig.title": "Параметри мітичних мобів",
+  
+  "mythicmobs.midnightconfig.mobSpawnRates": "Частота появи моба",
+  "mythicmobs.midnightconfig.koboldSpawnWeight": "Ймовірність появи кобольда",
+  "mythicmobs.midnightconfig.koboldWarriorSpawnWeight": "Ймовірність появи бойового кобольда",
+  "mythicmobs.midnightconfig.chupacabraSpawnWeight": "Ймовірність появи чупакабри",
+  "mythicmobs.midnightconfig.drakeSpawnWeight": "Ймовірність появи дракончика",
+  "mythicmobs.midnightconfig.mushroomSpawnWeight": "Ймовірність появи споровичка",
+
+  "mythicmobs.midnightconfig.mobAttributes": "Атрибути моба",
+  "mythicmobs.midnightconfig.automatonHealth": "Здоров'я автоматона",
+  "mythicmobs.midnightconfig.automatonAttackDamage": "Шкода від атак автоматона",
+  "mythicmobs.midnightconfig.chupacabraHealth": "Здоров'я чупакабри",
+  "mythicmobs.midnightconfig.chupacabraAttackDamage": "Шкода від атаки чупакабри",
+  "mythicmobs.midnightconfig.drakeHealth": "Здоров'я дракончика",
+  "mythicmobs.midnightconfig.drakeAttackDamage": "Шкода від атаки дракончика",
+  "mythicmobs.midnightconfig.koboldHealth": "Здоров'я кобольда",
+  "mythicmobs.midnightconfig.koboldAttackDamage": "Шкода від атаки кобольда",
+  "mythicmobs.midnightconfig.koboldWarriorHealth": "Здоров'я бойового кобольда",
+  "mythicmobs.midnightconfig.koboldWarriorArmor": "Броня бойового кобольда",
+  "mythicmobs.midnightconfig.koboldWarriorAttackDamage": "Шкода від атаки бойового кобольда",
+  "mythicmobs.midnightconfig.mushroomHealth": "Здоров'я споровичка",
+  "mythicmobs.midnightconfig.wendigoHealth": "Здоров'я вендиґо",
+  "mythicmobs.midnightconfig.wendigoArmor": "Броня вендиґо",
+  "mythicmobs.midnightconfig.wendigoAttackDamage": "Шкода від атаки вендиґо",
+
+
+  "mythicmobs.midnightconfig.miscellaneous": "Різні",
+  "mythicmobs.midnightconfig.replaceIronGolems": "Замінити залізних ґолемів",
+  "mythicmobs.midnightconfig.redMushroomLines": "Рядки червоного споровичка",
+  "mythicmobs.midnightconfig.brownMushroomLines": "Рядки коричневого споровичка"
 }
