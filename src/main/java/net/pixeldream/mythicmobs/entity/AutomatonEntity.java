@@ -258,6 +258,9 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     public boolean damage(DamageSource source, float amount) {
         IronGolemEntity.Crack crack = this.getCrack();
         boolean bl = super.damage(source, amount);
+        if (random.nextInt(2) == 1) {
+            this.dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 3)));
+        }
         if (bl && this.getCrack() != crack) {
             this.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 1.0f, 1.0f);
         }
@@ -351,7 +354,7 @@ public class AutomatonEntity extends IronGolemEntity implements IAnimatable {
     @Override
     public void onDeath(DamageSource damageSource) {
         produceParticles(ParticleTypes.POOF);
-        dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 5)));
+        dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextBetween(1, 4)));
         super.onDeath(damageSource);
     }
 
