@@ -28,4 +28,4 @@ Join the [Discord](https://discord.com/invite/rexDZqAJc3)!
 [![](https://i.imgur.com/l815YIN.png)](https://bisecthosting.com/PixelDream)
 
 ## ⚠️ Notice
-Mythic Mobs is a WIP mod, more content will be added in the future.
+Mythic Mobs is a WIP mod, new content is continuously being added.
