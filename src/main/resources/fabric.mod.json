@@ -3,13 +3,11 @@
 	"id": "mythicmobs",
 	"version": "${version}",
 	"name": "Mythic Mobs",
-	"description": "Discover a world of mythical creatures in Minecraft\nMany thanks to: Minecraft Garage, VeroxUniverse, Grendel Grendelsson the dwarf, Chicy3",
-	"authors": [
-		"Kyber_6",
-		"Pixel Dream Studios"
-	],
+	"description": "Discover a world of mythical creatures in Minecraft",
 	"contact": {
-		"homepage": "https://pixeldreamstudios.github.io"
+		"homepage": "https://pixeldreamstudios.github.io",
+		"sources": "https://github.com/kyber-6/mythicmobs",
+		"issues": "https://github.com/kyber-6/mythicmobs/issues"
 	},
 	"license": "GNU GPLv3",
 	"icon": "assets/mythicmobs/icon.png",
@@ -39,5 +37,26 @@
 	"suggests": {
 		"bettercombat": ">=1.7.1"
 	},
-	"accessWidener": "mythicmobs.accesswidener"
+	"accessWidener": "mythicmobs.accesswidener",
+	"authors": [
+		"Kyber_6",
+		"Pixel Dream Studios"
+	],
+	"contributors": [
+		"Minecraft Garage",
+		"Grendel Grendelsson",
+		"Chicy3",
+		"VeroxUniverse",
+		"Un roman",
+		"abyssing",
+		"Skully",
+		"KevyDevy"
+	],
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.com/invite/rexDZqAJc3"
+			}
+		}
+	}
 }
