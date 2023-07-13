@@ -24,7 +24,7 @@ Join the [Discord](https://discord.com/invite/rexDZqAJc3)!
   <img src="https://cdn.modrinth.com/data/5sy6g3kz/icon.png" width="100" height="100" />
 </a>
 
-## 💼 Affiliate
+## 💼 Partner
 [![](https://i.imgur.com/l815YIN.png)](https://bisecthosting.com/PixelDream)
 
 ## ⚠️ Notice
