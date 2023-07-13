@@ -8,10 +8,12 @@
       "text": "The Drake is a small creature that can be tamed, displaying utmost loyalty to its owner and demonstrating a willingness to sacrifice its life if called upon. Note that they should be kept away from livestock, especially from chickens. Drakes also have a certain knack for Chupacabra Skewers."
     },
     {
-      "type": "entity",
-      "entity": "mythicmobs:drake",
-      "name": "Drake",
-      "scale": "0.5"
+      "type": "image",
+      "images": [
+        "mythicmobs:other/images/drake.png",
+        "mythicmobs:other/images/drake_1.png"
+      ],
+      "border": true
     }
   ]
 }
