@@ -10,8 +10,7 @@
     {
       "type": "image",
       "images": [
-        "mythicmobs:other/images/drake.png",
-        "mythicmobs:other/images/drake_1.png"
+        "mythicmobs:other/images/drake.png"
       ],
       "border": true
     }

@@ -8,10 +8,12 @@
       "text": "Це гриб, нічого не скажеш."
     },
     {
-      "type": "entity",
-      "entity": "mythicmobs:mushroom_thing",
-      "name": "Споровичок",
-      "scale": "0.75"
+      "type": "image",
+      "images": [
+        "mythicmobs:other/images/mushroom_red.png",
+        "mythicmobs:other/images/mushroom_brown.png"
+      ],
+      "border": true
     }
   ]
 }
