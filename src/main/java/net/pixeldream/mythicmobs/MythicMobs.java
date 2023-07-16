@@ -20,7 +20,7 @@ import static net.pixeldream.mythicmobs.registry.ItemRegistry.*;
 
 public class MythicMobs implements ModInitializer {
 	public static final String MOD_ID = "mythicmobs";
-	public static final String MOD_NAME = "Mythic Mobs";
+	public static final String MOD_NAME = "Mythic MobsKOKOS";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID, "item_group"), () -> new ItemStack(AUTOMATON_HEAD));
 
