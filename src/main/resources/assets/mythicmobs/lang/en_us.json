@@ -32,7 +32,7 @@
   "block.mythicmobs.bronze_block": "Bronze Block",
   "block.mythicmobs.bronze_block_cut": "Cut Bronze Block",
 
-  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+  "itemgroup.mythicmobs": "Mythic Mobs",
 
   "mythicmobs.midnightconfig.title": "Mythic Mobs Options",
 

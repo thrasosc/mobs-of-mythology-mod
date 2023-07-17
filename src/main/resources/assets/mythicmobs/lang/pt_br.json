@@ -29,7 +29,7 @@
   "block.mythicmobs.bronze_block": "Bloco de bronze",
   "block.mythicmobs.bronze_block_cut": "Bloco de bronze talhado",
 
-  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+  "itemgroup.mythicmobs": "Mythic Mobs",
 
   "mythicmobs.midnightconfig.title": "Opções de Mythic Mobs",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Substituir Golens de ferro"

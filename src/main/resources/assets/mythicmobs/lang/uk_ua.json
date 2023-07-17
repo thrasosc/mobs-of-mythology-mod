@@ -29,7 +29,7 @@
   "block.mythicmobs.bronze_block": "Бронзовий блок",
   "block.mythicmobs.bronze_block_cut": "Тесаний бронзовий блок",
 
-  "itemGroup.mythicmobs.item_group": "Мітичні моби",
+  "itemgroup.mythicmobs": "Мітичні моби",
 
   "mythicmobs.midnightconfig.title": "Параметри мітичних моб",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Замінити залізних ґолемів"

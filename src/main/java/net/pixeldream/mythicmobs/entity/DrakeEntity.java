@@ -376,7 +376,7 @@ public class DrakeEntity extends TameableEntity implements GeoEntity, RangedAtta
 
     @Override
     public EntityView method_48926() {
-        return null;
+        return getWorld();
     }
 
 //    private static class LayEggGoal extends MoveToTargetPosGoal {
