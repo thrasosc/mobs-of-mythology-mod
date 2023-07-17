@@ -1,11 +1,12 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.model.entity;
 
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.MushroomEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import net.pixeldream.mythicmobs.entity.client.renderer.entity.MushroomRenderer;
+import software.bernie.geckolib.model.GeoModel;
 
-public class MushroomModel extends AnimatedGeoModel<MushroomEntity> {
+public class MushroomModel extends GeoModel<MushroomEntity> {
 
     @Override
     public Identifier getModelResource(MushroomEntity object) {

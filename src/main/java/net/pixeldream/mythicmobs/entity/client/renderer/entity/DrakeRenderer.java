@@ -1,8 +1,6 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
@@ -11,7 +9,8 @@ import net.minecraft.util.Util;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.DrakeEntity;
 import net.pixeldream.mythicmobs.entity.DrakeVariant;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import net.pixeldream.mythicmobs.entity.client.model.entity.DrakeModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Map;
 
@@ -38,23 +37,22 @@ public class DrakeRenderer extends GeoEntityRenderer<DrakeEntity> {
     public DrakeRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new DrakeModel());
         this.shadowRadius = 0.75f;
-        if (animatable != null) {
-            this.addLayer(new DrakeLayer<>(this, EYES_LOCATION_BY_VARIANT.get(animatable.getVariant())));  //GLOW LAYER
-        }
+        //TODO Glow layer
     }
 
     @Override
-    public Identifier getTextureResource(DrakeEntity instance) {
-        return LOCATION_BY_VARIANT.get(instance.getVariant());
+    public Identifier getTextureLocation(DrakeEntity animatable) {
+        return LOCATION_BY_VARIANT.get(animatable.getVariant());
     }
 
     @Override
-    public RenderLayer getRenderType(DrakeEntity animatable, float partialTicks, MatrixStack stack, VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder, int packedLightIn, Identifier textureLocation) {
-        if (animatable.isBaby()) {
-            stack.scale(0.5f, 0.5f, 0.5f);
+    public void render(DrakeEntity entity, float entityYaw, float partialTick, MatrixStack poseStack, VertexConsumerProvider bufferSource, int packedLight) {
+        if (entity.isBaby()) {
+            poseStack.scale(0.5f, 0.5f, 0.5f);
         } else {
-            stack.scale(1f, 1f, 1f);
+            poseStack.scale(1f, 1f, 1f);
         }
-        return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+        super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
+
     }
 }

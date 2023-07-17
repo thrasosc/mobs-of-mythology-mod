@@ -1,8 +1,5 @@
 package net.pixeldream.mythicmobs.goal;
 
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
@@ -15,6 +12,10 @@ import net.minecraft.util.math.Box;
 import net.minecraft.world.GameRules;
 import net.pixeldream.mythicmobs.entity.AbstractKoboldEntity;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.List;
 
 public class KoboldRevengeGoal extends TrackTargetGoal {
     private static final TargetPredicate VALID_AVOIDABLES_PREDICATE = TargetPredicate.createAttackable().ignoreVisibility().ignoreDistanceScalingFactor();
@@ -34,7 +35,7 @@ public class KoboldRevengeGoal extends TrackTargetGoal {
         int i = this.mob.getLastAttackedTime();
         LivingEntity livingEntity = this.mob.getAttacker();
         if (i != this.lastAttackedTime && livingEntity != null) {
-            if (livingEntity.getType() == EntityType.PLAYER && this.mob.world.getGameRules().getBoolean(GameRules.UNIVERSAL_ANGER)) {
+            if (livingEntity.getType() == EntityType.PLAYER && this.mob.getWorld().getGameRules().getBoolean(GameRules.UNIVERSAL_ANGER)) {
                 return false;
             } else {
                 Class[] var3 = this.noRevengeTypes;
@@ -75,7 +76,7 @@ public class KoboldRevengeGoal extends TrackTargetGoal {
     protected void callSameTypeForRevenge() {
         double d = this.getFollowRange();
         Box box = Box.from(this.mob.getPos()).expand(d, 10.0, d);
-        List<? extends MobEntity> list = this.mob.world.getEntitiesByClass(AbstractKoboldEntity.class, box, EntityPredicates.EXCEPT_SPECTATOR);
+        List<? extends MobEntity> list = this.mob.getWorld().getEntitiesByClass(AbstractKoboldEntity.class, box, EntityPredicates.EXCEPT_SPECTATOR);
         Iterator var5 = list.iterator();
 
         while(true) {

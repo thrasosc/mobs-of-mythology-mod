@@ -30,14 +30,14 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.14.21",
-		"minecraft": "~1.19.2",
+		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"geckolib3": ">=3.1.40",
-		"patchouli": ">=1.19.2-77-FABRIC",
+		"geckolib": ">=4.2",
+		"patchouli": ">=1.20.1-80-FABRIC",
 		"fabric-api": "*"
 	},
 	"suggests": {
-		"bettercombat": ">=1.7.1"
+		"bettercombat": ">=1.7.2"
 	},
 	"accessWidener": "mythicmobs.accesswidener"
 }

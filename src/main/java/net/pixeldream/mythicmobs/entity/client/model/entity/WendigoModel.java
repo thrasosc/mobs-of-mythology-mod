@@ -1,11 +1,11 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.model.entity;
 
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.WendigoEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class WendigoModel extends AnimatedGeoModel<WendigoEntity> {
+public class WendigoModel extends GeoModel<WendigoEntity> {
 
     @Override
     public Identifier getModelResource(WendigoEntity object) {

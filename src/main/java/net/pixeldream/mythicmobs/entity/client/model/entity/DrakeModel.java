@@ -1,11 +1,12 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.model.entity;
 
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.DrakeEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import net.pixeldream.mythicmobs.entity.client.renderer.entity.DrakeRenderer;
+import software.bernie.geckolib.model.GeoModel;
 
-public class DrakeModel extends AnimatedGeoModel<DrakeEntity> {
+public class DrakeModel extends GeoModel<DrakeEntity> {
 
     @Override
     public Identifier getModelResource(DrakeEntity object) {

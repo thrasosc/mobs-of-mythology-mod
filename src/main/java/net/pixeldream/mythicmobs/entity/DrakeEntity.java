@@ -31,33 +31,29 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.EntityView;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
+import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.function.Predicate;
 
-public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAttackMob {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public static final AnimationBuilder SIT = new AnimationBuilder().addAnimation("sit", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-    public static final AnimationBuilder FIRE = new AnimationBuilder().addAnimation("fire", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+public class DrakeEntity extends TameableEntity implements GeoEntity, RangedAttackMob {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    public static final RawAnimation FIRE = RawAnimation.begin().thenLoop("fire");
     private boolean firing = false;
     protected static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(DrakeEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(DrakeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -178,23 +174,23 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
             if (isSitting()) {
-                animationEvent.getController().setAnimation(SIT);
+                state.getController().setAnimation(DefaultAnimations.SIT);
                 return PlayState.CONTINUE;
             } else if (firing) {
-                animationEvent.getController().setAnimation(FIRE);
+                state.getController().setAnimation(FIRE);
                 return PlayState.CONTINUE;
-            } else if (animationEvent.isMoving() && !handSwinging) {
+            } else if (state.isMoving() && !handSwinging) {
                 if (isAttacking() && !handSwinging) {
-                    animationEvent.getController().setAnimation(RUN);
+                    state.getController().setAnimation(DefaultAnimations.RUN);
                     return PlayState.CONTINUE;
                 }
-                animationEvent.getController().setAnimation(WALK);
+                state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;
             } else if (handSwinging) {
-                animationEvent.getController().setAnimation(ATTACK);
+                state.getController().setAnimation(DefaultAnimations.ATTACK);
                 ticksUntilAttackFinish++;
                 if (ticksUntilAttackFinish > 25 * 2) {
                     handSwinging = false;
@@ -202,9 +198,14 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
                 }
                 return PlayState.CONTINUE;
             }
-            animationEvent.getController().setAnimation(IDLE);
+            state.getController().setAnimation(DefaultAnimations.IDLE);
             return PlayState.CONTINUE;
         }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     @Override
@@ -217,7 +218,7 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
             return super.interactMob(player, hand);
         }
         if (item == tameItem && !isTamed()) {
-            if (this.world.isClient()) {
+            if (this.getWorld().isClient()) {
                 if (!b1) {
                     produceParticles(ParticleTypes.SMOKE);
                 }
@@ -226,17 +227,17 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
                 if (!player.getAbilities().creativeMode) {
                     itemstack.decrement(1);
                 }
-                if (!this.world.isClient() && b1) {
+                if (!this.getWorld().isClient() && b1) {
                     super.setOwner(player);
                     this.navigation.recalculatePath();
                     this.setTarget(null);
-                    this.world.sendEntityStatus(this, (byte) 7);
+                    this.getWorld().sendEntityStatus(this, (byte) 7);
                     setSit(true);
                 }
                 return ActionResult.SUCCESS;
             }
         }
-        if (isTamed() && !this.world.isClient() && hand == Hand.MAIN_HAND) {
+        if (isTamed() && !this.getWorld().isClient() && hand == Hand.MAIN_HAND) {
             setSit(!isSitting());
             return ActionResult.SUCCESS;
         }
@@ -275,7 +276,7 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
+            this.getWorld().addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
         }
     }
 
@@ -292,11 +293,6 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
     }
 
     @Override
@@ -365,17 +361,22 @@ public class DrakeEntity extends TameableEntity implements IAnimatable, RangedAt
         double g = targetX - d;
         double h = targetY - e;
         double i = targetZ - f;
-        SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.world, this, g, h, i);
+        SmallFireballEntity smallFireballEntity = new SmallFireballEntity(this.getWorld(), this, g, h, i);
         smallFireballEntity.setOwner(this);
 //        if (charged) {
 //            fireballEntity.setCharged(true);
 //        }
         smallFireballEntity.setPos(d, e, f);
-        world.playSound((PlayerEntity) null, this.getBlockPos(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
-        this.world.spawnEntity(smallFireballEntity);
+        getWorld().playSound((PlayerEntity) null, this.getBlockPos(), SoundEvents.ITEM_FIRECHARGE_USE, SoundCategory.BLOCKS, 1.0f, 1.0f);
+        this.getWorld().spawnEntity(smallFireballEntity);
         for (int j = 0; j < 2000; j++) {
         }
         firing = false;
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return null;
     }
 
 //    private static class LayEggGoal extends MoveToTargetPosGoal {

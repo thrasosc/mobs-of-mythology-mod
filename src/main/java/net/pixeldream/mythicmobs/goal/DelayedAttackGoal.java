@@ -33,7 +33,7 @@ public class DelayedAttackGoal extends Goal {
     }
 
     public boolean canStart() {
-        long l = this.mob.world.getTime();
+        long l = this.mob.getWorld().getTime();
         if (l - this.lastUpdateTime < 20L) {
             return false;
         } else {

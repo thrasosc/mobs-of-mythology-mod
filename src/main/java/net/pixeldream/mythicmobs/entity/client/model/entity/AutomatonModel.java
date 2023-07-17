@@ -1,11 +1,11 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.model.entity;
 
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.AutomatonEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class AutomatonModel extends AnimatedGeoModel<AutomatonEntity> {
+public class AutomatonModel extends GeoModel<AutomatonEntity> {
 
     @Override
     public Identifier getModelResource(AutomatonEntity object) {

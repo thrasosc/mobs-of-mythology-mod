@@ -28,25 +28,22 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
+import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
 import net.pixeldream.mythicmobs.goal.DelayedAttackGoal;
 import net.pixeldream.mythicmobs.goal.RoarGoal;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
-public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    private AnimationBuilder IDLE;
-    private AnimationBuilder WALK;
-    private final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
-    private final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
-    private final AnimationBuilder ROAR = new AnimationBuilder().addAnimation("thing", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+public class WendigoEntity extends BossEntity implements GeoEntity, Monster {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    public RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    public RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private long ticksUntilAttackFinish = 0;
     private int roarTimer = 0;
     private long age = 0;
@@ -104,12 +101,12 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
 
     private void setAnim() {
         if (getVariant().equals(WendigoVariant.WENDIGO)) {
-            IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-            WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
+            IDLE = RawAnimation.begin().thenLoop("idle");
+            WALK = RawAnimation.begin().thenLoop("walk");
         } else {
             this.dataTracker.set(WAS_STANDING, Boolean.TRUE);
-            IDLE = new AnimationBuilder().addAnimation("idle_stand_up", ILoopType.EDefaultLoopTypes.LOOP);
-            WALK = new AnimationBuilder().addAnimation("two_legs_walk", ILoopType.EDefaultLoopTypes.LOOP);
+            IDLE = RawAnimation.begin().thenLoop("idle_stand_up");
+            WALK = RawAnimation.begin().thenLoop("two_legs_walk");
         }
     }
 
@@ -138,40 +135,44 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        setAnim();
-        animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
-//            if (getRoaring()) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+            if (getRoaring()) {
 //                animationEvent.getController().setAnimation(ROAR);
 //                MythicMobs.LOGGER.info("ROARING CURRENTLY");
 //                return PlayState.CONTINUE;
-//            } else
-                if (animationEvent.isMoving() && !handSwinging) {
-                if (isAttacking() && !handSwinging) {
-                    animationEvent.getController().setAnimation(RUN);
+            } else
+                if (state.isMoving() && !handSwinging) {
+                    if (isAttacking() && !handSwinging) {
+                        state.getController().setAnimation(DefaultAnimations.RUN);
+                        return PlayState.CONTINUE;
+                    }
+                    state.getController().setAnimation(WALK);
+                    return PlayState.CONTINUE;
+                } else if (isAttacking()) {
+                    state.getController().setAnimation(DefaultAnimations.ATTACK);
+                    ticksUntilAttackFinish++;
+                    if (ticksUntilAttackFinish > 17 * 6) {
+                        handSwinging = false;
+                        ticksUntilAttackFinish = 0;
+                    }
                     return PlayState.CONTINUE;
                 }
-                animationEvent.getController().setAnimation(WALK);
+            state.getController().setAnimation(IDLE);
                 return PlayState.CONTINUE;
-            } else if (isAttacking()) {
-                animationEvent.getController().setAnimation(ATTACK);
-                ticksUntilAttackFinish++;
-                if (ticksUntilAttackFinish > 17 * 6) {
-                    handSwinging = false;
-                    ticksUntilAttackFinish = 0;
-                }
-                return PlayState.CONTINUE;
-            }
-            animationEvent.getController().setAnimation(IDLE);
-            return PlayState.CONTINUE;
-        }));
+            }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     @Override
     public void tick() {
         super.tick();
         age++;
-        if (!world.isClient) {
+        if (!getWorld().isClient) {
             if (age == 1) {
                 setAnim();
             }
@@ -199,7 +200,7 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
+            this.getWorld().addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
         }
     }
 
@@ -217,11 +218,6 @@ public class WendigoEntity extends BossEntity implements IAnimatable, Monster {
             this.remove(Entity.RemovalReason.KILLED);
             this.dropXp();
         }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
     }
 
     @Override

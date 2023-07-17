@@ -33,24 +33,22 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
+import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MushroomEntity extends PathAwareEntity implements IAnimatable {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder BOUNCE = new AnimationBuilder().addAnimation("bounce", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+public class MushroomEntity extends PathAwareEntity implements GeoEntity {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
     protected static final TrackedData<Integer> DATA_ID_TYPE_VARIANT = DataTracker.registerData(MushroomEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private Text currentLine;
     private List<String> lines;
@@ -132,23 +130,28 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
-            if (animationEvent.isMoving()) {
-                animationEvent.getController().setAnimation(WALK);
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+            if (state.isMoving()) {
+                state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;
             }
-            animationEvent.getController().setAnimation(IDLE);
+            state.getController().setAnimation(DefaultAnimations.IDLE);
             return PlayState.CONTINUE;
         }));
-        animationData.addAnimationController(new AnimationController(this, "bounceController", 0, animationEvent -> {
+        controllerRegistrar.add(new AnimationController<>(this, "bounceController", 3, state -> {
             if (touched) {
-                animationEvent.getController().markNeedsReload();
-                animationEvent.getController().setAnimation(BOUNCE);
+                state.getController().forceAnimationReset();
+                state.getController().setAnimation(BOUNCE);
                 touched = false;
             }
             return PlayState.CONTINUE;
         }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     @Override
@@ -192,17 +195,12 @@ public class MushroomEntity extends PathAwareEntity implements IAnimatable {
         return super.interactMob(player, hand);
     }
 
-    @Override
-    public AnimationFactory getFactory() {
-        return factory;
-    }
-
     protected void produceParticles(ParticleEffect parameters) {
         for (int i = 0; i < 5; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
+            this.getWorld().addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
         }
     }
 

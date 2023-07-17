@@ -20,25 +20,20 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
+import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.ParticleRegistry;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.builder.ILoopType;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
-import software.bernie.geckolib3.util.GeckoLibUtil;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.object.PlayState;
 
 import java.util.function.Predicate;
 
-public class ChupacabraEntity extends HostileEntity implements IAnimatable, Monster {
-    private AnimationFactory factory = GeckoLibUtil.createFactory(this);
-    public static final AnimationBuilder IDLE = new AnimationBuilder().addAnimation("idle", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder WALK = new AnimationBuilder().addAnimation("walk", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder RUN = new AnimationBuilder().addAnimation("run", ILoopType.EDefaultLoopTypes.LOOP);
-    public static final AnimationBuilder ATTACK = new AnimationBuilder().addAnimation("attack", ILoopType.EDefaultLoopTypes.PLAY_ONCE);
+public class ChupacabraEntity extends HostileEntity implements GeoEntity, Monster {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     private static final Predicate<LivingEntity> DIET;
     private long ticksUntilAttackFinish = 0;
 
@@ -74,9 +69,9 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
     public void tick() {
         super.tick();
         if (handSwinging) {
-            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
-            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
-            this.world.addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            this.getWorld().addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            this.getWorld().addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            this.getWorld().addParticle(ParticleRegistry.BLOOD_PARTICLE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
             if (getHealth() < getMaxHealth()) {
                 this.heal(2.5f);
                 produceParticles(ParticleTypes.HAPPY_VILLAGER);
@@ -85,17 +80,17 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
     }
 
     @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 2.5f, animationEvent -> {
-            if (animationEvent.isMoving() && !handSwinging) {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+            if (state.isMoving() && !handSwinging) {
                 if (isAttacking() && !handSwinging) {
-                    animationEvent.getController().setAnimation(RUN);
+                    state.getController().setAnimation(DefaultAnimations.RUN);
                     return PlayState.CONTINUE;
                 }
-                animationEvent.getController().setAnimation(WALK);
+                state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;
             } else if (handSwinging) {
-                animationEvent.getController().setAnimation(ATTACK);
+                state.getController().setAnimation(DefaultAnimations.ATTACK);
                 ticksUntilAttackFinish++;
                 if (ticksUntilAttackFinish > 20 * 2) {
                     handSwinging = false;
@@ -103,9 +98,14 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
                 }
                 return PlayState.CONTINUE;
             }
-            animationEvent.getController().setAnimation(IDLE);
+            state.getController().setAnimation(DefaultAnimations.IDLE);
             return PlayState.CONTINUE;
         }));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
     }
 
     protected void produceParticles(ParticleEffect parameters) {
@@ -113,7 +113,7 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
-            this.world.addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
+            this.getWorld().addParticle(parameters, this.getParticleX(1.0), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
         }
     }
 
@@ -131,11 +131,6 @@ public class ChupacabraEntity extends HostileEntity implements IAnimatable, Mons
             this.dropXp();
             this.dropStack(new ItemStack(ItemRegistry.CHUPACABRA_RAW_MEAT, random.nextInt(2)));
         }
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
     }
 
     @Override

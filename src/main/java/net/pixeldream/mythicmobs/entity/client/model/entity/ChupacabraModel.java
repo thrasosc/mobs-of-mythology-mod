@@ -1,11 +1,11 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.model.entity;
 
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.ChupacabraEntity;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
+import software.bernie.geckolib.model.GeoModel;
 
-public class ChupacabraModel extends AnimatedGeoModel<ChupacabraEntity> {
+public class ChupacabraModel extends GeoModel<ChupacabraEntity> {
 
     @Override
     public Identifier getModelResource(ChupacabraEntity object) {

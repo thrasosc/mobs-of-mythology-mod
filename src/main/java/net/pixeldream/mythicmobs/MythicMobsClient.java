@@ -5,7 +5,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.pixeldream.mythicmobs.entity.client.*;
+import net.pixeldream.mythicmobs.entity.client.renderer.entity.*;
 import net.pixeldream.mythicmobs.particle.BloodParticle;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
 import net.pixeldream.mythicmobs.registry.ParticleRegistry;

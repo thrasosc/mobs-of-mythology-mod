@@ -1,17 +1,14 @@
-package net.pixeldream.mythicmobs.entity.client;
+package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.MushroomEntity;
 import net.pixeldream.mythicmobs.entity.MushroomVariant;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import net.pixeldream.mythicmobs.entity.client.model.entity.MushroomModel;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Map;
 
@@ -30,14 +27,7 @@ public class MushroomRenderer extends GeoEntityRenderer<MushroomEntity> {
     }
 
     @Override
-    public Identifier getTextureResource(MushroomEntity instance) {
-        return LOCATION_BY_VARIANT.get(instance.getVariant());
-    }
-
-    @Override
-    public RenderLayer getRenderType(MushroomEntity animatable, float partialTicks, MatrixStack stack,
-                                     VertexConsumerProvider renderTypeBuffer, VertexConsumer vertexBuilder,
-                                     int packedLightIn, Identifier textureLocation) {
-        return super.getRenderType(animatable, partialTicks, stack, renderTypeBuffer, vertexBuilder, packedLightIn, textureLocation);
+    public Identifier getTextureLocation(MushroomEntity animatable) {
+        return LOCATION_BY_VARIANT.get(animatable.getVariant());
     }
 }
