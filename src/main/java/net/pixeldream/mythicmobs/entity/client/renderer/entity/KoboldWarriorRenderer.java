@@ -1,6 +1,7 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -11,10 +12,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.RotationAxis;
 import net.pixeldream.mythicmobs.MythicMobs;
+import net.pixeldream.mythicmobs.entity.KoboldEntity;
 import net.pixeldream.mythicmobs.entity.KoboldWarriorEntity;
 import net.pixeldream.mythicmobs.entity.KoboldWarriorVariant;
 import net.pixeldream.mythicmobs.entity.client.model.entity.KoboldWarriorModel;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
@@ -22,8 +25,8 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 import java.util.Map;
 
 public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarriorEntity> {
-    private static final String LEFT_HAND = "item";
-    private static final String RIGHT_HAND = "item2";
+    private static final String RIGHT_HAND = "item";
+    private static final String LEFT_HAND = "item2";
     protected ItemStack mainHandItem;
     protected ItemStack offHandItem;
     public static final Map<KoboldWarriorVariant, Identifier> LOCATION_BY_VARIANT =
@@ -88,5 +91,13 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
     @Override
     public Identifier getTextureLocation(KoboldWarriorEntity animatable) {
         return LOCATION_BY_VARIANT.get(animatable.getVariant());
+    }
+
+    @Override
+    public void preRender(MatrixStack poseStack, KoboldWarriorEntity animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+
+        this.mainHandItem = animatable.getMainHandStack();
+        this.offHandItem = animatable.getOffHandStack();
     }
 }
