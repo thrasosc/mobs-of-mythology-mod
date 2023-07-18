@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
+import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 import java.util.Map;
@@ -41,6 +42,9 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
     public KoboldWarriorRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new KoboldWarriorModel());
         this.shadowRadius = 0.4f;
+
+        //TODO Add glow
+//        addRenderLayer(new AutoGlowingGeoLayer<>(this));
 
         // Add some held item rendering
         addRenderLayer(new BlockAndItemGeoLayer<>(this) {
