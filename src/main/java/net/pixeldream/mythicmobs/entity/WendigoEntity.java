@@ -215,7 +215,7 @@ public class WendigoEntity extends BossEntity implements GeoEntity, Monster {
         ++deathTime;
         if (deathTime == 30) {
             produceParticles(ParticleTypes.POOF);
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
             this.dropXp();
         }
     }

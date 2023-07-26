@@ -1,6 +1,7 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -15,6 +16,7 @@ import net.pixeldream.mythicmobs.entity.KoboldEntity;
 import net.pixeldream.mythicmobs.entity.KoboldVariant;
 import net.pixeldream.mythicmobs.entity.client.model.entity.KoboldModel;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
@@ -22,8 +24,8 @@ import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 import java.util.Map;
 
 public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
-    private static final String LEFT_HAND = "hand";
-    private static final String RIGHT_HAND = "hand2";
+    private static final String RIGHT_HAND = "hand";
+    private static final String LEFT_HAND = "hand2";
     protected ItemStack mainHandItem;
     protected ItemStack offHandItem;
     public static final Map<KoboldVariant, Identifier> LOCATION_BY_VARIANT =
@@ -37,6 +39,9 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     public KoboldRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new KoboldModel());
         this.shadowRadius = 0.4f;
+
+        //TODO Add glow
+//        addRenderLayer(new AutoGlowingGeoLayer<>(this));
 
         // Add some held item rendering
         addRenderLayer(new BlockAndItemGeoLayer<>(this) {
@@ -87,5 +92,13 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     @Override
     public Identifier getTextureLocation(KoboldEntity animatable) {
         return LOCATION_BY_VARIANT.get(animatable.getVariant());
+    }
+
+    @Override
+    public void preRender(MatrixStack poseStack, KoboldEntity animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+
+        this.mainHandItem = animatable.getMainHandStack();
+        this.offHandItem = animatable.getOffHandStack();
     }
 }

@@ -1,4 +1,4 @@
-//package net.pixeldream.mythicmobs.block;
+package net.pixeldream.mythicmobs.block;//package net.pixeldream.mythicmobs.block;
 //
 //import net.minecraft.block.*;
 //import net.minecraft.block.entity.BlockEntity;

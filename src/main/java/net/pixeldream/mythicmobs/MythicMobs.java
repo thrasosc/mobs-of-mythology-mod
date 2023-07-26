@@ -31,7 +31,9 @@ public class MythicMobs implements ModInitializer {
 		SoundRegistry.initialize();
 		WorldGen.generateWorldGen();
 
+		LOGGER.info("Replacing Iron Golems with Automata from " + MOD_NAME);
 		EntityEvents.replaceNaturallySpawningIronGolemsWithAutomata();
+		MythicMobs.LOGGER.info("Checking for un-spawned Automata from " + MythicMobs.MOD_NAME);
 		EntityEvents.checkForUnSpawnedGolem();
 	}
 }

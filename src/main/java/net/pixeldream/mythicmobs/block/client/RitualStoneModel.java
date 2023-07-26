@@ -1,4 +1,4 @@
-//package net.pixeldream.mythicmobs.block.client;
+package net.pixeldream.mythicmobs.block.client;//package net.pixeldream.mythicmobs.block.client;
 //
 //import net.minecraft.util.Identifier;
 //import net.pixeldream.mythicmobs.MythicMobs;

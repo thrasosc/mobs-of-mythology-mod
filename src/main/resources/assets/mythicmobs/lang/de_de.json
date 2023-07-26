@@ -29,7 +29,7 @@
   "block.mythicmobs.bronze_block": "Bronze Block",
   "block.mythicmobs.bronze_block_cut": "Geschnittener Bronze block",
 
-  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+  "itemgroup.mythicmobs": "Mythic Mobs",
 
   "mythicmobs.midnightconfig.title": "Mythic Mobs Optionen",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Eisen Golems Ersetzen"

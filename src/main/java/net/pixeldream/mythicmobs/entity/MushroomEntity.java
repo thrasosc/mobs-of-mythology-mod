@@ -213,7 +213,7 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
             } else {
                 this.dropStack(new ItemStack(Items.BROWN_MUSHROOM));
             }
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
             this.dropXp();
         }
     }

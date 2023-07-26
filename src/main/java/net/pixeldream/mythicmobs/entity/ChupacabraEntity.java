@@ -127,7 +127,7 @@ public class ChupacabraEntity extends HostileEntity implements GeoEntity, Monste
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 15) {
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
             this.dropXp();
             this.dropStack(new ItemStack(ItemRegistry.CHUPACABRA_RAW_MEAT, random.nextInt(2)));
         }

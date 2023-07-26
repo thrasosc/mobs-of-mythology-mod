@@ -6,43 +6,43 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MythicMobsConfigs extends MidnightConfig {
-    @MidnightConfig.Comment(centered = true)
+    @Comment(centered = true)
     public static Comment mobSpawnRates;
-    @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
+    @Entry(isSlider = true, min = 0, max = 100)
     public static int koboldSpawnWeight = 10;
-    @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
+    @Entry(isSlider = true, min = 0, max = 100)
     public static int koboldWarriorSpawnWeight = 8;
-    @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
+    @Entry(isSlider = true, min = 0, max = 100)
     public static int chupacabraSpawnWeight = 20;
-    @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
+    @Entry(isSlider = true, min = 0, max = 100)
     public static int drakeSpawnWeight = 5;
-    @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
+    @Entry(isSlider = true, min = 0, max = 100)
     public static int mushroomSpawnWeight = 20;
-    @MidnightConfig.Comment(centered = true)
+    @Comment(centered = true)
     public static Comment mobAttributes;
-    @MidnightConfig.Entry
+    @Entry
     public static double automatonHealth = 100.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double automatonAttackDamage = 16.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double chupacabraHealth = 16.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double chupacabraAttackDamage = 6.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double drakeHealth = 30.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double drakeAttackDamage = 5.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double koboldHealth = 20.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double koboldAttackDamage = 2.5;
-    @MidnightConfig.Entry
+    @Entry
     public static double koboldWarriorHealth = 20.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double koboldWarriorArmor = 6.0;
-    @MidnightConfig.Entry
+    @Entry
     public static double koboldWarriorAttackDamage = 5.5;
-    @MidnightConfig.Entry
+    @Entry
     public static double mushroomHealth = 6.0;
 //    @MidnightConfig.Entry
     public static double wendigoHealth = 250.0;
@@ -51,11 +51,11 @@ public class MythicMobsConfigs extends MidnightConfig {
 //    @MidnightConfig.Entry
     public static double wendigoAttackDamage = 8.0;
 
-    @MidnightConfig.Comment(centered = true)
+    @Comment(centered = true)
     public static Comment miscellaneous;
-    @MidnightConfig.Entry
+    @Entry
     public static boolean replaceIronGolems = true;
-    @MidnightConfig.Entry
+    @Entry
     public static List<String> redMushroomLines = Arrays.asList(
             "playerGreeting",
             "Seen any smurfs lately?",
@@ -74,7 +74,7 @@ public class MythicMobsConfigs extends MidnightConfig {
             "Some people blame me for the apocalypse...",
             "Γειά σου Ελλάδα!"
     );
-    @MidnightConfig.Entry
+    @Entry
     public static List<String> brownMushroomLines = Arrays.asList(
             "Why do I feel like a fun-guy in a no-fun zone?",
             "You want a piece of my spore attitude? Take a hike!",

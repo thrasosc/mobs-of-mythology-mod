@@ -290,7 +290,7 @@ public class DrakeEntity extends TameableEntity implements GeoEntity, RangedAtta
     public void updatePostDeath() {
         ++deathTime;
         if (deathTime == 15) {
-            this.remove(Entity.RemovalReason.KILLED);
+            this.remove(RemovalReason.KILLED);
             this.dropXp();
         }
     }
@@ -376,7 +376,7 @@ public class DrakeEntity extends TameableEntity implements GeoEntity, RangedAtta
 
     @Override
     public EntityView method_48926() {
-        return null;
+        return getWorld();
     }
 
 //    private static class LayEggGoal extends MoveToTargetPosGoal {

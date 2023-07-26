@@ -29,7 +29,7 @@
   "block.mythicmobs.bronze_block": "Khối Đồng",
   "block.mythicmobs.bronze_block_cut": "Cut Bronze Block",
 
-  "itemGroup.mythicmobs.item_group": "Mythic Mobs",
+  "itemgroup.mythicmobs": "Mythic Mobs",
 
   "mythicmobs.midnightconfig.title": "Tùy chọn Mythic Mobs",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Thay thế Golem sắt"

@@ -1,0 +1,12 @@
+{
+  "type": "patchouli:shapeless_book_recipe",
+  "ingredients": [
+    {
+      "item": "mythicmobs:automaton_gear"
+    },
+    {
+      "item": "minecraft:book"
+    }
+  ],
+  "book": "mythicmobs:mythical_guide_book"
+}
