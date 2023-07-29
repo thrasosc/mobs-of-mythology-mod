@@ -12,6 +12,7 @@
       "images": [
         "mythicmobs:other/images/automaton.png"
       ],
+      "text": "The Great Defender",
       "border": true
     }
   ]

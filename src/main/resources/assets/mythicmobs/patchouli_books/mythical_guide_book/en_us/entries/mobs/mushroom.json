@@ -13,6 +13,7 @@
         "mythicmobs:other/images/mushroom_red.png",
         "mythicmobs:other/images/mushroom_brown.png"
       ],
+      "text": "Mushroom",
       "border": true
     }
   ]

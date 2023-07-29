@@ -103,9 +103,6 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     @Override
     public boolean damage(DamageSource source, float amount) {
         boolean bl = super.damage(source, amount);
-        if (random.nextInt(2) == 1) {
-            this.dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 3)));
-        }
         if (bl) {
             this.playSound(SoundEvents.ENTITY_IRON_GOLEM_DAMAGE, 1.0f, 1.0f);
         }
@@ -151,6 +148,7 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     public void onDeath(DamageSource damageSource) {
         produceParticles(ParticleTypes.POOF);
         dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextBetween(1, 4)));
+        this.dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 3)));
         super.onDeath(damageSource);
     }
 
