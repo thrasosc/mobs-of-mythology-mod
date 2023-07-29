@@ -1,6 +1,5 @@
 package net.pixeldream.mythicmobs.entity;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;

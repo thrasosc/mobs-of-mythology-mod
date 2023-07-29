@@ -159,14 +159,14 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, state -> {
             if (state.isMoving() && !handSwinging) {
                 state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;
             } else if (handSwinging) {
                 state.getController().setAnimation(DefaultAnimations.ATTACK);
                 ticksUntilAttackFinish++;
-                if (ticksUntilAttackFinish > 20 * 4) {
+                if (ticksUntilAttackFinish > 20 * 5.5) {
                     handSwinging = false;
                     ticksUntilAttackFinish = 0;
                 }

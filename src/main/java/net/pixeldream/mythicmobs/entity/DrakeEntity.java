@@ -175,7 +175,7 @@ public class DrakeEntity extends TameableEntity implements GeoEntity, RangedAtta
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, state -> {
             if (isSitting()) {
                 state.getController().setAnimation(DefaultAnimations.SIT);
                 return PlayState.CONTINUE;

@@ -5,14 +5,14 @@
   "pages": [
     {
       "type": "text",
-      "text": "Automatons are the new protectors of villages. These intricate and sentient creations are built with precision and purpose. They are stronger and fiercer than Iron Golems, and can be repaired using Bronze Ingots."
+      "text": "Automatons are the new protectors of villages. These intricate and sentient creations are built with precision and purpose. They are stronger and fiercer than Iron Golems, and can be repaired using Bronze Ingots.",
+      "title": "Bestiary"
     },
     {
-      "type": "image",
-      "images": [
-        "mythicmobs:other/images/automaton.png"
-      ],
-      "border": true
+      "type": "entity",
+      "entity": "mythicmobs:automaton",
+      "offset": 0.25,
+      "text": "The Great Defender"
     }
   ]
 }

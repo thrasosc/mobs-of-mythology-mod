@@ -5,15 +5,15 @@
   "pages": [
     {
       "type": "text",
+      "title": "Bestiary",
       "text": "It is a mushroom, there is not much more than that."
     },
     {
-      "type": "image",
-      "images": [
-        "mythicmobs:other/images/mushroom_red.png",
-        "mythicmobs:other/images/mushroom_brown.png"
-      ],
-      "border": true
+      "type": "entity",
+      "entity": "mythicmobs:mushroom_thing",
+      "scale": "0.75",
+      "offset": 0,
+      "text": "Mushroom"
     }
   ]
 }

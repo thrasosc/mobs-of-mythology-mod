@@ -1,7 +1,6 @@
 package net.pixeldream.mythicmobs.entity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
@@ -81,7 +80,7 @@ public class ChupacabraEntity extends HostileEntity implements GeoEntity, Monste
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, state -> {
             if (state.isMoving() && !handSwinging) {
                 if (isAttacking() && !handSwinging) {
                     state.getController().setAnimation(DefaultAnimations.RUN);

@@ -1,7 +1,6 @@
 package net.pixeldream.mythicmobs.entity;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -131,7 +130,7 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, state -> {
             if (state.isMoving()) {
                 state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;

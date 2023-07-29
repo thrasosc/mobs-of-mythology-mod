@@ -61,7 +61,7 @@ public abstract class AbstractKoboldEntity extends PathAwareEntity implements Ge
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 0, state -> {
             if (state.isMoving() && !handSwinging) {
                 if (isAttacking() && !handSwinging) {
                     state.getController().setAnimation(DefaultAnimations.RUN);
