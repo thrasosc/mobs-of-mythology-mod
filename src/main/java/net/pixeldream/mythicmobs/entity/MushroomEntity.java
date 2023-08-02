@@ -58,7 +58,6 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
 
     private boolean startCountdown = false;
     private boolean talk = true;
-    private int pitch;
     private SoundEvent interactSound;
 
     public MushroomEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
@@ -157,7 +156,6 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         if (getVariant().equals(MushroomVariant.RED)) {
-            pitch = 15;
             interactSound = SoundEvents.ENTITY_VILLAGER_YES;
             lines = MythicMobsConfigs.redMushroomLines;
             greetings = Arrays.asList(
@@ -170,7 +168,6 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
                     "Godspeed, "
             );
         } else {
-            pitch = 10;
             interactSound = SoundEvents.ENTITY_VILLAGER_NO;
             lines = MythicMobsConfigs.brownMushroomLines;
         }
@@ -188,7 +185,7 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
             } while (currentLine.equals(previousLine));
             MinecraftServer server = player.getServer();
             if (server != null) {
-                this.playSound(interactSound, 1.0f, pitch);
+                this.playSound(interactSound, 1.0f, 15);
                 server.send(new ServerTask(0, () -> player.sendMessage(currentLine, true)));
             }
         }
@@ -226,24 +223,24 @@ public class MushroomEntity extends PathAwareEntity implements GeoEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.ENTITY_VILLAGER_AMBIENT, 1.0f, pitch);
+        this.playSound(SoundEvents.ENTITY_VILLAGER_AMBIENT, 1.0f, 15);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENTITY_VILLAGER_HURT, 1.0f, pitch);
+        this.playSound(SoundEvents.ENTITY_VILLAGER_HURT, 1.0f, 15);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.ENTITY_VILLAGER_DEATH, 1.0f, pitch);
+        this.playSound(SoundEvents.ENTITY_VILLAGER_DEATH, 1.0f, 15);
         return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.25f, pitch);
+        this.playSound(SoundEvents.ENTITY_WOLF_STEP, 0.25f, 15);
     }
 }
