@@ -16,15 +16,11 @@
   "parent": "mythicmobs:mythicmobs",
   "criteria": {
     "requirement": {
-      "trigger": "minecraft:inventory_changed",
+      "trigger": "minecraft:player_interacted_with_entity",
       "conditions": {
-        "items": [
-          {
-            "items": [
-              "mythicmobs:bronze_ingot"
-            ]
-          }
-        ]
+        "entity": {
+          "type": "mythicmobs:kobold"
+        }
       }
     }
   }
