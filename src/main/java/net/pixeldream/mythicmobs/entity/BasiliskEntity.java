@@ -188,6 +188,7 @@ public class BasiliskEntity extends AbstractHorseEntity implements GeoEntity, Ju
         return 0;
     }
 
+    //TODO finish move control
     class BasiliskMoveControl extends MoveControl {
         public BasiliskMoveControl() {
             super(BasiliskEntity.this);
