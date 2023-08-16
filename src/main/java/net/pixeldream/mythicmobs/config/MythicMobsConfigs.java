@@ -18,6 +18,8 @@ public class MythicMobsConfigs extends MidnightConfig {
     public static int drakeSpawnWeight = 5;
     @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
     public static int mushroomSpawnWeight = 20;
+    @MidnightConfig.Entry(isSlider = true, min = 0, max = 100)
+    public static int basiliskSpawnWeight = 1;
     @MidnightConfig.Comment(centered = true)
     public static Comment mobAttributes;
     @MidnightConfig.Entry
@@ -44,6 +46,10 @@ public class MythicMobsConfigs extends MidnightConfig {
     public static double koboldWarriorAttackDamage = 5.5;
     @MidnightConfig.Entry
     public static double mushroomHealth = 6.0;
+    @MidnightConfig.Entry
+    public static double basiliskHealth = 50.0;
+    @MidnightConfig.Entry
+    public static double basiliskAttackDamage = 6.0;
 //    @MidnightConfig.Entry
     public static double wendigoHealth = 250.0;
 //    @MidnightConfig.Entry
