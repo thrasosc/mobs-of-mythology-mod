@@ -1,4 +1,4 @@
-[![](https://i.imgur.com/hMkcTWc.png)](https://pixeldreamstudios.github.io)
+[![](https://i.imgur.com/hMkcTWc.png)](https://pixeldreamstudios.net)
 
 ## 📜 Description
 Mythic Mobs is an exciting Minecraft mod that brings mythical creatures and powerful mobs into your Minecraft world. This mod introduces a whole new level of challenge and adventure, allowing you to encounter unique and formidable creatures during your exploration.
