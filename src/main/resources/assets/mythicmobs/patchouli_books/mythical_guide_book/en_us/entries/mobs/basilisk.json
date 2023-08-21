@@ -1,0 +1,19 @@
+{
+  "name": "Basilisk",
+  "icon": "mythicmobs:basilisk_spawn_egg",
+  "category": "mythicmobs:mobs",
+  "pages": [
+    {
+      "type": "text",
+      "text": "Basilisk description."
+    },
+    {
+      "type": "image",
+      "images": [
+        "mythicmobs:other/images/basilisk.png"
+      ],
+      "text": "A Gentle Giant",
+      "border": true
+    }
+  ]
+}

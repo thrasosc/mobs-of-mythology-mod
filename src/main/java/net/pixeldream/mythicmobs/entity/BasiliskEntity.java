@@ -52,7 +52,7 @@ public class BasiliskEntity extends AbstractHorseEntity implements GeoEntity, Ju
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
-        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, MythicMobsConfigs.basiliskHealth).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, MythicMobsConfigs.basiliskAttackDamage).add(EntityAttributes.GENERIC_ATTACK_SPEED, 1.25f).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.175);
+        return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, MythicMobsConfigs.basiliskHealth).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, MythicMobsConfigs.basiliskAttackDamage).add(EntityAttributes.GENERIC_ATTACK_SPEED, 1.25f).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.175).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1.5);
     }
 
     @Override
@@ -196,9 +196,10 @@ public class BasiliskEntity extends AbstractHorseEntity implements GeoEntity, Ju
 
         @Override
         public void tick() {
-            if (this.state == MoveControl.State.MOVE_TO && !BasiliskEntity.this.isLeashed() && BasiliskEntity.this.isSitting() && !BasiliskEntity.this.isChangingPose()) {
-                BasiliskEntity.this.startStanding();
-            }
+            //TODO uncomment this
+//            if (this.state == MoveControl.State.MOVE_TO && !BasiliskEntity.this.isLeashed() && BasiliskEntity.this.isSitting() && !BasiliskEntity.this.isChangingPose()) {
+//                BasiliskEntity.this.startStanding();
+//            }
             super.tick();
         }
     }

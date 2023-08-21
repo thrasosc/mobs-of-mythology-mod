@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "patchouli:shapeless_book_recipe",
   "ingredients": [
     {
       "item": "minecraft:book"
@@ -8,10 +8,5 @@
       "item": "mythicmobs:gear"
     }
   ],
-  "result": {
-    "item": "patchouli:book",
-    "nbt": {
-      "patchouli:book": "mythicmobs:mythical_guide_book"
-    }
-  }
+  "book": "mythicmobs:mythical_guide_book"
 }
