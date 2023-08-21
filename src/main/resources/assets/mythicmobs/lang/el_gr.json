@@ -14,6 +14,7 @@
   "entity.mythicmobs.chupacabra": "Τσουπακαμπρά",
   "entity.mythicmobs.drake": "Δράκος",
   "entity.mythicmobs.mushroom_thing": "Σπορίδιο",
+  "entity.mythicmobs.basilisk": "Βασιλίσκος",
 
   "item.mythicmobs.kobold_spear": "Ακόντιο Καλικάντζαρου",
   "item.mythicmobs.bronze_ingot": "Ράβδος Ορείχαλκου",
@@ -24,7 +25,11 @@
   "item.mythicmobs.wendigo_spawn_egg": "Αυγό Γέννησης ",
   "item.mythicmobs.drake_spawn_egg": "Αυγό Γέννησης Δράκου",
   "item.mythicmobs.mushroom_spawn_egg": "Αυγό Γέννησης Σπορίδιου",
+  "item.mythicmobs.basilisk_spawn_egg": "Αυγό Γέννησης Βασιλίσκου",
   "item.mythicmobs.automaton_head": "Κεφάλι Ρομπότ",
+  "item.mythicmobs.chupacabra_raw_meat": "Ωμό Κρέας Τσουπακάμπρα",
+  "item.mythicmobs.chupacabra_cooked_meat_skewer": "Σουβλάκι Τσουπακάμπρα",
+  "item.mythicmobs.gear": "Γρανάζι Ρομπότ",
 
   "block.mythicmobs.bronze_block": "Κύβος Ορείχαλκου",
   "block.mythicmobs.bronze_block_cut": "Κομμένος Ορείχαλκος",

@@ -14,6 +14,7 @@
   "entity.mythicmobs.chupacabra": "Chupacabra",
   "entity.mythicmobs.drake": "Drake",
   "entity.mythicmobs.mushroom_thing": "Sporeling",
+  "entity.mythicmobs.basilisk": "Basilisk",
 
   "item.mythicmobs.kobold_spear": "Kobold Spear",
   "item.mythicmobs.bronze_ingot": "Bronze Ingot",
@@ -24,6 +25,7 @@
   "item.mythicmobs.wendigo_spawn_egg": "Wendigo Spawn Egg",
   "item.mythicmobs.drake_spawn_egg": "Drake Spawn Egg",
   "item.mythicmobs.mushroom_spawn_egg": "Sporeling Spawn Egg",
+  "item.mythicmobs.basilisk_spawn_egg": "Basilisk Spawn Egg",
   "item.mythicmobs.automaton_head": "Automaton Head",
   "item.mythicmobs.chupacabra_raw_meat": "Raw Chupacabra Meat",
   "item.mythicmobs.chupacabra_cooked_meat_skewer": "Chupacabra Skewer",
