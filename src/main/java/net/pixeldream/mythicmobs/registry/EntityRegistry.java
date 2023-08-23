@@ -48,11 +48,11 @@ public class EntityRegistry {
             new Identifier(MythicMobs.MOD_ID, "mushroom_thing"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, MushroomEntity::new).dimensions(EntityDimensions.fixed(1.0f,0.8f)).build()
     );
-    public static final EntityType<BasiliskEntity> BASILISK_ENTITY = Registry.register(
-            Registries.ENTITY_TYPE,
-            new Identifier(MythicMobs.MOD_ID, "basilisk"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BasiliskEntity::new).dimensions(EntityDimensions.fixed(1.75f,1.2f)).build()
-    );
+//    public static final EntityType<BasiliskEntity> BASILISK_ENTITY = Registry.register(
+//            Registries.ENTITY_TYPE,
+//            new Identifier(MythicMobs.MOD_ID, "basilisk"),
+//            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, BasiliskEntity::new).dimensions(EntityDimensions.fixed(1.75f,1.2f)).build()
+//    );
 
     public static void initialize() {
         MythicMobs.LOGGER.info("Registering entities for " + MythicMobs.MOD_NAME);
@@ -63,6 +63,6 @@ public class EntityRegistry {
         FabricDefaultAttributeRegistry.register(CHUPACABRA_ENTITY, ChupacabraEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(DRAKE_ENTITY, DrakeEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(MUSHROOM_ENTITY, MushroomEntity.setAttributes());
-        FabricDefaultAttributeRegistry.register(BASILISK_ENTITY, BasiliskEntity.setAttributes());
+//        FabricDefaultAttributeRegistry.register(BASILISK_ENTITY, BasiliskEntity.setAttributes());
     }
 }

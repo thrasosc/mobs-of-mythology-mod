@@ -28,7 +28,7 @@ public class EntitySpawn {
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, EntityRegistry.MUSHROOM_ENTITY, MythicMobsConfigs.mushroomSpawnWeight, 3, 5);
         SpawnRestriction.register(EntityRegistry.MUSHROOM_ENTITY, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PathAwareEntity::canMobSpawn);
 
-        BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, EntityRegistry.BASILISK_ENTITY, MythicMobsConfigs.basiliskSpawnWeight, 1, 1);
-        SpawnRestriction.register(EntityRegistry.BASILISK_ENTITY, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PathAwareEntity::canMobSpawn);
+//        BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), SpawnGroup.CREATURE, EntityRegistry.BASILISK_ENTITY, MythicMobsConfigs.basiliskSpawnWeight, 1, 1);
+//        SpawnRestriction.register(EntityRegistry.BASILISK_ENTITY, SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PathAwareEntity::canMobSpawn);
     }
 }
