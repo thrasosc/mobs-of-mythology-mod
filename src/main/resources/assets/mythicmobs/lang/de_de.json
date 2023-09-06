@@ -14,6 +14,7 @@
   "entity.mythicmobs.chupacabra": "Chupacabra",
   "entity.mythicmobs.drake": "Drake",
   "entity.mythicmobs.mushroom_thing": "Sporenling",
+  "entity.mythicmobs.basilisk": "Basilisk",
 
   "item.mythicmobs.kobold_spear": "Kobold Speer",
   "item.mythicmobs.bronze_ingot": "Bronze Barren",
@@ -24,6 +25,7 @@
   "item.mythicmobs.wendigo_spawn_egg": "Wendigo Spawn Ei",
   "item.mythicmobs.drake_spawn_egg": "Drake Spawn Ei",
   "item.mythicmobs.mushroom_spawn_egg": "Sporenling Spawn Ei",
+  "item.mythicmobs.basilisk_spawn_egg": "Basilisk Spawn Ei",
   "item.mythicmobs.automaton_head": "Automat Kopf",
   "item.mythicmobs.chupacabra_raw_meat": "Rohes Chupacabra Fleisch",
   "item.mythicmobs.chupacabra_cooked_meat_skewer": "Chupacabra Spies",
@@ -60,6 +62,7 @@
   "mythicmobs.midnightconfig.wendigoArmor": "Wendigo Rüstung",
   "mythicmobs.midnightconfig.wendigoAttackDamage": "Wendigo Angriffsschaden",
 
+  
   "mythicmobs.midnightconfig.miscellaneous": "Sonstig",
   "mythicmobs.midnightconfig.REPLACE_IRON_GOLEMS": "Eisen Golems Ersetzen",
   "mythicmobs.midnightconfig.redMushroomLines": "Roter Sporenling Linien",
