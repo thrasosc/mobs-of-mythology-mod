@@ -1,11 +1,11 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
+import mod.azure.azurelib.renderer.GeoEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.WendigoEntity;
 import net.pixeldream.mythicmobs.entity.client.model.entity.WendigoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class WendigoRenderer extends GeoEntityRenderer<WendigoEntity> {
     public WendigoRenderer(EntityRendererFactory.Context ctx) {

@@ -1,9 +1,9 @@
 package net.pixeldream.mythicmobs.entity.client.model.entity;
 
+import mod.azure.azurelib.model.GeoModel;
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.AutomatonEntity;
-import software.bernie.geckolib.model.GeoModel;
 
 public class AutomatonModel extends GeoModel<AutomatonEntity> {
 

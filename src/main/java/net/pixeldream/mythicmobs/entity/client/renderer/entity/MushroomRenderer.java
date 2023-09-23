@@ -1,6 +1,7 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
+import mod.azure.azurelib.renderer.GeoEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
@@ -8,7 +9,6 @@ import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.MushroomEntity;
 import net.pixeldream.mythicmobs.entity.MushroomVariant;
 import net.pixeldream.mythicmobs.entity.client.model.entity.MushroomModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 import java.util.Map;
 

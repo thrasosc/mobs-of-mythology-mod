@@ -1,6 +1,8 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
+import mod.azure.azurelib.renderer.GeoEntityRenderer;
+import mod.azure.azurelib.renderer.layer.AutoGlowingGeoLayer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
@@ -10,8 +12,6 @@ import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.DrakeEntity;
 import net.pixeldream.mythicmobs.entity.DrakeVariant;
 import net.pixeldream.mythicmobs.entity.client.model.entity.DrakeModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 import java.util.Map;
 

@@ -1,6 +1,6 @@
 package net.pixeldream.mythicmobs.entity.constant;
 
-import software.bernie.geckolib.core.animation.RawAnimation;
+import mod.azure.azurelib.core.animation.RawAnimation;
 
 public final class DefaultAnimations {
     public static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");

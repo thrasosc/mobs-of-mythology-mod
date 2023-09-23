@@ -1,12 +1,12 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
+import mod.azure.azurelib.renderer.GeoEntityRenderer;
+import mod.azure.azurelib.renderer.layer.AutoGlowingGeoLayer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.ChupacabraEntity;
 import net.pixeldream.mythicmobs.entity.client.model.entity.ChupacabraModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
 
 public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
     public ChupacabraRenderer(EntityRendererFactory.Context ctx) {

@@ -1,6 +1,10 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
+import mod.azure.azurelib.cache.object.BakedGeoModel;
+import mod.azure.azurelib.cache.object.GeoBone;
+import mod.azure.azurelib.renderer.DynamicGeoEntityRenderer;
+import mod.azure.azurelib.renderer.layer.BlockAndItemGeoLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -16,11 +20,6 @@ import net.pixeldream.mythicmobs.entity.KoboldEntity;
 import net.pixeldream.mythicmobs.entity.KoboldVariant;
 import net.pixeldream.mythicmobs.entity.client.model.entity.KoboldModel;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.renderer.DynamicGeoEntityRenderer;
-import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;
-import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
 import java.util.Map;
 

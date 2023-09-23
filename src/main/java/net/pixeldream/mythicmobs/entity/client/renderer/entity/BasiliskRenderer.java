@@ -1,11 +1,11 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
+import mod.azure.azurelib.renderer.GeoEntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.entity.BasiliskEntity;
 import net.pixeldream.mythicmobs.entity.client.model.entity.BasiliskModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
 public class BasiliskRenderer extends GeoEntityRenderer<BasiliskEntity> {
     public BasiliskRenderer(EntityRendererFactory.Context ctx) {
