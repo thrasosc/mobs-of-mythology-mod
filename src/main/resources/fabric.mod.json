@@ -31,6 +31,7 @@
 		"minecraft": "~1.20.1",
 		"java": ">=17",
 		"azurelib": ">=1.0.29",
+		"smartbrainlib": ">=1.12",
 		"patchouli": ">=1.20.1-80-FABRIC",
 		"fabric-api": "*"
 	},
