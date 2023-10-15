@@ -1,16 +1,19 @@
 package net.pixeldream.mythicmobs.entity;
 
+import mod.azure.azurelib.ai.pathing.AzureNavigation;
 import mod.azure.azurelib.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
+import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.animation.RawAnimation;
-import mod.azure.azurelib.util.AzureLibUtil;
+import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
@@ -20,6 +23,8 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.passive.CowEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
@@ -32,13 +37,13 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
-import net.tslat.smartbrainlib.api.SmartBrainOwner;
-import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.pixeldream.mythicmobs.goal.DelayedAttackGoal;
+import net.pixeldream.mythicmobs.goal.RoarGoal;
+import net.pixeldream.mythicmobs.registry.SoundRegistry;
 import org.jetbrains.annotations.Nullable;
 
-public class WendigoEntity extends BossEntity implements SmartBrainOwner<WendigoEntity>, GeoEntity, Monster {
-    private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
+public class WendigoEntity extends BossEntity implements GeoEntity, Monster {
+    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     public RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     public RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     private long ticksUntilAttackFinish = 0;
@@ -53,6 +58,7 @@ public class WendigoEntity extends BossEntity implements SmartBrainOwner<Wendigo
 
     public WendigoEntity(EntityType<? extends WendigoEntity> entityType, World world) {
         super(entityType, world, BossBar.Color.PURPLE);
+        navigation = new AzureNavigation(this, world);
     }
 
     @Override
@@ -111,6 +117,18 @@ public class WendigoEntity extends BossEntity implements SmartBrainOwner<Wendigo
         return HostileEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, MythicMobsConfigs.wendigoHealth).add(EntityAttributes.GENERIC_ARMOR, MythicMobsConfigs.wendigoArmor).add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 10).add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 5).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, MythicMobsConfigs.wendigoAttackDamage).add(EntityAttributes.GENERIC_ATTACK_KNOCKBACK, 1.5f).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3);
     }
 
+    @Override
+    protected void initGoals() {
+        goalSelector.add(0, new SwimGoal(this));
+        goalSelector.add(1, new RoarGoal(this));
+        goalSelector.add(2, new DelayedAttackGoal(this, 1.5f, true));
+        goalSelector.add(3, new WanderAroundFarGoal(this, 0.75f));
+        goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
+        goalSelector.add(5, new LookAroundGoal(this));
+        targetSelector.add(2, new ActiveTargetGoal<>(this, CowEntity.class, true));
+        targetSelector.add(3, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
+    }
+
     public boolean getRoaring() {
         return this.dataTracker.get(ROARING);
     }
@@ -120,57 +138,31 @@ public class WendigoEntity extends BossEntity implements SmartBrainOwner<Wendigo
     }
 
     @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        tickBrain(this);
-    }
-
-//    @Override
-//    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-//        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
-//            if (getRoaring()) {
-////                animationEvent.getController().setAnimation(ROAR);
-////                MythicMobs.LOGGER.info("ROARING CURRENTLY");
-////                return PlayState.CONTINUE;
-//            } else
-//                if (state.isMoving() && !handSwinging) {
-//                    if (isAttacking() && !handSwinging) {
-//                        state.getController().setAnimation(DefaultAnimations.RUN);
-//                        return PlayState.CONTINUE;
-//                    }
-//                    state.getController().setAnimation(WALK);
-//                    return PlayState.CONTINUE;
-//                } else if (isAttacking()) {
-//                    state.getController().setAnimation(DefaultAnimations.ATTACK);
-//                    ticksUntilAttackFinish++;
-//                    if (ticksUntilAttackFinish > 17 * 6) {
-//                        handSwinging = false;
-//                        ticksUntilAttackFinish = 0;
-//                    }
-//                    return PlayState.CONTINUE;
-//                }
-//            state.getController().setAnimation(IDLE);
-//                return PlayState.CONTINUE;
-//            }));
-//    }
-
-    @Override
-    public List<? extends ExtendedSensor<? extends WendigoEntity>> getSensors() {
-        return null;
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 0, event ->
-        {
-            return event.setAndContinue(
-                    // If moving, play the walking animation
-                    event.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+            if (state.isMoving() && !handSwinging) {
+                if (isAttacking() && !handSwinging) {
+                    state.getController().setAnimation(DefaultAnimations.RUN);
+                    return PlayState.CONTINUE;
+                }
+                state.getController().setAnimation(WALK);   // should not be DefaultAnimations.WALK
+                return PlayState.CONTINUE;
+            } else if (isAttacking()) {
+                state.getController().setAnimation(DefaultAnimations.ATTACK);
+                ticksUntilAttackFinish++;
+                if (ticksUntilAttackFinish > 17 * 6) {
+                    handSwinging = false;
+                    ticksUntilAttackFinish = 0;
+                }
+                return PlayState.CONTINUE;
+            }
+            state.getController().setAnimation(IDLE);   // should not be DefaultAnimations.IDLE
+            return PlayState.CONTINUE;
+        }));
+        controllerRegistrar.add(
+                new AnimationController<>(this, "miscController", event -> PlayState.CONTINUE)
+                        .triggerableAnim("death", DefaultAnimations.DEATH)
+                        .triggerableAnim("roar", RawAnimation.begin().thenPlay("thing")));
     }
 
     @Override
@@ -186,8 +178,12 @@ public class WendigoEntity extends BossEntity implements SmartBrainOwner<Wendigo
             if (age == 1) {
                 setAnim();
             }
-
-            if (!getRoaring()) {
+            if (getRoaring()) {
+                this.triggerAnim("miscController", "roar");
+                this.playSound(SoundRegistry.WENDIGO_ROAR, 0.75f, 1.0f);
+                setRoaring(false);
+            }
+            else {
                 roarTimer++;
                 if (roarTimer > 6000) {
                     setRoaring(true);
@@ -252,4 +248,146 @@ public class WendigoEntity extends BossEntity implements SmartBrainOwner<Wendigo
     protected void playStepSound(BlockPos pos, BlockState state) {
         playSound(SoundEvents.ENTITY_HUSK_STEP, 0.5f, 1.0f);
     }
+
+//    public class WendigoAttackGoal extends Goal {
+//        protected final WendigoEntity mob;
+//        private final double speed;
+//        private final boolean pauseWhenMobIdle;
+//        private Path path;
+//        private double targetX;
+//        private double targetY;
+//        private double targetZ;
+//        private int updateCountdownTicks;
+//        private int cooldown;
+//        private final int attackIntervalTicks = 20;
+//        private long lastUpdateTime;
+//        private static final long MAX_ATTACK_TIME = 20L;
+//
+//        public WendigoAttackGoal(WendigoEntity mob, double speed, boolean pauseWhenMobIdle) {
+//            this.mob = mob;
+//            this.speed = speed;
+//            this.pauseWhenMobIdle = pauseWhenMobIdle;
+//            this.setControls(EnumSet.of(Goal.Control.MOVE, Goal.Control.LOOK));
+//        }
+//
+//        @Override
+//        public boolean canStart() {
+//            long l = this.mob.world.getTime();
+//            if (l - this.lastUpdateTime < 20L) {
+//                return false;
+//            }
+//            this.lastUpdateTime = l;
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (livingEntity == null) {
+//                return false;
+//            }
+//            if (!livingEntity.isAlive()) {
+//                return false;
+//            }
+//            this.path = this.mob.getNavigation().findPathTo(livingEntity, 0);
+//            if (this.path != null) {
+//                return true;
+//            }
+//            return this.getSquaredMaxAttackDistance(livingEntity) >= this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+//        }
+//
+//        @Override
+//        public boolean shouldContinue() {
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (livingEntity == null) {
+//                return false;
+//            }
+//            if (!livingEntity.isAlive()) {
+//                return false;
+//            }
+//            if (!this.pauseWhenMobIdle) {
+//                return !this.mob.getNavigation().isIdle();
+//            }
+//            if (!this.mob.isInWalkTargetRange(livingEntity.getBlockPos())) {
+//                return false;
+//            }
+//            return !(livingEntity instanceof PlayerEntity) || !livingEntity.isSpectator() && !((PlayerEntity)livingEntity).isCreative();
+//        }
+//
+//        @Override
+//        public void start() {
+//            this.mob.getNavigation().startMovingAlong(this.path, this.speed);
+//            this.mob.setAttacking(true);
+//            this.updateCountdownTicks = 0;
+//            this.cooldown = 40;
+//        }
+//
+//        @Override
+//        public void stop() {
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (!EntityPredicates.EXCEPT_CREATIVE_OR_SPECTATOR.test(livingEntity)) {
+//                this.mob.setTarget(null);
+//            }
+//            this.mob.setAttacking(false);
+//            this.mob.getNavigation().stop();
+//        }
+//
+//        @Override
+//        public boolean shouldRunEveryTick() {
+//            return true;
+//        }
+//
+//        @Override
+//        public void tick() {
+//            LivingEntity livingEntity = this.mob.getTarget();
+//            if (livingEntity == null) {
+//                return;
+//            }
+//            this.mob.getLookControl().lookAt(livingEntity, 30.0f, 30.0f);
+//            double d = this.mob.squaredDistanceTo(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
+//            this.updateCountdownTicks = Math.max(this.updateCountdownTicks - 1, 0);
+//            if ((this.pauseWhenMobIdle || this.mob.getVisibilityCache().canSee(livingEntity)) && this.updateCountdownTicks <= 0 && (this.targetX == 0.0 && this.targetY == 0.0 && this.targetZ == 0.0 || livingEntity.squaredDistanceTo(this.targetX, this.targetY, this.targetZ) >= 1.0 || this.mob.getRandom().nextFloat() < 0.05f)) {
+//                this.targetX = livingEntity.getX();
+//                this.targetY = livingEntity.getY();
+//                this.targetZ = livingEntity.getZ();
+//                this.updateCountdownTicks = 4 + this.mob.getRandom().nextInt(7);
+//                if (d > 1024.0) {
+//                    this.updateCountdownTicks += 10;
+//                } else if (d > 256.0) {
+//                    this.updateCountdownTicks += 5;
+//                }
+//                if (!this.mob.getNavigation().startMovingTo(livingEntity, this.speed)) {
+//                    this.updateCountdownTicks += 15;
+//                }
+//                this.updateCountdownTicks = this.getTickCount(this.updateCountdownTicks);
+//            }
+//            this.cooldown--;
+//            this.attack(livingEntity, d);
+//        }
+//
+//        protected void attack(LivingEntity target, double squaredDistance) {
+//            double d = this.getSquaredMaxAttackDistance(target);
+//            if (squaredDistance <= d && this.cooldown <= 0) {
+//                this.resetCooldown();
+//                this.mob.swingHand(Hand.MAIN_HAND);
+//                this.mob.tryAttack(target);
+//            }
+//        }
+//
+//        protected void resetCooldown() {
+//            this.cooldown = 40;
+//        }
+//
+//        protected boolean isCooledDown() {
+//            return this.cooldown <= 0;
+//        }
+//
+//        protected int getCooldown() {
+//            return this.cooldown;
+//        }
+//
+//        protected int getMaxCooldown() {
+//            return this.getTickCount(20);
+//        }
+//
+//        protected double getSquaredMaxAttackDistance(LivingEntity entity) {
+//            return this.mob.getWidth() * 2.0f * (this.mob.getWidth() * 2.0f) + entity.getWidth();
+//        }
+//    }
+
 }

@@ -15,5 +15,11 @@
     "sounds": [
       "mythicmobs:entity/drake/roar_big"
     ]
+  },
+  "wendigo_roar": {
+    "subtitle": "subtitles.mythicmobs.wendigo_roar",
+    "sounds": [
+      "mythicmobs:entity/wendigo/roar"
+    ]
   }
 }
