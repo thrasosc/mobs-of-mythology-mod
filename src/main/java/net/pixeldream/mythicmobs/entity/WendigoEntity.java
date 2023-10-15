@@ -218,6 +218,9 @@ public class WendigoEntity extends BossEntity implements GeoEntity, Monster {
 
     @Override
     public void updatePostDeath() {
+        super.updatePostDeath();
+        //TODO fix death animation
+        this.triggerAnim("miscController", "death");
         ++deathTime;
         if (deathTime == 30) {
             produceParticles(ParticleTypes.POOF);
