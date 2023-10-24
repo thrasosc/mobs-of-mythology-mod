@@ -16,15 +16,15 @@ public class ItemGroupRegistry {
         entries.add(ItemRegistry.CHUPACABRA_COOKED_MEAT_SKEWER);
         entries.add(ItemRegistry.GEAR);
         entries.add(ItemRegistry.BRONZE_INGOT);
-//        entries.add(ItemRegistry.BRONZE_BLOCK);
-//        entries.add(ItemRegistry.BRONZE_BLOCK_CUT);
+        entries.add(BlockRegistry.BRONZE_BLOCK);
+        entries.add(BlockRegistry.CUT_BRONZE_BLOCK);
         entries.add(ItemRegistry.AUTOMATON_SPAWN_EGG);
         entries.add(ItemRegistry.KOBOLD_SPAWN_EGG);
         entries.add(ItemRegistry.KOBOLD_WARRIOR_SPAWN_EGG);
         entries.add(ItemRegistry.CHUPACABRA_SPAWN_EGG);
         entries.add(ItemRegistry.DRAKE_SPAWN_EGG);
         entries.add(ItemRegistry.MUSHROOM_SPAWN_EGG);
-        entries.add(ItemRegistry.WENDIGO_SPAWN_EGG);
+//        entries.add(ItemRegistry.WENDIGO_SPAWN_EGG);
         entries.add(ItemRegistry.BASILISK_SPAWN_EGG);
     }).build());
 

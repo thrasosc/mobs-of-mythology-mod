@@ -23,11 +23,11 @@ public class EntityRegistry {
             new Identifier(MythicMobs.MOD_ID, "kobold_warrior"),
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, KoboldWarriorEntity::new).dimensions(EntityDimensions.fixed(0.75f,1.75f)).build()
     );
-    public static final EntityType<WendigoEntity> WENDIGO_ENTITY = Registry.register(
-            Registries.ENTITY_TYPE,
-            new Identifier(MythicMobs.MOD_ID, "wendigo"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WendigoEntity::new).dimensions(EntityDimensions.fixed(3.5f,4.0f)).build()
-    );
+//    public static final EntityType<WendigoEntity> WENDIGO_ENTITY = Registry.register(
+//            Registries.ENTITY_TYPE,
+//            new Identifier(MythicMobs.MOD_ID, "wendigo"),
+//            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, WendigoEntity::new).dimensions(EntityDimensions.fixed(3.5f,4.0f)).build()
+//    );
     public static final EntityType<AutomatonEntity> AUTOMATON_ENTITY = Registry.register(
             Registries.ENTITY_TYPE,
             new Identifier(MythicMobs.MOD_ID, "automaton"),
@@ -58,7 +58,7 @@ public class EntityRegistry {
         MythicMobs.LOGGER.info("Registering entities for " + MythicMobs.MOD_NAME);
         FabricDefaultAttributeRegistry.register(KOBOLD_ENTITY, KoboldEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(KOBOLD_WARRIOR_ENTITY, KoboldWarriorEntity.setAttributes());
-        FabricDefaultAttributeRegistry.register(WENDIGO_ENTITY, WendigoEntity.setAttributes());
+//        FabricDefaultAttributeRegistry.register(WENDIGO_ENTITY, WendigoEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(AUTOMATON_ENTITY, AutomatonEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(CHUPACABRA_ENTITY, ChupacabraEntity.setAttributes());
         FabricDefaultAttributeRegistry.register(DRAKE_ENTITY, DrakeEntity.setAttributes());

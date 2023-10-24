@@ -33,16 +33,15 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
+import net.pixeldream.mythicmobs.registry.TagRegistry;
 
 public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     protected static final TrackedData<Byte> IRON_GOLEM_FLAGS = DataTracker.registerData(IronGolemEntity.class, TrackedDataHandlerRegistry.BYTE);
     private long ticksUntilAttackFinish = 0;
-
     public AutomatonEntity(EntityType<? extends IronGolemEntity> entityType, World world) {
         super(entityType, world);
     }
@@ -122,10 +121,9 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!itemStack.isOf(ItemRegistry.BRONZE_INGOT)) {
+        if (!itemStack.getRegistryEntry().isIn(TagRegistry.Items.BRONZE_INGOTS)) {
             return ActionResult.PASS;
         }
-        MythicMobs.LOGGER.info("HEALTH:" + this.getHealth());
         float f = this.getHealth();
         this.heal(25.0f);
         if (this.getHealth() == f) {

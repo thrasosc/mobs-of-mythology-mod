@@ -14,8 +14,8 @@ import net.pixeldream.mythicmobs.block.BronzeBlock;
 import net.pixeldream.mythicmobs.block.CutBronzeBlock;
 
 public class BlockRegistry {
-    public static final Block BRONZE_BLOCK = registerBlock("bronze_block", new BronzeBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).sounds(BlockSoundGroup.METAL)));
-    public static final Block CUT_BRONZE_BLOCK = registerBlock("bronze_block_cut", new CutBronzeBlock(FabricBlockSettings.copyOf(Blocks.IRON_BLOCK).sounds(BlockSoundGroup.METAL)));
+    public static final Block BRONZE_BLOCK = registerBlock("bronze_block", new BronzeBlock(FabricBlockSettings.copyOf(Blocks.COPPER_BLOCK).sounds(BlockSoundGroup.METAL)));
+    public static final Block CUT_BRONZE_BLOCK = registerBlock("bronze_block_cut", new CutBronzeBlock(FabricBlockSettings.copyOf(Blocks.COPPER_BLOCK).sounds(BlockSoundGroup.METAL)));
 
     private static Block registerBlock(String name, Block block) {
         registerBlockItem(name, block);

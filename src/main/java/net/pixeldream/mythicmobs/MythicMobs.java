@@ -4,7 +4,6 @@ import eu.midnightdust.lib.config.MidnightConfig;
 import mod.azure.azurelib.AzureLib;
 import net.fabricmc.api.ModInitializer;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
-import net.pixeldream.mythicmobs.event.EntityEvents;
 import net.pixeldream.mythicmobs.registry.*;
 import net.pixeldream.mythicmobs.world.gen.WorldGen;
 import org.slf4j.Logger;
@@ -30,10 +29,5 @@ public class MythicMobs implements ModInitializer {
 		BlockEntityRegistry.initialize();
 		SoundRegistry.initialize();
 		WorldGen.generateWorldGen();
-
-		LOGGER.info("Replacing Iron Golems with Automata from " + MOD_NAME);
-		EntityEvents.replaceNaturallySpawningIronGolemsWithAutomata();
-		MythicMobs.LOGGER.info("Checking for un-spawned Automata from " + MythicMobs.MOD_NAME);
-		EntityEvents.checkForUnSpawnedGolem();
 	}
 }

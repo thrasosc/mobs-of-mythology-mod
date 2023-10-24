@@ -4,9 +4,7 @@
   "package": "net.pixeldream.mythicmobs.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "MobRememberSpawnReasonMixin"
-  ],
-  "client": [
+    "AutomatonSpawnMixin"
   ],
   "injectors": {
     "defaultRequire": 1
