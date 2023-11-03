@@ -21,5 +21,11 @@
     "sounds": [
       "mythicmobs:entity/wendigo/roar"
     ]
+  },
+  "robotic_voice": {
+    "subtitle": "subtitles.mythicmobs.robotic_voice",
+    "sounds": [
+      "mythicmobs:entity/automaton/robotic_voice"
+    ]
   }
 }

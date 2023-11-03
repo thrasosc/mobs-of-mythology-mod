@@ -12,6 +12,7 @@ public class SoundRegistry {
     public static SoundEvent DRAKE_ROAR = registerSoundEvent("drake_roar");
     public static SoundEvent DRAKE_DEATH = registerSoundEvent("drake_death");
     public static SoundEvent WENDIGO_ROAR = registerSoundEvent("wendigo_roar");
+    public static SoundEvent ROBOTIC_VOICE = registerSoundEvent("robotic_voice");
 
     private static SoundEvent registerSoundEvent(String name) {
         Identifier id = new Identifier(MOD_ID, name);
