@@ -7,7 +7,7 @@ import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -15,7 +15,6 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
 import net.minecraft.entity.passive.PassiveEntity;
@@ -36,8 +35,6 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.EntityView;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
@@ -52,11 +49,6 @@ public class AutomatonEntity extends TameableEntity implements GeoEntity {
 
     public AutomatonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
-    }
-
-    @Override
-    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
-        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
     @Override
@@ -109,14 +101,6 @@ public class AutomatonEntity extends TameableEntity implements GeoEntity {
         double e = this.random.nextGaussian() * 0.02;
         double f = this.random.nextGaussian() * 0.02;
         this.getWorld().addParticle(parameters, this.getParticleX(0.5), this.getRandomBodyY() + 1.0, this.getParticleZ(1.0), d, e, f);
-    }
-
-    @Override
-    protected void pushAway(Entity entity) {
-        if (entity instanceof Monster && !(entity instanceof CreeperEntity) && this.getRandom().nextInt(20) == 0) {
-            this.setTarget((LivingEntity) entity);
-        }
-        super.pushAway(entity);
     }
 
     @Override
