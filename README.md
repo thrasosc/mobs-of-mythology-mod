@@ -1,1 +1,1 @@
-[![](https://i.imgur.com/l815YIN.png)](https://bisecthosting.com/PixelDream)
+[![](https://www.bisecthosting.com/images/CF/MythicMobs/BH_MM_PROMO.webp)](https://bisecthosting.com/PixelDream)
