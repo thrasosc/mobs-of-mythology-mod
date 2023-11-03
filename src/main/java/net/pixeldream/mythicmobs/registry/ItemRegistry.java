@@ -22,7 +22,7 @@ public class ItemRegistry {
     public static final Item DRAKE_SPAWN_EGG = registerItem("drake_spawn_egg", new SpawnEggItem(EntityRegistry.DRAKE_ENTITY, 0xFE6F42, 0xE54B1A, new FabricItemSettings().maxCount(64)));
     public static final Item MUSHROOM_SPAWN_EGG = registerItem("mushroom_spawn_egg", new SpawnEggItem(EntityRegistry.MUSHROOM_ENTITY, 0xE53935, 0xFEFEFE, new FabricItemSettings().maxCount(64)));
 //    public static final Item WENDIGO_SPAWN_EGG = registerItem("wendigo_spawn_egg", new SpawnEggItem(EntityRegistry.WENDIGO_ENTITY, 0x9f906f, 0x473a1f, new FabricItemSettings().maxCount(64)));
-    public static final Item BASILISK_SPAWN_EGG = registerItem("basilisk_spawn_egg", new SpawnEggItem(EntityRegistry.BASILISK_ENTITY, 0x399E6F, 0x1B6E47, new FabricItemSettings().maxCount(64)));
+//    public static final Item BASILISK_SPAWN_EGG = registerItem("basilisk_spawn_egg", new SpawnEggItem(EntityRegistry.BASILISK_ENTITY, 0x399E6F, 0x1B6E47, new FabricItemSettings().maxCount(64)));
     public static final Item KOBOLD_SPEAR = registerItem("kobold_spear", new KoboldSpearItem(ToolMaterials.IRON, 3, -2.0f, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
 //    public static final Item AUTOMATON_AXE = registerItem("automaton_axe", new AutomatonAxeItem(ToolMaterials.GOLD, 8, -3.25f, new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
     public static final Item BRONZE_INGOT = registerItem("bronze_ingot", new Item(new FabricItemSettings().maxCount(64)));

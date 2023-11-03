@@ -7,9 +7,7 @@ import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -20,52 +18,86 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.Monster;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.IronGolemEntity;
+import net.minecraft.entity.passive.PassiveEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.ServerTask;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.EntityView;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.entity.constant.DefaultAnimations;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.TagRegistry;
+import org.jetbrains.annotations.Nullable;
 
-public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
+public class AutomatonEntity extends TameableEntity implements GeoEntity {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    protected static final TrackedData<Byte> IRON_GOLEM_FLAGS = DataTracker.registerData(IronGolemEntity.class, TrackedDataHandlerRegistry.BYTE);
     private long ticksUntilAttackFinish = 0;
-    public AutomatonEntity(EntityType<? extends IronGolemEntity> entityType, World world) {
+    private static final TrackedData<Boolean> SITTING = DataTracker.registerData(DrakeEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
+    public AutomatonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
     }
 
     @Override
+    public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    }
+
+    @Override
     protected void initGoals() {
+        this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new MeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.add(2, new WanderNearTargetGoal(this, 0.9, 32.0f));
-        this.goalSelector.add(2, new WanderAroundPointOfInterestGoal((PathAwareEntity) this, 0.6, false));
-        this.goalSelector.add(4, new IronGolemWanderAroundGoal(this, 0.6));
-        this.goalSelector.add(5, new IronGolemLookGoal(this));
-        this.goalSelector.add(7, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
-        this.goalSelector.add(8, new LookAroundGoal(this));
-        this.targetSelector.add(1, new TrackIronGolemTargetGoal(this));
-        this.targetSelector.add(2, new RevengeGoal(this, new Class[0]));
-        this.targetSelector.add(3, new ActiveTargetGoal<PlayerEntity>(this, PlayerEntity.class, 10, true, false, this::shouldAngerAt));
-        this.targetSelector.add(3, new ActiveTargetGoal<MobEntity>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster && !(entity instanceof CreeperEntity)));
-        this.targetSelector.add(4, new UniversalAngerGoal<AutomatonEntity>(this, false));
+        this.goalSelector.add(2, new SitGoal(this));
+        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.0, 3.0F, 16.0F, false));
+        this.goalSelector.add(5, new WanderAroundGoal(this, 0.6));
+        this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
+        this.goalSelector.add(7, new LookAroundGoal(this));
+        this.targetSelector.add(1, new TrackOwnerAttackerGoal(this));
+        this.targetSelector.add(2, new AttackWithOwnerGoal(this));
+        this.targetSelector.add(3, (new RevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
+        this.targetSelector.add(4, new ActiveTargetGoal<MobEntity>(this, MobEntity.class, 5, false, false, entity -> entity instanceof Monster));
+        this.targetSelector.add(6, new UntamedActiveTargetGoal<MobEntity>(this, MobEntity.class, false, entity -> entity instanceof Monster));
+        this.targetSelector.add(7, new UniversalAngerGoal(this, true));
+    }
+
+    @Nullable
+    @Override
+    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
+        return null;
     }
 
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(IRON_GOLEM_FLAGS, (byte) 0);
+        this.dataTracker.startTracking(SITTING, false);
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("IsSitting", this.dataTracker.get(SITTING));
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.dataTracker.set(SITTING, nbt.getBoolean("IsSitting"));
     }
 
     public static DefaultAttributeContainer.Builder setAttributes() {
@@ -119,22 +151,47 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     }
 
     @Override
-    protected ActionResult interactMob(PlayerEntity player, Hand hand) {
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getStackInHand(hand);
-        if (!itemStack.getRegistryEntry().isIn(TagRegistry.Items.BRONZE_INGOTS)) {
+        if (hand == Hand.MAIN_HAND && !isTamed()) {
+            if (!this.getWorld().isClient()) {
+                super.setOwner(player);
+                this.navigation.recalculatePath();
+                this.setTarget(null);
+                this.getWorld().sendEntityStatus(this, (byte) 7);
+                setSit(false);
+                MinecraftServer server = player.getServer();
+                if (server != null) {
+                    server.send(new ServerTask(0, () -> player.sendMessage(Text.literal("I will protect you at all costs, " + player.getEntityName() + "."), true)));
+                }
+            }
+            return ActionResult.SUCCESS;
+        } else if (itemStack.getRegistryEntry().isIn(TagRegistry.Items.BRONZE_INGOTS)) {
+            float f = this.getHealth();
+            this.heal(25.0f);
+            if (this.getHealth() == f) {
+                return ActionResult.PASS;
+            }
+            float g = 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f;
+            this.playSound(SoundEvents.ENTITY_IRON_GOLEM_REPAIR, 1.0f, g);
+            if (!player.getAbilities().creativeMode) {
+                itemStack.decrement(1);
+            }
             return ActionResult.PASS;
-        }
-        float f = this.getHealth();
-        this.heal(25.0f);
-        if (this.getHealth() == f) {
-            return ActionResult.PASS;
-        }
-        float g = 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f;
-        this.playSound(SoundEvents.ENTITY_IRON_GOLEM_REPAIR, 1.0f, g);
-        if (!player.getAbilities().creativeMode) {
-            itemStack.decrement(1);
+        } else if (isTamed() && !this.getWorld().isClient() && hand == Hand.MAIN_HAND) {
+            MinecraftServer server = player.getServer();
+            setSit(!isSitting());
+            if (server != null) {
+                server.send(new ServerTask(0, () -> player.sendMessage(Text.literal(!isSitting() ? "I will follow you." : "I will wait for you."), true)));
+            }
+            return ActionResult.SUCCESS;
         }
         return ActionResult.success(this.getWorld().isClient);
+    }
+
+    public void setSit(boolean sitting) {
+        this.dataTracker.set(SITTING, sitting);
+        super.setSitting(sitting);
     }
 
     @Override
@@ -146,7 +203,7 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     public void onDeath(DamageSource damageSource) {
         produceParticles(ParticleTypes.POOF);
         dropStack(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextBetween(1, 4)));
-        this.dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 3)));
+        dropStack(new ItemStack(ItemRegistry.GEAR, random.nextBetween(1, 3)));
         super.onDeath(damageSource);
     }
 
@@ -178,5 +235,10 @@ public class AutomatonEntity extends IronGolemEntity implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Override
+    public EntityView method_48926() {
+        return getWorld();
     }
 }

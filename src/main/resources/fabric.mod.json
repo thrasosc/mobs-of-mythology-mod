@@ -5,7 +5,7 @@
 	"name": "Mythic Mobs",
 	"description": "Discover a world of mythical creatures in Minecraft",
 	"contact": {
-		"homepage": "https://pixeldreamstudios.github.io",
+		"homepage": "https://pixeldreamstudios.net",
 		"sources": "https://github.com/kyber-6/mythicmobs",
 		"issues": "https://github.com/kyber-6/mythicmobs/issues"
 	},
@@ -31,7 +31,6 @@
 		"minecraft": "~1.20.1",
 		"java": ">=17",
 		"azurelib": ">=1.0.29",
-		"smartbrainlib": ">=1.12",
 		"patchouli": ">=1.20.1-80-FABRIC",
 		"fabric-api": "*"
 	},
@@ -57,7 +56,7 @@
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.discord": "https://discord.com/invite/rexDZqAJc3"
+				"modmenu.discord": "https://discord.com/invite/pixel-dream-studios-872788557553610802"
 			}
 		}
 	}

@@ -1,7 +1,11 @@
 plugins {
 	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
+	id "me.modmuss50.mod-publish-plugin" version "0.4.2"
 }
+
+def dotenvProperties = new Properties()
+dotenvProperties.load(file(".env").newDataInputStream())
 
 version = project.mod_version
 group = project.maven_group
@@ -15,10 +19,6 @@ repositories {
 	maven { url "https://api.modrinth.com/maven" }
 	maven { url "https://maven.blamejared.com" }
 	maven { url 'https://libs.azuredoom.com:4443/mods' }
-	maven {
-		name = "SmartBrainLib (SBL) Maven Repo"
-		url = "https://dl.cloudsmith.io/public/tslat/sbl/maven/"
-	}
 }
 
 dependencies {
@@ -30,8 +30,6 @@ dependencies {
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}") { exclude group: "net.fabricmc.fabric-api" }
 	modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 	modImplementation "mod.azure.azurelib:${project.azurelib_version}"
-	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${project.minecraft_version}:${project.sbl_version}"
-	modImplementation "net.tslat.smartbrainlib:SmartBrainLib-common-${project.minecraft_version}:${project.sbl_version}"
 }
 
 processResources {
@@ -67,5 +65,41 @@ publishing {
 
 	repositories {
 
+	}
+}
+
+publishMods {
+	changelog = "# Markdown changelog content"
+	type = STABLE
+	file = remapJar.archiveFile
+	modLoaders.add("fabric")
+
+	curseforge {
+		accessToken = providers.environmentVariable(dotenvProperties.getProperty("CURSEFORGE_TOKEN"))
+		projectId = "699989"
+		minecraftVersions.add("1.20.1")
+		requires {
+			slug = "azurelib"
+			slug = "patchouli-fabric"
+		}
+		optional {
+			slug = "better-combat-by-daedelus"
+		}
+	}
+
+	modrinth {
+		accessToken = providers.environmentVariable(dotenvProperties.getProperty("MODRINTH_TOKEN"))
+		projectId = "avrKhvsK"
+		minecraftVersions.add("1.20.1")
+		requires {
+			id = "7zlUOZvb"
+			slug = "azurelib"
+			id = "nU0bVIaL"
+			slug = "patchouli"
+		}
+		optional {
+			id = "5sy6g3kz"
+			slug = "better-combat"
+		}
 	}
 }

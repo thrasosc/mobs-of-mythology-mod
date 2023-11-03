@@ -21,7 +21,7 @@ public class MythicMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityRegistry.CHUPACABRA_ENTITY, ChupacabraRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.DRAKE_ENTITY, DrakeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MUSHROOM_ENTITY, MushroomRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.BASILISK_ENTITY, BasiliskRenderer::new);
+//        EntityRendererRegistry.register(EntityRegistry.BASILISK_ENTITY, BasiliskRenderer::new);
 
         ParticleFactoryRegistry.getInstance().register(ParticleRegistry.BLOOD_PARTICLE, BloodParticle.Factory::new);
 

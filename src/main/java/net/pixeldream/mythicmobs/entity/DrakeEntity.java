@@ -145,7 +145,7 @@ public class DrakeEntity extends TameableEntity implements GeoEntity, RangedAtta
         this.goalSelector.add(1, new SitGoal(this));
         this.goalSelector.add(2, new MeleeAttackGoal(this, 1.25f, true));
 //        this.goalSelector.add(2, new ProjectileAttackGoal(this, 0.0f, 40, 100, 20f));
-        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.2f, 10.0F, 2.0F, false));
+        this.goalSelector.add(3, new FollowOwnerGoal(this, 1.2f, 3.0F, 16.0F, false));
 //        this.goalSelector.add(4, new MateGoal(this, 1.0));
 //        this.goalSelector.add(4, new LayEggGoal(this, 1.0));
         this.goalSelector.add(5, new WanderAroundGoal(this, 0.75f));

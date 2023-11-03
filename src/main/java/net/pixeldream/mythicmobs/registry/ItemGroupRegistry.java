@@ -25,7 +25,7 @@ public class ItemGroupRegistry {
         entries.add(ItemRegistry.DRAKE_SPAWN_EGG);
         entries.add(ItemRegistry.MUSHROOM_SPAWN_EGG);
 //        entries.add(ItemRegistry.WENDIGO_SPAWN_EGG);
-        entries.add(ItemRegistry.BASILISK_SPAWN_EGG);
+//        entries.add(ItemRegistry.BASILISK_SPAWN_EGG);
     }).build());
 
     public static void initialize() {

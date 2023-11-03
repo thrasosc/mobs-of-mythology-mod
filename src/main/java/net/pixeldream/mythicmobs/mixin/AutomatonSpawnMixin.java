@@ -45,7 +45,6 @@ public class AutomatonSpawnMixin {
         AutomatonEntity automatonEntity;
         BlockPattern.Result result2 = this.getAutomatonPattern().searchAround(world, pos);
         if (result2 != null && (automatonEntity = EntityRegistry.AUTOMATON_ENTITY.create(world)) != null) {
-            automatonEntity.setPlayerCreated(true);
             spawnEntity(world, result2, automatonEntity, result2.translate(1, 2, 0).getBlockPos());
         }
     }

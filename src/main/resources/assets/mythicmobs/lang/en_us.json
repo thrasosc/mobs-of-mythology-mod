@@ -44,6 +44,7 @@
   "mythicmobs.midnightconfig.chupacabraSpawnWeight": "Chupacabra Spawn Weight",
   "mythicmobs.midnightconfig.drakeSpawnWeight": "Drake Spawn Weight",
   "mythicmobs.midnightconfig.mushroomSpawnWeight": "Sporeling Spawn Weight",
+  "mythicmobs.midnightconfig.basiliskSpawnWeight": "Basilisk Spawn Weight",
 
   "mythicmobs.midnightconfig.mobAttributes": "Mob Attributes",
   "mythicmobs.midnightconfig.automatonHealth": "Automaton Health",
@@ -61,6 +62,8 @@
   "mythicmobs.midnightconfig.wendigoHealth": "Wendigo Health",
   "mythicmobs.midnightconfig.wendigoArmor": "Wendigo Armor",
   "mythicmobs.midnightconfig.wendigoAttackDamage": "Wendigo Attack Damage",
+  "mythicmobs.midnightconfig.basiliskHealth": "Basilisk Health",
+  "mythicmobs.midnightconfig.basiliskAttackDamage": "Basilisk Attack Damage",
 
 
   "mythicmobs.midnightconfig.miscellaneous": "Miscellaneous",
