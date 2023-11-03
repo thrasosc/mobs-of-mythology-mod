@@ -162,7 +162,7 @@ public class AutomatonEntity extends TameableEntity implements GeoEntity {
                 itemStack.decrement(1);
             }
             return ActionResult.PASS;
-        } else if (isTamed() && !this.getWorld().isClient() && hand == Hand.MAIN_HAND) {
+        } else if (this.isOwner(player) && !this.getWorld().isClient() && hand == Hand.MAIN_HAND) {
             MinecraftServer server = player.getServer();
             setSit(!isSitting());
             if (server != null) {
