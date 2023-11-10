@@ -1,34 +1,34 @@
 package net.pixeldream.mythicmobs.block;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.pixeldream.mythicmobs.registry.BlockRegistry;
 import net.pixeldream.mythicmobs.registry.TagRegistry;
 
 public class BronzeBlock extends Block {
-    public BronzeBlock(Settings settings) {
+    public BronzeBlock(Properties settings) {
         super(settings);
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        Item item = player.getStackInHand(Hand.MAIN_HAND).getItem();
-        if (item.getRegistryEntry().isIn(TagRegistry.Items.PICKAXES)) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        Item item = player.getItemInHand(InteractionHand.MAIN_HAND).getItem();
+        if (item.builtInRegistryHolder().is(TagRegistry.Items.PICKAXES)) {
             item.use(world, player, hand);
-            world.playSoundAtBlockCenter(pos, SoundEvents.BLOCK_COPPER_BREAK, SoundCategory.BLOCKS, 1, 1, true);
-            world.addBlockBreakParticles(pos, this.getDefaultState());
-            world.setBlockState(pos, BlockRegistry.CUT_BRONZE_BLOCK.getDefaultState());
-            return ActionResult.SUCCESS;
+            world.playLocalSound(pos, SoundEvents.COPPER_BREAK, SoundSource.BLOCKS, 1, 1, true);
+            world.addDestroyBlockEffect(pos, this.defaultBlockState());
+            world.setBlockAndUpdate(pos, BlockRegistry.CUT_BRONZE_BLOCK.defaultBlockState());
+            return InteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return InteractionResult.PASS;
     }
 }

@@ -1,24 +1,24 @@
 package net.pixeldream.mythicmobs.entity.client.model.entity;
 
 import mod.azure.azurelib.model.GeoModel;
-import net.minecraft.util.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.pixeldream.mythicmobs.MythicMobs;
-import net.pixeldream.mythicmobs.entity.ChupacabraEntity;
+import net.pixeldream.mythicmobs.entity.mobs.ChupacabraEntity;
 
 public class ChupacabraModel extends GeoModel<ChupacabraEntity> {
 
     @Override
-    public Identifier getModelResource(ChupacabraEntity object) {
-        return new Identifier(MythicMobs.MOD_ID, "geo/entity/chupacabra.geo.json");
+    public ResourceLocation getModelResource(ChupacabraEntity object) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "geo/entity/chupacabra.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(ChupacabraEntity object) {
-        return new Identifier(MythicMobs.MOD_ID, "textures/entity/chupacabra.png");
+    public ResourceLocation getTextureResource(ChupacabraEntity object) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "textures/entity/chupacabra.png");
     }
 
     @Override
-    public Identifier getAnimationResource(ChupacabraEntity animatable) {
-        return new Identifier(MythicMobs.MOD_ID, "animations/entity/chupacabra.animation.json");
+    public ResourceLocation getAnimationResource(ChupacabraEntity animatable) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "animations/entity/chupacabra.animation.json");
     }
 }

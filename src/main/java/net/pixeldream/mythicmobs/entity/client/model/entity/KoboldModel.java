@@ -5,26 +5,26 @@ import mod.azure.azurelib.core.animatable.model.CoreGeoBone;
 import mod.azure.azurelib.core.animation.AnimationState;
 import mod.azure.azurelib.model.GeoModel;
 import mod.azure.azurelib.model.data.EntityModelData;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.pixeldream.mythicmobs.MythicMobs;
-import net.pixeldream.mythicmobs.entity.KoboldEntity;
 import net.pixeldream.mythicmobs.entity.client.renderer.entity.KoboldRenderer;
+import net.pixeldream.mythicmobs.entity.mobs.KoboldEntity;
 
 public class KoboldModel extends GeoModel<KoboldEntity> {
     @Override
-    public Identifier getModelResource(KoboldEntity object) {
-        return new Identifier(MythicMobs.MOD_ID, "geo/entity/kobold.geo.json");
+    public ResourceLocation getModelResource(KoboldEntity object) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "geo/entity/kobold.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(KoboldEntity object) {
+    public ResourceLocation getTextureResource(KoboldEntity object) {
         return KoboldRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
     }
 
     @Override
-    public Identifier getAnimationResource(KoboldEntity animatable) {
-        return new Identifier(MythicMobs.MOD_ID, "animations/entity/kobold.animation.json");
+    public ResourceLocation getAnimationResource(KoboldEntity animatable) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "animations/entity/kobold.animation.json");
     }
 
     @Override
@@ -33,8 +33,8 @@ public class KoboldModel extends GeoModel<KoboldEntity> {
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-            head.setRotX(entityData.headPitch() * MathHelper.RADIANS_PER_DEGREE);
-            head.setRotY(entityData.netHeadYaw() * MathHelper.RADIANS_PER_DEGREE);
+            head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
+            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
         }
     }
 }

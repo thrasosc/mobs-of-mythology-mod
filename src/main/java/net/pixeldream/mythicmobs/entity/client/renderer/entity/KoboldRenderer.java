@@ -1,24 +1,24 @@
 package net.pixeldream.mythicmobs.entity.client.renderer.entity;
 
 import com.google.common.collect.Maps;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import mod.azure.azurelib.cache.object.BakedGeoModel;
 import mod.azure.azurelib.cache.object.GeoBone;
 import mod.azure.azurelib.renderer.DynamicGeoEntityRenderer;
 import mod.azure.azurelib.renderer.layer.BlockAndItemGeoLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.model.json.ModelTransformationMode;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
-import net.minecraft.util.math.RotationAxis;
+import net.minecraft.Util;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShieldItem;
 import net.pixeldream.mythicmobs.MythicMobs;
-import net.pixeldream.mythicmobs.entity.KoboldEntity;
-import net.pixeldream.mythicmobs.entity.KoboldVariant;
 import net.pixeldream.mythicmobs.entity.client.model.entity.KoboldModel;
+import net.pixeldream.mythicmobs.entity.mobs.KoboldEntity;
+import net.pixeldream.mythicmobs.entity.mobs.KoboldVariant;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
@@ -28,15 +28,15 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     private static final String LEFT_HAND = "hand2";
     protected ItemStack mainHandItem;
     protected ItemStack offHandItem;
-    public static final Map<KoboldVariant, Identifier> LOCATION_BY_VARIANT =
+    public static final Map<KoboldVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldVariant.class), (map) -> {
                 map.put(KoboldVariant.KOBOLD,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold/kobold.png"));
+                        new ResourceLocation(MythicMobs.MOD_ID, "textures/entity/kobold/kobold.png"));
                 map.put(KoboldVariant.KOBOLD_CLOTHED,
-                        new Identifier(MythicMobs.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
+                        new ResourceLocation(MythicMobs.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
             });
 
-    public KoboldRenderer(EntityRendererFactory.Context ctx) {
+    public KoboldRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new KoboldModel());
         this.shadowRadius = 0.4f;
 
@@ -59,28 +59,28 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
             }
 
             @Override
-            protected ModelTransformationMode getTransformTypeForStack(GeoBone bone, ItemStack stack, KoboldEntity animatable) {
+            protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, KoboldEntity animatable) {
                 // Apply the camera transform for the given hand
                 return switch (bone.getName()) {
-                    case LEFT_HAND, RIGHT_HAND -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
-                    default -> ModelTransformationMode.NONE;
+                    case LEFT_HAND, RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+                    default -> ItemDisplayContext.NONE;
                 };
             }
 
             // Do some quick render modifications depending on what the item is
             @Override
-            protected void renderStackForBone(MatrixStack poseStack, GeoBone bone, ItemStack stack, KoboldEntity animatable, VertexConsumerProvider bufferSource, float partialTick, int packedLight, int packedOverlay) {
+            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, KoboldEntity animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
                 if (stack == KoboldRenderer.this.mainHandItem) {
-                    poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90f));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
 
                     if (stack.getItem() instanceof ShieldItem)
                         poseStack.translate(0, 0.125, -0.25);
                 } else if (stack == KoboldRenderer.this.offHandItem) {
-                    poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90f));
+                    poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
 
                     if (stack.getItem() instanceof ShieldItem) {
                         poseStack.translate(0, 0.125, 0.25);
-                        poseStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
+                        poseStack.mulPose(Axis.YP.rotationDegrees(180));
                     }
                 }
 
@@ -90,15 +90,15 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     }
 
     @Override
-    public Identifier getTextureLocation(KoboldEntity animatable) {
+    public ResourceLocation getTextureLocation(KoboldEntity animatable) {
         return LOCATION_BY_VARIANT.get(animatable.getVariant());
     }
 
     @Override
-    public void preRender(MatrixStack poseStack, KoboldEntity animatable, BakedGeoModel model, VertexConsumerProvider bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, KoboldEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
 
-        this.mainHandItem = animatable.getMainHandStack();
-        this.offHandItem = animatable.getOffHandStack();
+        this.mainHandItem = animatable.getMainHandItem();
+        this.offHandItem = animatable.getOffhandItem();
     }
 }

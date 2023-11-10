@@ -1,4 +1,4 @@
-package net.pixeldream.mythicmobs.entity;
+package net.pixeldream.mythicmobs.entity.mobs;
 
 import java.util.Arrays;
 import java.util.Comparator;

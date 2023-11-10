@@ -25,7 +25,6 @@ public class MythicMobs implements ModInitializer {
 		BlockRegistry.initialize();
 		ItemGroupRegistry.initialize();
 		EntityRegistry.initialize();
-		ParticleRegistry.initialize();
 		BlockEntityRegistry.initialize();
 		SoundRegistry.initialize();
 		WorldGen.generateWorldGen();

@@ -3,12 +3,9 @@ package net.pixeldream.mythicmobs;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.pixeldream.mythicmobs.entity.client.renderer.entity.*;
-import net.pixeldream.mythicmobs.particle.BloodParticle;
 import net.pixeldream.mythicmobs.registry.EntityRegistry;
-import net.pixeldream.mythicmobs.registry.ParticleRegistry;
 
 @Environment(EnvType.CLIENT)
 public class MythicMobsClient implements ClientModInitializer {
@@ -22,8 +19,6 @@ public class MythicMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(EntityRegistry.DRAKE_ENTITY, DrakeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.MUSHROOM_ENTITY, MushroomRenderer::new);
 //        EntityRendererRegistry.register(EntityRegistry.BASILISK_ENTITY, BasiliskRenderer::new);
-
-        ParticleFactoryRegistry.getInstance().register(ParticleRegistry.BLOOD_PARTICLE, BloodParticle.Factory::new);
 
 //        BlockEntityRendererRegistry.register(BlockEntityRegistry.RITUAL_STONE_BLOCK_ENTITY, RitualStoneRenderer::new);
 //        BlockEntityRendererRegistry.register(BlockEntityRegistry.DRAKE_EGG_BLOCK_ENTITY, DrakeEggRenderer::new);

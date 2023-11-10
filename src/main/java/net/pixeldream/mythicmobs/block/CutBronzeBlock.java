@@ -1,9 +1,9 @@
 package net.pixeldream.mythicmobs.block;
 
-import net.minecraft.block.Block;
+import net.minecraft.world.level.block.Block;
 
 public class CutBronzeBlock extends Block {
-    public CutBronzeBlock(Settings settings) {
+    public CutBronzeBlock(Properties settings) {
         super(settings);
     }
 }

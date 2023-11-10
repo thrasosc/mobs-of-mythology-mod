@@ -1,10 +1,10 @@
 package net.pixeldream.mythicmobs.item;
 
-import net.minecraft.item.SwordItem;
-import net.minecraft.item.ToolMaterial;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 
 public class KoboldSpearItem extends SwordItem {
-    public KoboldSpearItem(ToolMaterial toolMaterial, int attackDamage, float attackSpeed, Settings settings) {
-        super(toolMaterial, attackDamage, attackSpeed, settings);
+    public KoboldSpearItem(Tier toolMaterial, int attackDamage, float attackSpeed, Properties properties) {
+        super(toolMaterial, attackDamage, attackSpeed, properties);
     }
 }

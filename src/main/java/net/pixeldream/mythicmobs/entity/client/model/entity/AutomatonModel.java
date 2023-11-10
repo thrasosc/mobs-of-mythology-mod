@@ -5,26 +5,26 @@ import mod.azure.azurelib.core.animatable.model.CoreGeoBone;
 import mod.azure.azurelib.core.animation.AnimationState;
 import mod.azure.azurelib.model.GeoModel;
 import mod.azure.azurelib.model.data.EntityModelData;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.pixeldream.mythicmobs.MythicMobs;
-import net.pixeldream.mythicmobs.entity.AutomatonEntity;
+import net.pixeldream.mythicmobs.entity.mobs.AutomatonEntity;
 
 public class AutomatonModel extends GeoModel<AutomatonEntity> {
 
     @Override
-    public Identifier getModelResource(AutomatonEntity object) {
-        return new Identifier(MythicMobs.MOD_ID, "geo/entity/automaton.geo.json");
+    public ResourceLocation getModelResource(AutomatonEntity object) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "geo/entity/automaton.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(AutomatonEntity object) {
-        return new Identifier(MythicMobs.MOD_ID, "textures/entity/automaton.png");
+    public ResourceLocation getTextureResource(AutomatonEntity object) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "textures/entity/automaton.png");
     }
 
     @Override
-    public Identifier getAnimationResource(AutomatonEntity animatable) {
-        return new Identifier(MythicMobs.MOD_ID, "animations/entity/automaton.animation.json");
+    public ResourceLocation getAnimationResource(AutomatonEntity animatable) {
+        return new ResourceLocation(MythicMobs.MOD_ID, "animations/entity/automaton.animation.json");
     }
 
     @Override
@@ -33,8 +33,8 @@ public class AutomatonModel extends GeoModel<AutomatonEntity> {
 
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-            head.setRotX(entityData.headPitch() * MathHelper.RADIANS_PER_DEGREE);
-            head.setRotY(entityData.netHeadYaw() * MathHelper.RADIANS_PER_DEGREE);
+            head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
+            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
         }
     }
 }

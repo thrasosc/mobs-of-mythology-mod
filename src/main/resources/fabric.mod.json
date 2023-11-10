@@ -38,7 +38,6 @@
 	"suggests": {
 		"bettercombat": ">=1.7.2"
 	},
-	"accessWidener": "mythicmobs.accesswidener",
 	"authors": [
 		"Kyber_6",
 		"Pixel Dream Studios"

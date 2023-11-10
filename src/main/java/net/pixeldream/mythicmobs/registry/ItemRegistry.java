@@ -1,16 +1,16 @@
 package net.pixeldream.mythicmobs.registry;
 
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.item.FoodComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.SpawnEggItem;
-import net.minecraft.item.ToolMaterials;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Rarity;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.Tiers;
 import net.pixeldream.mythicmobs.MythicMobs;
 import net.pixeldream.mythicmobs.item.KoboldSpearItem;
 
@@ -23,17 +23,17 @@ public class ItemRegistry {
     public static final Item MUSHROOM_SPAWN_EGG = registerItem("mushroom_spawn_egg", new SpawnEggItem(EntityRegistry.MUSHROOM_ENTITY, 0xE53935, 0xFEFEFE, new FabricItemSettings().maxCount(64)));
 //    public static final Item WENDIGO_SPAWN_EGG = registerItem("wendigo_spawn_egg", new SpawnEggItem(EntityRegistry.WENDIGO_ENTITY, 0x9f906f, 0x473a1f, new FabricItemSettings().maxCount(64)));
 //    public static final Item BASILISK_SPAWN_EGG = registerItem("basilisk_spawn_egg", new SpawnEggItem(EntityRegistry.BASILISK_ENTITY, 0x399E6F, 0x1B6E47, new FabricItemSettings().maxCount(64)));
-    public static final Item KOBOLD_SPEAR = registerItem("kobold_spear", new KoboldSpearItem(ToolMaterials.IRON, 3, -2.0f, new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON)));
+    public static final Item KOBOLD_SPEAR = registerItem("kobold_spear", new KoboldSpearItem(Tiers.IRON, 3, -2.0f, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 //    public static final Item AUTOMATON_AXE = registerItem("automaton_axe", new AutomatonAxeItem(ToolMaterials.GOLD, 8, -3.25f, new Item.Settings().maxCount(1).rarity(Rarity.EPIC)));
     public static final Item BRONZE_INGOT = registerItem("bronze_ingot", new Item(new FabricItemSettings().maxCount(64)));
     public static final Item AUTOMATON_HEAD = registerItem("automaton_head", new Item(new FabricItemSettings().maxCount(1)));
 //    public static final Item DRAKE_EGG_BLOCK = registerItem("drake_egg", new BlockItem(BlockRegistry.DRAKE_EGG_BLOCK, new FabricItemSettings().maxCount(16)));
-    public static final Item CHUPACABRA_RAW_MEAT = registerItem("chupacabra_raw_meat", new Item(new FabricItemSettings().maxCount(64).food(new FoodComponent.Builder().hunger(4).saturationModifier(0.1F).statusEffect(new StatusEffectInstance(StatusEffects.HUNGER, 600, 0), 0.8F).meat().build())));
-    public static final Item CHUPACABRA_COOKED_MEAT_SKEWER = registerItem("chupacabra_cooked_meat_skewer", new Item(new FabricItemSettings().maxCount(64).food(new FoodComponent.Builder().hunger(6).saturationModifier(0.8F).meat().build())));
+    public static final Item CHUPACABRA_RAW_MEAT = registerItem("chupacabra_raw_meat", new Item(new FabricItemSettings().maxCount(64).food(new FoodProperties.Builder().nutrition(4).saturationMod(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.8F).meat().build())));
+    public static final Item CHUPACABRA_COOKED_MEAT_SKEWER = registerItem("chupacabra_cooked_meat_skewer", new Item(new FabricItemSettings().maxCount(64).food(new FoodProperties.Builder().nutrition(6).saturationMod(0.8F).meat().build())));
     public static final Item GEAR = registerItem("gear", new Item(new FabricItemSettings().maxCount(64)));
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registries.ITEM, new Identifier(MythicMobs.MOD_ID, name), item);
+        return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(MythicMobs.MOD_ID, name), item);
     }
 
     public static void initialize() {

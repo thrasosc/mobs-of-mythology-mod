@@ -20,7 +20,7 @@
 //import net.minecraft.world.BlockView;
 //import net.minecraft.world.World;
 //import net.pixeldream.mythicmobs.block.entity.DrakeEggBlockEntity;
-//import net.pixeldream.mythicmobs.entity.DrakeEntity;
+//import net.pixeldream.mythicmobs.entity.mobs.DrakeEntity;
 //import net.pixeldream.mythicmobs.registry.EntityRegistry;
 //import org.jetbrains.annotations.Nullable;
 //
