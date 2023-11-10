@@ -1,5 +1,6 @@
 package net.pixeldream.mythicmobs.entity.mobs;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -23,6 +24,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
@@ -34,9 +36,29 @@ import net.pixeldream.mythicmobs.config.MythicMobsConfigs;
 import net.pixeldream.mythicmobs.registry.ItemRegistry;
 import net.pixeldream.mythicmobs.registry.SoundRegistry;
 import net.pixeldream.mythicmobs.registry.TagRegistry;
+import net.tslat.smartbrainlib.api.SmartBrainOwner;
+import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
+import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import org.jetbrains.annotations.Nullable;
 
-public class AutomatonEntity extends TamableAnimal implements GeoEntity {
+import java.util.List;
+
+public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBrainOwner<AutomatonEntity> {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     private long ticksUntilAttackFinish = 0;
         private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.BOOLEAN);
@@ -167,7 +189,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
             setSit(!isSitting());
             if (server != null) {
                 this.playSound(SoundRegistry.ROBOTIC_VOICE, 1.0f, 1.0f);
-                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isInSittingPose() ? "I will follow you." : "I will wait for you."), true)));
+                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isSitting() ? "I will follow you." : "I will wait for you."), true)));
             }
             return InteractionResult.SUCCESS;
         }
@@ -208,5 +230,50 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    @Override
+    protected Brain.Provider<?> brainProvider() {
+        return new SmartBrainProvider<>(this);
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        tickBrain(this);
+    }
+
+    @Override
+    public List<ExtendedSensor<AutomatonEntity>> getSensors() {
+        return ObjectArrayList.of(
+                new NearbyLivingEntitySensor<>(),
+                new HurtBySensor<>()
+        );
+    }
+
+    @Override
+    public BrainActivityGroup<AutomatonEntity> getCoreTasks() {
+        return BrainActivityGroup.coreTasks(
+                new LookAtTarget<>(),
+                new MoveToWalkTarget<>());
+    }
+
+    @Override
+    public BrainActivityGroup<AutomatonEntity> getIdleTasks() {
+        return BrainActivityGroup.idleTasks(
+                new FirstApplicableBehaviour<AutomatonEntity>(
+                        new TargetOrRetaliate<>(),
+                        new SetPlayerLookTarget<>(),
+                        new SetRandomLookTarget<>()),
+                new OneRandomBehaviour<>(
+                        new SetRandomWalkTarget<>(),
+                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+    }
+
+    @Override
+    public BrainActivityGroup<AutomatonEntity> getFightTasks() {
+        return BrainActivityGroup.fightTasks(
+                new InvalidateAttackTarget<>(),
+                new SetWalkTargetToAttackTarget<>(),
+                new AnimatableMeleeAttack<>(0));
     }
 }
