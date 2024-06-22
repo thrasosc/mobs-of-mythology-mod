@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.pixeldreamstudios.mobs_of_mythology.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "CarvedPumpkinBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

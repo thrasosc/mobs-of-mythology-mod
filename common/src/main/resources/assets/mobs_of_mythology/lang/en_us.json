@@ -1,0 +1,12 @@
+{
+  "itemGroup.mobs_of_mythology.mobs_of_mythology_tab": "Mobs of Mythology",
+
+  "entity.mobs_of_mythology.automaton": "Automaton",
+
+  "item.mobs_of_mythology.bronze_ingot": "Bronze Ingot",
+  "item.mobs_of_mythology.automaton_spawn_egg": "Automaton Spawn Egg",
+  "item.mobs_of_mythology.gear": "Automaton Gear",
+
+  "block.mobs_of_mythology.bronze_block": "Bronze Block",
+  "block.mobs_of_mythology.cut_bronze_block": "Cut Bronze Block"
+}

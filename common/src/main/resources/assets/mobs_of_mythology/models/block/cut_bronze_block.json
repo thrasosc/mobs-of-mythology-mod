@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_column",
+  "textures": {
+    "end": "mobs_of_mythology:block/bronze_block_cut_bottom_top",
+    "side": "mobs_of_mythology:block/bronze_block_cut_side"
+  }
+}
