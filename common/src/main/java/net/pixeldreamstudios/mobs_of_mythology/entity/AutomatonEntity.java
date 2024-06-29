@@ -79,9 +79,9 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBr
     public static final RawAnimation ATTACK2 = RawAnimation.begin().then("attack2", Animation.LoopType.PLAY_ONCE);
 
 
-    public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
-        super(entityType, world);
-        this.navigation = new SmoothGroundNavigation(this, world);
+    public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
+        super(entityType, level);
+        this.navigation = new SmoothGroundNavigation(this, level);
     }
 
     @Nullable

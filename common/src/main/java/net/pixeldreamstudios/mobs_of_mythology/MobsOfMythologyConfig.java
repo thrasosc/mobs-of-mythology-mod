@@ -9,4 +9,9 @@ public class MobsOfMythologyConfig {
     public double automatonHealth = 100.0;
     @Configurable
     public double automatonAttackDamage = 16.0;
+
+    @Configurable.Comment("Chupacabra")
+    public double chupacabraHealth = 16.0;
+    @Configurable
+    public double chupacabraAttackDamage = 6.0;
 }
