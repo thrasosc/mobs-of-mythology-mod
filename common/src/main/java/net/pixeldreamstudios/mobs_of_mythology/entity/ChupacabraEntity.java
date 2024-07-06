@@ -4,6 +4,8 @@ import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager;
+import mod.azure.azurelib.core.animation.AnimationController;
+import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.sounds.SoundEvent;
@@ -18,6 +20,7 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 
 import java.util.function.Predicate;
 
@@ -113,6 +116,18 @@ public class ChupacabraEntity extends Monster implements GeoEntity, Enemy {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
+            if (event.isMoving() && !swinging) {
+                if (isAggressive()) {
+                    return event.setAndContinue(DefaultAnimations.RUN);
+                }
+                return event.setAndContinue(DefaultAnimations.WALK);
+            }
+            return event.setAndContinue(DefaultAnimations.IDLE);
+        })).add(new AnimationController<>(this, "attackController", 3, event -> {
+            swinging = false;
+            return PlayState.STOP;
+        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
     }
 
     @Override

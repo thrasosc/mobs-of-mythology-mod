@@ -223,8 +223,8 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "livingController", 3, event -> {
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
             if (event.isMoving() && !swinging) {
                 if (isAggressive()) {
                     return event.setAndContinue(RUN);
