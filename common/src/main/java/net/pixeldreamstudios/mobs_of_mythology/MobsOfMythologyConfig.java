@@ -6,35 +6,48 @@ import mod.azure.azurelib.common.internal.common.config.Configurable;
 @Config(id = MobsOfMythology.MOD_ID)
 public class MobsOfMythologyConfig {
     @Configurable
+    @Configurable.Synchronized
     public double automatonHealth = 100.0;
     @Configurable
+    @Configurable.Synchronized
     public double automatonAttackDamage = 16.0;
 
     @Configurable
+    @Configurable.Synchronized
     public double chupacabraHealth = 16.0;
     @Configurable
+    @Configurable.Synchronized
     public double chupacabraAttackDamage = 6.0;
 
     @Configurable
+    @Configurable.Synchronized
     public double koboldHealth = 20.0;
     @Configurable
+    @Configurable.Synchronized
     public double koboldAttackDamage = 2.5;
 
     @Configurable
+    @Configurable.Synchronized
     public double koboldWarriorHealth = 20.0;
     @Configurable
+    @Configurable.Synchronized
     public double koboldWarriorArmor = 6.0;
     @Configurable
+    @Configurable.Synchronized
     public double koboldWarriorAttackDamage = 5.5;
 
     @Configurable
+    @Configurable.Synchronized
     public double drakeHealth = 30.0;
     @Configurable
+    @Configurable.Synchronized
     public double drakeAttackDamage = 5.0;
 
     @Configurable
+    @Configurable.Synchronized
     public double mushroomHealth = 6.0;;
     @Configurable
+    @Configurable.Synchronized
     public static String[] redMushroomLines = {
             "playerGreeting",
             "Seen any smurfs lately?",
@@ -54,6 +67,7 @@ public class MobsOfMythologyConfig {
             "Γειά σου Ελλάδα!"
     };
     @Configurable
+    @Configurable.Synchronized
     public static String[] brownMushroomLines = {
             "Why do I feel like a fun-guy in a no-fun zone?",
             "You want a piece of my spore attitude? Take a hike!",

@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -123,12 +122,5 @@ public class KoboldEntity extends AbstractKoboldEntity {
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
-    }
-
-    @Override
-    public void die(DamageSource damageSource) {
-        produceParticles(ParticleTypes.POOF);
-        this.spawnAtLocation(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextInt(4)));
-        super.die(damageSource);
     }
 }

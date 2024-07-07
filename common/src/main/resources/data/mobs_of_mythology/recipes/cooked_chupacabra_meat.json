@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.35,
+  "ingredient": {
+    "item": "mobs_of_mythology:chupacabra_meat"
+  },
+  "result": {
+    "id": "mobs_of_mythology:cooked_chupacabra_meat"
+  }
+}

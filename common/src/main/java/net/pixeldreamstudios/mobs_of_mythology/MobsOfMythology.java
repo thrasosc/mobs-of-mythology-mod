@@ -19,7 +19,7 @@ public final class MobsOfMythology {
 
     public static void init() {
         AzureLib.initialize();
-        config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.yaml()).getConfigInstance();
+        config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties()).getConfigInstance();
 
         EntityRegistry.init();
         ItemRegistry.init();

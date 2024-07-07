@@ -185,7 +185,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         Item item = itemStack.getItem();
         if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
-            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.CHUPACABRA_COOKED_MEAT_SKEWER.get()) && !this.isTame();
+            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
             return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else if (this.isTame()) {
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
@@ -205,7 +205,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
             } else {
                 return interactionResult;
             }
-        } else if (itemStack.is(ItemRegistry.CHUPACABRA_COOKED_MEAT_SKEWER.get())) {
+        } else if (itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) {
             itemStack.consume(1, player);
             this.tryToTame(player);
             return InteractionResult.SUCCESS;

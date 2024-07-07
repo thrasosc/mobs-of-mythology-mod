@@ -9,7 +9,6 @@ import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -30,8 +29,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -191,17 +188,6 @@ public class SporelingEntity extends AbstractMythEntity implements GeoEntity {
             }
         }
         return super.mobInteract(player, hand);
-    }
-
-    @Override
-    public void die(DamageSource damageSource) {
-        produceParticles(ParticleTypes.POOF);
-        if (this.getVariant().equals(SporelingVariant.RED)) {
-            this.spawnAtLocation(new ItemStack(Items.RED_MUSHROOM));
-        } else {
-            this.spawnAtLocation(new ItemStack(Items.BROWN_MUSHROOM));
-        }
-        super.die(damageSource);
     }
 
     @Override

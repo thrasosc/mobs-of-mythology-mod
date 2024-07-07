@@ -1,0 +1,6 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "mobs_of_mythology:item/cooked_chupacabra_meat"
+  }
+}
