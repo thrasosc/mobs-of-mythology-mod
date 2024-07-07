@@ -131,7 +131,7 @@
 			"loop": true,
 			"animation_length": 0.96,
 			"bones": {
-				"mushroom_thing": {
+				"sporeling": {
 					"position": {
 						"0.0": {
 							"vector": [0, -0.5, 0]

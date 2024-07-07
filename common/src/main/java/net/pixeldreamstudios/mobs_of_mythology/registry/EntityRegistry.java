@@ -29,6 +29,9 @@ public class EntityRegistry {
     public static final RegistrySupplier<EntityType<DrakeEntity>> DRAKE = ENTITIES.register("drake", () -> EntityType.Builder.of(DrakeEntity::new, MobCategory.MISC)
             .sized(1.25f,1.0f)
             .build(new ResourceLocation(MobsOfMythology.MOD_ID, "drake").toString()));
+    public static final RegistrySupplier<EntityType<SporelingEntity>> SPORELING = ENTITIES.register("sporeling", () -> EntityType.Builder.of(SporelingEntity::new, MobCategory.MISC)
+            .sized(1.0f,0.8f)
+            .build(new ResourceLocation(MobsOfMythology.MOD_ID, "sporeling").toString()));
 
     private static void initSpawns() {
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DESERT_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MISC, new MobSpawnSettings.SpawnerData(AUTOMATON.get(), 80, 1, 1)));
@@ -41,6 +44,7 @@ public class EntityRegistry {
         EntityAttributeRegistry.register(KOBOLD, KoboldEntity::createAttributes);
         EntityAttributeRegistry.register(KOBOLD_WARRIOR, KoboldWarriorEntity::createAttributes);
         EntityAttributeRegistry.register(DRAKE, DrakeEntity::createAttributes);
+        EntityAttributeRegistry.register(SPORELING, SporelingEntity::createAttributes);
     }
 
     public static void init() {
