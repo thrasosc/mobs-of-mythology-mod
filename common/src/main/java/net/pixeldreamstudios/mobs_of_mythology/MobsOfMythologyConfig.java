@@ -14,4 +14,16 @@ public class MobsOfMythologyConfig {
     public double chupacabraHealth = 16.0;
     @Configurable
     public double chupacabraAttackDamage = 6.0;
+
+    @Configurable.Comment("Kobold")
+    public double koboldHealth = 20.0;
+    @Configurable
+    public double koboldAttackDamage = 2.5;
+
+    @Configurable.Comment("Kobold Warrior")
+    public double koboldWarriorHealth = 20.0;
+    @Configurable
+    public double koboldWarriorArmor = 6.0;
+    @Configurable
+    public double koboldWarriorAttackDamage = 5.5;
 }

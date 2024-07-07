@@ -12,6 +12,8 @@ import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AutomatonEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.ChupacabraEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.KoboldEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.KoboldWarriorEntity;
 
 public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.ENTITY_TYPE);
@@ -21,6 +23,12 @@ public class EntityRegistry {
     public static final RegistrySupplier<EntityType<ChupacabraEntity>> CHUPACABRA = ENTITIES.register("chupacabra", () -> EntityType.Builder.of(ChupacabraEntity::new, MobCategory.MISC)
             .sized(1.25f,1.0f)
             .build(new ResourceLocation(MobsOfMythology.MOD_ID, "chupacabra").toString()));
+    public static final RegistrySupplier<EntityType<KoboldEntity>> KOBOLD = ENTITIES.register("kobold", () -> EntityType.Builder.of(KoboldEntity::new, MobCategory.MISC)
+            .sized(0.75f,1.75f)
+            .build(new ResourceLocation(MobsOfMythology.MOD_ID, "kobold").toString()));
+    public static final RegistrySupplier<EntityType<KoboldWarriorEntity>> KOBOLD_WARRIOR = ENTITIES.register("kobold_warrior", () -> EntityType.Builder.of(KoboldWarriorEntity::new, MobCategory.MISC)
+            .sized(0.75f,1.75f)
+            .build(new ResourceLocation(MobsOfMythology.MOD_ID, "kobold_warrior").toString()));
 
     private static void initSpawns() {
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DESERT_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MISC, new MobSpawnSettings.SpawnerData(AUTOMATON.get(), 80, 1, 1)));
@@ -29,6 +37,9 @@ public class EntityRegistry {
     private static void initAttributes() {
         EntityAttributeRegistry.register(AUTOMATON, AutomatonEntity::createAttributes);
         EntityAttributeRegistry.register(CHUPACABRA, ChupacabraEntity::createAttributes);
+        EntityAttributeRegistry.register(CHUPACABRA, ChupacabraEntity::createAttributes);
+        EntityAttributeRegistry.register(KOBOLD, KoboldEntity::createAttributes);
+        EntityAttributeRegistry.register(KOBOLD_WARRIOR, KoboldWarriorEntity::createAttributes);
     }
 
     public static void init() {
