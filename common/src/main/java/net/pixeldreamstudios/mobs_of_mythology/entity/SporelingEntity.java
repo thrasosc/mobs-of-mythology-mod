@@ -27,6 +27,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -103,14 +104,14 @@ public class SporelingEntity extends AbstractMythEntity implements GeoEntity {
         this.entityData.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
     }
 
-//    @Override
-//    protected void initGoals() {
-//        this.goalSelector.add(0, new SwimGoal(this));
-//        this.goalSelector.add(1, new EscapeDangerGoal(this, 0.80f));
-//        this.goalSelector.add(2, new WanderAroundGoal(this, 0.75f));
-//        this.goalSelector.add(3, new LookAtEntityGoal(this, Player.class, 6.0f));
-//        this.goalSelector.add(4, new LookAroundGoal(this));
-//    }
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new PanicGoal(this, 0.80f));
+        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.75f));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+    }
 
     @Override
     public void tick() {

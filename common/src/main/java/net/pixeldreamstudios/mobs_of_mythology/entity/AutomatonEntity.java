@@ -1,15 +1,13 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.azurelib.common.internal.common.util.AzureLibUtil;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.Animation;
 import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -29,55 +27,30 @@ import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.behavior.LookAtTargetSink;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.task.AutomatonMeleeAttack;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
-import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
-import net.tslat.smartbrainlib.api.SmartBrainOwner;
-import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
-import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.custom.UnreachableTargetSensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
-import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBrainOwner<AutomatonEntity> {
+public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
     private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(AutomatonEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AutomatonEntity.class, EntityDataSerializers.BOOLEAN);
-    public static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    public static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
-    public static final RawAnimation RUN = RawAnimation.begin().thenLoop("run");
-    public static final RawAnimation ATTACK = RawAnimation.begin().then("attack", Animation.LoopType.PLAY_ONCE);
-    public static final RawAnimation ATTACK2 = RawAnimation.begin().then("attack2", Animation.LoopType.PLAY_ONCE);
-
 
     public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
@@ -101,27 +74,38 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBr
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
-        builder.define(SITTING, false);
         builder.define(STATE, 0);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
-        nbt.putBoolean("sitting", this.entityData.get(SITTING));
         nbt.putInt("state", getAttckingState());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        this.entityData.set(SITTING, nbt.getBoolean("sitting"));
         this.setAttackingState(nbt.getInt("state"));
     }
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return false;
+        return itemStack.is(ItemRegistry.BRONZE_INGOT.get());
+    }
+
+    protected void registerGoals() {
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal(this, true));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -133,7 +117,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBr
     }
 
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 2; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
@@ -153,69 +137,97 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBr
         }
     }
 
+    //TODO Fix taming AI
     @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.IRON_GOLEM_HURT;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.IRON_GOLEM_DEATH;
-    }
-
-    @Override
-    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
-        if (hand == InteractionHand.MAIN_HAND && !isTame()) {
-            if (!this.level().isClientSide()) {
-                super.tame(player);
-                this.navigation.recomputePath();
-                this.setTarget(null);
-                this.level().broadcastEntityEvent(this, (byte) 7);
-                setSit(false);
+    public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+        ItemStack itemStack = player.getItemInHand(interactionHand);
+        Item item = itemStack.getItem();
+        if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
+            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.GEAR.get()) && !this.isTame();
+            return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
+        } else if (this.isTame()) {
+            if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
+                itemStack.consume(1, player);
+                FoodProperties foodProperties = (FoodProperties)itemStack.get(DataComponents.FOOD);
+                float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
+                this.heal(2.0F * f);
+                return InteractionResult.sidedSuccess(this.level().isClientSide());
+            }
+            InteractionResult interactionResult = super.mobInteract(player, interactionHand);
+            if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
+                this.setOrderedToSit(!this.isOrderedToSit());
                 MinecraftServer server = player.getServer();
                 if (server != null) {
-                    server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."), true)));
+                    this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
+                    server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isInSittingPose() ? "I will follow you." : "I will wait for you."), true)));
                 }
+                this.jumping = false;
+                this.navigation.stop();
+                this.setTarget((LivingEntity)null);
+                return InteractionResult.SUCCESS_NO_ITEM_USED;
+            } else {
+                return interactionResult;
             }
+        } else if (itemStack.is(ItemRegistry.GEAR.get())) {
+            itemStack.consume(1, player);
+            this.tryToTame(player);
             return InteractionResult.SUCCESS;
-        } else if (itemStack.getItemHolder().is(TagRegistry.BRONZE_INGOTS)) {
-            float f = this.getHealth();
-            this.heal(25.0f);
-            if (this.getHealth() == f) {
-                return InteractionResult.PASS;
-            }
-            float g = 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f;
-            this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0f, g);
-            if (!player.isCreative()) {
-                itemStack.shrink(1);
-            }
-            return InteractionResult.PASS;
-        } else if (this.isOwnedBy(player) && !this.level().isClientSide() && hand == InteractionHand.MAIN_HAND) {
-            MinecraftServer server = player.getServer();
-            setSit(!isSitting());
-            if (server != null) {
-                this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
-                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isSitting() ? "I will follow you." : "I will wait for you."), true)));
-            }
-            return InteractionResult.SUCCESS;
+        } else {
+            return super.mobInteract(player, interactionHand);
         }
-        return InteractionResult.sidedSuccess(this.level().isClientSide());
     }
 
-    public void setSit(boolean sitting) {
-        this.entityData.set(SITTING, sitting);
-        super.setOrderedToSit(sitting);
+    private void tryToTame(Player player) {
+        if (this.random.nextInt(3) == 0) {
+            this.tame(player);
+            this.navigation.stop();
+            this.setTarget((LivingEntity)null);
+            this.setOrderedToSit(true);
+            this.level().broadcastEntityEvent(this, (byte)7);
+        } else {
+            this.level().broadcastEntityEvent(this, (byte)6);
+        }
     }
 
-    public boolean isSitting() {
-        return this.entityData.get(SITTING);
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0f, 1.0f);
-    }
+//    @Override
+//    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+//        ItemStack itemStack = player.getItemInHand(hand);
+//        if (hand == InteractionHand.MAIN_HAND && !isTame()) {
+//            if (!this.level().isClientSide()) {
+//                super.tame(player);
+//                this.navigation.recomputePath();
+//                this.setTarget(null);
+//                this.level().broadcastEntityEvent(this, (byte) 7);
+//                setSit(false);
+//                MinecraftServer server = player.getServer();
+//                if (server != null) {
+//                    server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."), true)));
+//                }
+//            }
+//            return InteractionResult.SUCCESS;
+//        } else if (itemStack.getItemHolder().is(TagRegistry.BRONZE_INGOTS)) {
+//            float f = this.getHealth();
+//            this.heal(25.0f);
+//            if (this.getHealth() == f) {
+//                return InteractionResult.PASS;
+//            }
+//            float g = 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f;
+//            this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0f, g);
+//            if (!player.isCreative()) {
+//                itemStack.shrink(1);
+//            }
+//            return InteractionResult.PASS;
+//        } else if (this.isOwnedBy(player) && !this.level().isClientSide() && hand == InteractionHand.MAIN_HAND) {
+//            MinecraftServer server = player.getServer();
+//            this.setOrderedToSit(!this.isOrderedToSit());
+//            if (server != null) {
+//                this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
+//                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isSitting() ? "I will follow you." : "I will wait for you."), true)));
+//            }
+//            return InteractionResult.SUCCESS;
+//        }
+//        return InteractionResult.sidedSuccess(this.level().isClientSide());
+//    }
 
     @Override
     public Vec3 getLeashOffset() {
@@ -227,72 +239,34 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity, SmartBr
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
             if (event.isMoving() && !swinging) {
                 if (isAggressive()) {
-                    return event.setAndContinue(RUN);
+                    return event.setAndContinue(DefaultAnimations.RUN);
                 }
-                return event.setAndContinue(WALK);
+                return event.setAndContinue(DefaultAnimations.WALK);
             }
-            return event.setAndContinue(IDLE);
+            return event.setAndContinue(DefaultAnimations.IDLE);
         })).add(new AnimationController<>(this, "attackController", 3, event -> {
             swinging = false;
             return PlayState.STOP;
-        }).triggerableAnim("attack", ATTACK).triggerableAnim("attack2", ATTACK2));
+        }).triggerableAnim("attack", DefaultAnimations.ATTACK).triggerableAnim("attack2", DefaultAnimations.ATTACK2));
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.IRON_GOLEM_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.IRON_GOLEM_DEATH;
+    }
+
+    @Override
+    protected void playStepSound(BlockPos pos, BlockState state) {
+        this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0f, 1.0f);
     }
 
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
-    }
-
-    @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        tickBrain(this);
-    }
-
-    @Override
-    public List<? extends ExtendedSensor<? extends AutomatonEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<>(),
-                new HurtBySensor<>(),
-                new UnreachableTargetSensor<>());
-    }
-
-    @Override
-    public BrainActivityGroup<AutomatonEntity> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
-                new LookAtTarget<>(),
-                new FloatToSurfaceOfFluid<>(),
-                new LookAtTargetSink(40, 300),
-                new MoveToWalkTarget<>());
-    }
-
-    @Override
-    public BrainActivityGroup<AutomatonEntity> getIdleTasks() {
-        return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<AutomatonEntity>(
-                        new TargetOrRetaliate<>()
-                                .attackablePredicate(entity -> {
-                                    LivingEntity lastAutomatonAttacker = BrainUtils.getMemory(this, MemoryModuleType.HURT_BY_ENTITY);
-                                    return entity.isAlive() && entity.equals(lastAutomatonAttacker) && (!(entity instanceof Player player) || !player.isCreative());
-                                })
-                                .alertAlliesWhen((mob, entity) -> this.isAggressive()),
-                        new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()),
-                new OneRandomBehaviour<>(
-                        new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)))
-        );
-    }
-
-    @Override
-    public BrainActivityGroup<AutomatonEntity> getFightTasks() {
-        return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>().speedMod((owner, target) -> 1.25F),
-                new AutomatonMeleeAttack<>(20));
     }
 }

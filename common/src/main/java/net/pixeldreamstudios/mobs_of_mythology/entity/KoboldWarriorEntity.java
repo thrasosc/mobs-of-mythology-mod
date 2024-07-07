@@ -61,11 +61,4 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
     private void setVariant(KoboldWarriorVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
-
-//    @Override
-//    public void die(DamageSource damageSource) {
-//        produceParticles(ParticleTypes.POOF);
-//        this.spawnAtLocation(new ItemStack(ItemRegistry.KOBOLD_SPEAR));
-//        super.die(damageSource);
-//    }
 }
