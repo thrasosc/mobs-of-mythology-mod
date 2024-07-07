@@ -14,7 +14,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class AbstractKoboldEntity extends MythicEntity implements Enemy {
+public abstract class AbstractKoboldEntity extends AbstractMythEntity implements Enemy {
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(AbstractKoboldEntity.class, EntityDataSerializers.INT);
     protected int placeTorchCooldown = 0;
     protected AbstractKoboldEntity(EntityType<? extends PathfinderMob> entityType, Level level, int XP) {

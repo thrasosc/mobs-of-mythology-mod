@@ -14,10 +14,10 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 
-public abstract class MythicEntity extends PathfinderMob implements GeoEntity {
+public abstract class AbstractMythEntity extends PathfinderMob implements GeoEntity {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    protected MythicEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected AbstractMythEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
     }
 

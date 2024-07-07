@@ -4,10 +4,7 @@ import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
 import mod.azure.azurelib.common.internal.common.AzureLib;
 import mod.azure.azurelib.common.internal.common.AzureLibMod;
 import mod.azure.azurelib.common.internal.common.config.format.ConfigFormats;
-import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.AutomatonRenderer;
-import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.ChupacabraRenderer;
-import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldRenderer;
-import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldWarriorRenderer;
+import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.*;
 import net.pixeldreamstudios.mobs_of_mythology.registry.BlockRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.CreativeTabRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.EntityRegistry;
@@ -36,5 +33,6 @@ public final class MobsOfMythology {
         EntityRendererRegistry.register(EntityRegistry.CHUPACABRA, ChupacabraRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.KOBOLD, KoboldRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.KOBOLD_WARRIOR, KoboldWarriorRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.DRAKE, DrakeRenderer::new);
     }
 }

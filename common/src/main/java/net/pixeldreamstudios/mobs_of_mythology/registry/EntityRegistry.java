@@ -10,10 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.AutomatonEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.ChupacabraEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.KoboldEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.KoboldWarriorEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.*;
 
 public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.ENTITY_TYPE);
@@ -29,6 +26,9 @@ public class EntityRegistry {
     public static final RegistrySupplier<EntityType<KoboldWarriorEntity>> KOBOLD_WARRIOR = ENTITIES.register("kobold_warrior", () -> EntityType.Builder.of(KoboldWarriorEntity::new, MobCategory.MISC)
             .sized(0.75f,1.75f)
             .build(new ResourceLocation(MobsOfMythology.MOD_ID, "kobold_warrior").toString()));
+    public static final RegistrySupplier<EntityType<DrakeEntity>> DRAKE = ENTITIES.register("drake", () -> EntityType.Builder.of(DrakeEntity::new, MobCategory.MISC)
+            .sized(1.25f,1.0f)
+            .build(new ResourceLocation(MobsOfMythology.MOD_ID, "drake").toString()));
 
     private static void initSpawns() {
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DESERT_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MISC, new MobSpawnSettings.SpawnerData(AUTOMATON.get(), 80, 1, 1)));
@@ -40,6 +40,7 @@ public class EntityRegistry {
         EntityAttributeRegistry.register(CHUPACABRA, ChupacabraEntity::createAttributes);
         EntityAttributeRegistry.register(KOBOLD, KoboldEntity::createAttributes);
         EntityAttributeRegistry.register(KOBOLD_WARRIOR, KoboldWarriorEntity::createAttributes);
+        EntityAttributeRegistry.register(DRAKE, DrakeEntity::createAttributes);
     }
 
     public static void init() {

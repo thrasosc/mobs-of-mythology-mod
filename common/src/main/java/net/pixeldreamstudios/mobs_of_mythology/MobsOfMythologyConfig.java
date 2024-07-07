@@ -26,4 +26,9 @@ public class MobsOfMythologyConfig {
     public double koboldWarriorArmor = 6.0;
     @Configurable
     public double koboldWarriorAttackDamage = 5.5;
+
+    @Configurable.Comment("Drake")
+    public double drakeHealth = 30.0;
+    @Configurable
+    public double drakeAttackDamage = 5.0;
 }
