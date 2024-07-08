@@ -22,7 +22,7 @@ public final class MobsOfMythology {
         EntityRegistry.init();
         ItemRegistry.init();
         BlockRegistry.init();
-        CreativeTabRegistry.init();
+        TabRegistry.init();
     }
 
     public static void initClient() {

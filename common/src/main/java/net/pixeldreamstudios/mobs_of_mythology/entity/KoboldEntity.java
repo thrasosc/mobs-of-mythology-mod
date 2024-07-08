@@ -2,19 +2,19 @@ package net.pixeldreamstudios.mobs_of_mythology.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +24,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.abstraction.AbstractKoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
-import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -46,13 +45,38 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Random;
 
 public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwner<KoboldEntity> {
-    private int heldCounter = 0;
+    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity .class, EntityDataSerializers.ITEM_STACK);;
 
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);
+        this.setItemStack(new ItemStack(Items.APPLE, 3));
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ITEM_STACK, ItemStack.EMPTY);
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        super.readAdditionalSaveData(nbt);
+    }
+
+    public void setItemStack(ItemStack itemStack) {
+        this.getEntityData().set(DATA_ITEM_STACK, itemStack);
+        this.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
+    }
+
+    public ItemStack getItemStack() {
+        return this.getEntityData().get(DATA_ITEM_STACK);
     }
 
     @Override
@@ -60,6 +84,13 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
         KoboldVariant variant = Util.getRandom(KoboldVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+    }
+
+    @Override
+    public void die(DamageSource arg) {
+        super.die(arg);
+        this.spawnAtLocation(getItemStack());
+        setItemStack(ItemStack.EMPTY);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -115,7 +146,8 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
     public BrainActivityGroup<KoboldEntity> getFightTasks() { // These are the tasks that handle fighting
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)), // Cancel fighting if the target is no longer valid
-                new FleeTarget<>()
+//                new SetWalkTargetToAttackTarget<>().closeEnoughDist((entity, target) -> 1).whenStopping(),      // Set the walk target to the attack target
+                new FleeTarget<>().startCondition(pathfinderMob -> !getItemStack().isEmpty())
         );
     }
 
@@ -124,68 +156,56 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
         return (T) KoboldVariant.byId(this.getTypeVariant() & 255);
     }
 
-
     @Override
     protected void customServerAiStep() {
         tickBrain(this);
     }
 
-    @Override
-    public void tick() {
-        super.tick();
-        if (isHoldingItem()) {
-            heldCounter++;
-            if (heldCounter == 20 * 3) {
-                if (this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.DIAMOND)) {
-                    this.playSound(SoundEvents.VILLAGER_YES, 1.0f, 1.5f);
-                    this.produceParticles(ParticleTypes.HAPPY_VILLAGER);
-                    Random random = new Random();
-                    this.spawnAtLocation(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextInt(3)));
-                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-                    this.getBrain().eraseMemory(MemoryModuleType.LIKED_PLAYER);
-                    heldCounter = 0;
-                } else {
-                    this.playSound(SoundEvents.VILLAGER_NO, 1.0f, 1.5f);
-                    this.produceParticles(ParticleTypes.ANGRY_VILLAGER);
-                    this.spawnAtLocation(getItemInHand(InteractionHand.MAIN_HAND));
-                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-                    this.getBrain().eraseMemory(MemoryModuleType.LIKED_PLAYER);
-                    heldCounter = 0;
-                }
-            }
-        }
-    }
+//    @Override
+//    public void tick() {
+//        super.tick();
+//        if (isHoldingItem()) {
+//            heldCounter++;
+//            if (heldCounter == 20 * 3) {
+//                if (this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.DIAMOND)) {
+//                    this.playSound(SoundEvents.VILLAGER_YES, 1.0f, 1.5f);
+//                    this.produceParticles(ParticleTypes.HAPPY_VILLAGER);
+//                    Random random = new Random();
+//                    this.spawnAtLocation(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextInt(3)));
+//                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+//                    this.getBrain().eraseMemory(MemoryModuleType.LIKED_PLAYER);
+//                    heldCounter = 0;
+//                } else {
+//                    this.playSound(SoundEvents.VILLAGER_NO, 1.0f, 1.5f);
+//                    this.produceParticles(ParticleTypes.ANGRY_VILLAGER);
+//                    this.spawnAtLocation(getItemInHand(InteractionHand.MAIN_HAND));
+//                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+//                    this.getBrain().eraseMemory(MemoryModuleType.LIKED_PLAYER);
+//                    heldCounter = 0;
+//                }
+//            }
+//        }
+//    }
 
     private void setVariant(KoboldVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
 
-
-    public boolean isHoldingItem() {
-        return !this.getItemInHand(InteractionHand.MAIN_HAND).isEmpty();
-    }
-
-    private void decrementStackUnlessInCreative(Player player, ItemStack stack) {
-        if (!player.isCreative()) {
-            stack.shrink(1);
-        }
-    }
-
-    @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        ItemStack playerStack = player.getItemInHand(hand);
-        if (!isHoldingItem() && !playerStack.isEmpty()) {
-            ItemStack koboldStack2 = playerStack.copy();
-            koboldStack2.setCount(1);
-            setItemInHand(InteractionHand.MAIN_HAND, koboldStack2);
-            decrementStackUnlessInCreative(player, playerStack);
-            level().playSound(player, this, SoundEvents.VILLAGER_TRADE, SoundSource.NEUTRAL, 2.0F, 1.5f);
-            this.produceParticles(ParticleTypes.POOF);
-            getBrain().setMemory(MemoryModuleType.LIKED_PLAYER, player.getUUID());
-            return InteractionResult.SUCCESS;
-        }
-        return super.mobInteract(player, hand);
-    }
+//    @Override
+//    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+//        ItemStack playerStack = player.getItemInHand(hand);
+//        if (!isHoldingItem() && !playerStack.isEmpty()) {
+//            ItemStack koboldStack2 = playerStack.copy();
+//            koboldStack2.setCount(1);
+//            setItemInHand(InteractionHand.MAIN_HAND, koboldStack2);
+//            decrementStackUnlessInCreative(player, playerStack);
+//            level().playSound(player, this, SoundEvents.VILLAGER_TRADE, SoundSource.NEUTRAL, 2.0F, 1.5f);
+//            this.produceParticles(ParticleTypes.POOF);
+//            getBrain().setMemory(MemoryModuleType.LIKED_PLAYER, player.getUUID());
+//            return InteractionResult.SUCCESS;
+//        }
+//        return super.mobInteract(player, hand);
+//    }
 
     @Override
     protected Brain.Provider<?> brainProvider() {

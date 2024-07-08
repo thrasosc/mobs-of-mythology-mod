@@ -16,10 +16,10 @@ public class BlockRegistry {
     public static final DeferredRegister<Item> BLOCK_ITEMS = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.ITEM);
 
     public static final RegistrySupplier<Block> BRONZE_BLOCK = BLOCKS.register("bronze_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
-    public static final RegistrySupplier<Item> BRONZE_BLOCK_ITEM = BLOCK_ITEMS.register(BRONZE_BLOCK.getId(), () -> new BlockItem(BRONZE_BLOCK.get(), new Item.Properties().arch$tab(CreativeTabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
+    public static final RegistrySupplier<Item> BRONZE_BLOCK_ITEM = BLOCK_ITEMS.register(BRONZE_BLOCK.getId(), () -> new BlockItem(BRONZE_BLOCK.get(), new Item.Properties().arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
 
     public static final RegistrySupplier<Block> CUT_BRONZE_BLOCK = BLOCKS.register("cut_bronze_block", () -> new RotatedPillarBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK)));
-    public static final RegistrySupplier<Item> CUT_BRONZE_BLOCK_ITEM = BLOCK_ITEMS.register(CUT_BRONZE_BLOCK.getId(), () -> new BlockItem(CUT_BRONZE_BLOCK.get(), new Item.Properties().arch$tab(CreativeTabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
+    public static final RegistrySupplier<Item> CUT_BRONZE_BLOCK_ITEM = BLOCK_ITEMS.register(CUT_BRONZE_BLOCK.getId(), () -> new BlockItem(CUT_BRONZE_BLOCK.get(), new Item.Properties().arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
 
     public static void init() {
         BLOCKS.register();

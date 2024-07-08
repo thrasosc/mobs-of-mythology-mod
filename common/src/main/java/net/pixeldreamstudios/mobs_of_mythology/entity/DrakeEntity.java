@@ -52,7 +52,6 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_EGG;
     public static final Predicate<LivingEntity> PREY_SELECTOR;
-    private long ticksUntilAttackFinish = 0;
 
     public DrakeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -157,18 +156,20 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (state.isMoving() && !swinging) {
+            if (isInSittingPose()) {
+                state.getController().setAnimation(DefaultAnimations.SIT);
+                return PlayState.CONTINUE;
+            } else if (state.isMoving() && !swinging) {
                 if (isAggressive() && !swinging) {
                     state.getController().setAnimation(DefaultAnimations.RUN);
                     return PlayState.CONTINUE;
                 }
-                state.getController().setAnimation(DefaultAnimations.WALK);
-                return PlayState.CONTINUE;
+                else {
+                    state.getController().setAnimation(DefaultAnimations.WALK);
+                    return PlayState.CONTINUE;
+                }
             } else if (swinging) {
                 state.getController().setAnimation(DefaultAnimations.ATTACK);
-                return PlayState.CONTINUE;
-            } else if (isInSittingPose()) {
-                state.getController().setAnimation(DefaultAnimations.SIT);
                 return PlayState.CONTINUE;
             }
             state.getController().setAnimation(DefaultAnimations.IDLE);
@@ -229,19 +230,19 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 2.0f, 1.0f);
+        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 1.0f, 1.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 3.0f, 1.0f);
+        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 1.0f, 2.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundRegistry.DRAKE_DEATH.get(), 2.0f, 1.0f);
+        this.playSound(SoundRegistry.DRAKE_DEATH.get(), 1.0f, 1.0f);
         return null;
     }
 
