@@ -9,7 +9,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 
-public class TagRegistry {
+public record TagRegistry() {
     public static final TagKey<Block> BRONZE_BLOCKS = TagKey.create(Registries.BLOCK, new ResourceLocation(Platform.isFabric() ? "c" : "forge", Platform.isFabric() ? "bronze_blocks" : "bronze"));
 
     public static final TagKey<Item> PICKAXES = TagKey.create(Registries.ITEM, new ResourceLocation(Platform.isFabric() ? "c" : "forge", "pickaxes"));

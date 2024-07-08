@@ -45,7 +45,6 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
-import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
 public class AutomatonEntity extends TamableAnimal implements GeoEntity {
@@ -54,7 +53,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
 
     public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
-        this.navigation = new SmoothGroundNavigation(this, level);
+//        this.navigation = new SmoothGroundNavigation(this, level);
     }
 
     @Nullable
@@ -137,7 +136,6 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         }
     }
 
-    //TODO Fix taming AI
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
@@ -156,10 +154,10 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
             InteractionResult interactionResult = super.mobInteract(player, interactionHand);
             if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
                 this.setOrderedToSit(!this.isOrderedToSit());
+                this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
                 MinecraftServer server = player.getServer();
                 if (server != null) {
-                    this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
-                    server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isInSittingPose() ? "I will follow you." : "I will wait for you."), true)));
+                    server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(isInSittingPose() ? "I will follow you." : "I will wait for you."), true)));
                 }
                 this.jumping = false;
                 this.navigation.stop();
@@ -183,51 +181,16 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
             this.navigation.stop();
             this.setTarget((LivingEntity)null);
             this.setOrderedToSit(true);
+            this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
+            MinecraftServer server = player.getServer();
+            if (server != null) {
+                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."), true)));
+            }
             this.level().broadcastEntityEvent(this, (byte)7);
         } else {
             this.level().broadcastEntityEvent(this, (byte)6);
         }
     }
-
-//    @Override
-//    public InteractionResult mobInteract(Player player, InteractionHand hand) {
-//        ItemStack itemStack = player.getItemInHand(hand);
-//        if (hand == InteractionHand.MAIN_HAND && !isTame()) {
-//            if (!this.level().isClientSide()) {
-//                super.tame(player);
-//                this.navigation.recomputePath();
-//                this.setTarget(null);
-//                this.level().broadcastEntityEvent(this, (byte) 7);
-//                setSit(false);
-//                MinecraftServer server = player.getServer();
-//                if (server != null) {
-//                    server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."), true)));
-//                }
-//            }
-//            return InteractionResult.SUCCESS;
-//        } else if (itemStack.getItemHolder().is(TagRegistry.BRONZE_INGOTS)) {
-//            float f = this.getHealth();
-//            this.heal(25.0f);
-//            if (this.getHealth() == f) {
-//                return InteractionResult.PASS;
-//            }
-//            float g = 1.0f + (this.random.nextFloat() - this.random.nextFloat()) * 0.2f;
-//            this.playSound(SoundEvents.IRON_GOLEM_REPAIR, 1.0f, g);
-//            if (!player.isCreative()) {
-//                itemStack.shrink(1);
-//            }
-//            return InteractionResult.PASS;
-//        } else if (this.isOwnedBy(player) && !this.level().isClientSide() && hand == InteractionHand.MAIN_HAND) {
-//            MinecraftServer server = player.getServer();
-//            this.setOrderedToSit(!this.isOrderedToSit());
-//            if (server != null) {
-//                this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
-//                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(!isSitting() ? "I will follow you." : "I will wait for you."), true)));
-//            }
-//            return InteractionResult.SUCCESS;
-//        }
-//        return InteractionResult.sidedSuccess(this.level().isClientSide());
-//    }
 
     @Override
     public Vec3 getLeashOffset() {
@@ -253,6 +216,11 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return SoundEvents.IRON_GOLEM_HURT;
+    }
+
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundRegistry.ROBOTIC_VOICE.get();
     }
 
     @Override

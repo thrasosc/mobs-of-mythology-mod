@@ -108,7 +108,7 @@ public class SporelingEntity extends AbstractMythEntity implements GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 0.80f));
-        this.goalSelector.addGoal(2, new RandomStrollGoal(this, 0.75f));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75f));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
     }
