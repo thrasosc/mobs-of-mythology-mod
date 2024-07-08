@@ -12,6 +12,9 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -50,17 +53,16 @@ public class KoboldEntity extends AbstractKoboldEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
-//    @Override
-//    protected void initGoals() {
-//        this.goalSelector.add(0, new SwimGoal(this));
-//        this.goalSelector.add(1, new MeleeAttackGoal(this, 1.25f, false));
-//        this.goalSelector.add(2, new WanderAroundGoal(this, 0.75f));
-//        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 6.0f));
-//        this.goalSelector.add(4, new LookAroundGoal(this));
-//        this.targetSelector.add(1, new ActiveTargetGoal<>(this, CowEntity.class, true));
-//        this.targetSelector.add(2, (new KoboldRevengeGoal(this, new Class[0])).setGroupRevenge(new Class[0]));
-//        this.targetSelector.add(3, new UniversalAngerGoal(this, true));
-//    }
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25f, false));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75f));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal(this, true));
+    }
 
     @Override
     public <T> T getVariant() {
