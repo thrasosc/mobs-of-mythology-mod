@@ -14,7 +14,7 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldRend
 public class KoboldModel extends GeoModel<KoboldEntity> {
     @Override
     public ResourceLocation getModelResource(KoboldEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/kobold.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/kobold.geo.json");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class KoboldModel extends GeoModel<KoboldEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(KoboldEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/kobold.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/kobold.animation.json");
     }
 
     @Override

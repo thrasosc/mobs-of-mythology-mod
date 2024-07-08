@@ -10,7 +10,7 @@ public class SporelingModel extends GeoModel<SporelingEntity> {
 
     @Override
     public ResourceLocation getModelResource(SporelingEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/sporeling.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/sporeling.geo.json");
     }
 
     @Override
@@ -20,6 +20,6 @@ public class SporelingModel extends GeoModel<SporelingEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(SporelingEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/sporeling.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/sporeling.animation.json");
     }
 }

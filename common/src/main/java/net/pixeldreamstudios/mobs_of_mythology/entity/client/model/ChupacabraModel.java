@@ -9,16 +9,16 @@ public class ChupacabraModel extends GeoModel<ChupacabraEntity> {
 
     @Override
     public ResourceLocation getModelResource(ChupacabraEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/chupacabra.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/chupacabra.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(ChupacabraEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(ChupacabraEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/chupacabra.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/chupacabra.animation.json");
     }
 }

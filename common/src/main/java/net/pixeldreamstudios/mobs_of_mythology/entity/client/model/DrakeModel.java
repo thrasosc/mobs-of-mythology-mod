@@ -10,7 +10,7 @@ public class DrakeModel extends GeoModel<DrakeEntity> {
 
     @Override
     public ResourceLocation getModelResource(DrakeEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/drake.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/drake.geo.json");
     }
 
     @Override
@@ -20,6 +20,6 @@ public class DrakeModel extends GeoModel<DrakeEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(DrakeEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/drake.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/drake.animation.json");
     }
 }

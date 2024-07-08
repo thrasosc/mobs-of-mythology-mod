@@ -14,17 +14,17 @@ public class AutomatonModel extends GeoModel<AutomatonEntity> {
 
     @Override
     public ResourceLocation getModelResource(AutomatonEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/automaton.geo.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/automaton.geo.json");
     }
 
     @Override
     public ResourceLocation getTextureResource(AutomatonEntity object) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/automaton.png");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/automaton.png");
     }
 
     @Override
     public ResourceLocation getAnimationResource(AutomatonEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/automaton.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/automaton.animation.json");
     }
 
     @Override

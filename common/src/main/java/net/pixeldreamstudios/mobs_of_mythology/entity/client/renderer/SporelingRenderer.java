@@ -16,9 +16,9 @@ public class SporelingRenderer extends GeoEntityRenderer<SporelingEntity> {
     public static final Map<SporelingVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(SporelingVariant.class), (map) -> {
                 map.put(SporelingVariant.RED,
-                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/sporeling/sporeling_red.png"));
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/sporeling/sporeling_red.png"));
                 map.put(SporelingVariant.BROWN,
-                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/sporeling/sporeling_brown.png"));
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/sporeling/sporeling_brown.png"));
             });
 
     public SporelingRenderer(EntityRendererProvider.Context ctx) {

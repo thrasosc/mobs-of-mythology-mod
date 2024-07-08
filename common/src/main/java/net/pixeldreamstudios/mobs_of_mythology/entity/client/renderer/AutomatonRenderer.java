@@ -15,6 +15,6 @@ public class AutomatonRenderer extends GeoEntityRenderer<AutomatonEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(AutomatonEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/automaton.png");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/automaton.png");
     }
 }

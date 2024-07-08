@@ -31,9 +31,9 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     public static final Map<KoboldVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldVariant.class), (map) -> {
                 map.put(KoboldVariant.KOBOLD,
-                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold.png"));
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold.png"));
                 map.put(KoboldVariant.KOBOLD_CLOTHED,
-                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
             });
 
     public KoboldRenderer(EntityRendererProvider.Context ctx) {

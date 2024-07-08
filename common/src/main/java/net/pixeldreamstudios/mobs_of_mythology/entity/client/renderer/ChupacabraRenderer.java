@@ -17,6 +17,6 @@ public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(ChupacabraEntity animatable) {
-        return new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
     }
 }
