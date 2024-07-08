@@ -1,10 +1,28 @@
 {
   "itemGroup.mobs_of_mythology.mobs_of_mythology_tab": "Mobs of Mythology",
 
-  "entity.mobs_of_mythology.automaton": "Automaton",
+  "sound.mobs_of_mythology.robotic_voice": "Robotic voice",
 
-  "item.mobs_of_mythology.bronze_ingot": "Bronze Ingot",
+  "entity.mobs_of_mythology.automaton": "Automaton",
+  "entity.mobs_of_mythology.kobold": "Kobold",
+  "entity.mobs_of_mythology.kobold_warrior": "Kobold Warrior",
+  "entity.mobs_of_mythology.chupacabra": "Chupacabra",
+  "entity.mobs_of_mythology.drake": "Drake",
+  "entity.mobs_of_mythology.sporeling": "Sporeling",
+
   "item.mobs_of_mythology.automaton_spawn_egg": "Automaton Spawn Egg",
+  "item.mobs_of_mythology.kobold_spawn_egg": "Kobold Spawn Egg",
+  "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Kobold Warrior Spawn Egg",
+  "item.mobs_of_mythology.chupacabra_spawn_egg": "Chupacabra Spawn Egg",
+  "item.mobs_of_mythology.wendigo_spawn_egg": "Wendigo Spawn Egg",
+  "item.mobs_of_mythology.drake_spawn_egg": "Drake Spawn Egg",
+  "item.mobs_of_mythology.mushroom_spawn_egg": "Sporeling Spawn Egg",
+  "item.mobs_of_mythology.basilisk_spawn_egg": "Basilisk Spawn Egg",
+
+  "item.mobs_of_mythology.kobold_spear": "Kobold Spear",
+  "item.mobs_of_mythology.bronze_ingot": "Bronze Ingot",
+  "item.mobs_of_mythology.chupacabra_meat": "Chupacabra Meat",
+  "item.mobs_of_mythology.cooked_chupacabra_meat": "Cooked Chupacabra Meat",
   "item.mobs_of_mythology.gear": "Automaton Gear",
 
   "block.mobs_of_mythology.bronze_block": "Bronze Block",
