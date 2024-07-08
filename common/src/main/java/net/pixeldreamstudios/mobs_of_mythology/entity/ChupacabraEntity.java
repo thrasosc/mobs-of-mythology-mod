@@ -1,11 +1,6 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -24,11 +19,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.entity.abstraction.AbstractMythMonsterEntity;
 
-public class ChupacabraEntity extends Monster implements GeoEntity, Enemy {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-
+public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity, Enemy {
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         this.xpReward = Enemy.XP_REWARD_MEDIUM;
@@ -58,28 +51,12 @@ public class ChupacabraEntity extends Monster implements GeoEntity, Enemy {
     public void tick() {
         super.tick();
         if (swinging) {
-            this.level().addParticle(ParticleTypes.CRIMSON_SPORE, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+            produceParticles(ParticleTypes.CRIMSON_SPORE);
             if (getHealth() < getMaxHealth()) {
                 this.heal(1.5f);
-                this.level().addParticle(ParticleTypes.HAPPY_VILLAGER, getX(), getY(), getZ(), 0.0, 0.0, 0.0);
+                produceParticles(ParticleTypes.HAPPY_VILLAGER);
             }
         }
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
-            if (event.isMoving() && !swinging) {
-                if (isAggressive()) {
-                    return event.setAndContinue(DefaultAnimations.RUN);
-                }
-                return event.setAndContinue(DefaultAnimations.WALK);
-            }
-            return event.setAndContinue(DefaultAnimations.IDLE);
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
     }
 
     @Override
@@ -103,10 +80,5 @@ public class ChupacabraEntity extends Monster implements GeoEntity, Enemy {
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.WOLF_STEP, 0.5f, 1.0f);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 }

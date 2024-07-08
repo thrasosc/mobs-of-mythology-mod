@@ -1,8 +1,25 @@
 {
+  "drake_roar": {
+    "subtitle": "sound.mobs_of_mythology.drake_roar",
+    "sounds": [
+      "mobs_of_mythology:entity/drake/roar_1",
+      "mobs_of_mythology:entity/drake/roar_2",
+      "mobs_of_mythology:entity/drake/roar_3",
+      "mobs_of_mythology:entity/drake/roar_small",
+      "mobs_of_mythology:entity/drake/roar_cave",
+      "mobs_of_mythology:entity/drake/exhale"
+    ]
+  },
+  "drake_death": {
+    "subtitle": "sound.mobs_of_mythology.drake_death",
+    "sounds": [
+      "mobs_of_mythology:entity/drake/roar_big"
+    ]
+  },
   "robotic_voice": {
     "subtitle": "sound.mobs_of_mythology.robotic_voice",
     "sounds": [
-      "mobs_of_mythology:robotic_voice"
+      "mobs_of_mythology:entity/automaton/robotic_voice"
     ]
   }
 }

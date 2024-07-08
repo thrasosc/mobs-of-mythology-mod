@@ -9,15 +9,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public abstract class AbstractKoboldEntity extends AbstractMythEntity implements Enemy {
+public abstract class AbstractKoboldEntity extends AbstractMythMonsterEntity implements Enemy {
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(AbstractKoboldEntity.class, EntityDataSerializers.INT);
-    protected int placeTorchCooldown = 0;
-    protected AbstractKoboldEntity(EntityType<? extends PathfinderMob> entityType, Level level, int XP) {
+
+    protected AbstractKoboldEntity(EntityType<? extends Monster> entityType, Level level, int XP) {
         super(entityType, level);
         this.xpReward = XP;
     }
@@ -44,26 +44,6 @@ public abstract class AbstractKoboldEntity extends AbstractMythEntity implements
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.entityData.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-//        if (getEntityWorld().isNight()) {
-//            if (!getStackInHand(Hand.OFF_HAND).isEmpty()) {
-//                if (placeTorchCooldown == 30) {
-//                    MythicMobs.LOGGER.info("PLACING TORCH");
-//                    placeTorchCooldown = 0;
-//                }
-//            }
-//            else {
-//                MythicMobs.LOGGER.info("EQUIPPED TORCH");
-//                setStackInHand(Hand.OFF_HAND, new ItemStack(Items.TORCH, 64));
-//            }
-//        }
-//        else if (getEntityWorld().isDay() && this.getStackInHand(Hand.OFF_HAND).isOf(Items.TORCH)) {
-//            setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY);
-//        }
     }
 
     @Override

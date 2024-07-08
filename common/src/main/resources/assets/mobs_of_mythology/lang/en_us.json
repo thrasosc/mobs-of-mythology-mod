@@ -1,6 +1,8 @@
 {
   "itemGroup.mobs_of_mythology.mobs_of_mythology_tab": "Mobs of Mythology",
 
+  "sound.mobs_of_mythology.drake_roar": "Drake roar",
+  "sound.mobs_of_mythology.drake_death": "Drake death",
   "sound.mobs_of_mythology.robotic_voice": "Robotic voice",
 
   "entity.mobs_of_mythology.automaton": "Automaton",

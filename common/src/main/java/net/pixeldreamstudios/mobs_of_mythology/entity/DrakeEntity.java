@@ -39,6 +39,7 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.DrakeVariant;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
+import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import org.jetbrains.annotations.Nullable;
 
@@ -131,7 +132,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
+//        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
 //        this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
@@ -228,19 +229,19 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.ENDER_DRAGON_AMBIENT, 2.0f, 1.0f);
+        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 2.0f, 1.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.ENDER_DRAGON_HURT, 2.0f, 1.0f);
+        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 3.0f, 1.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.ENDER_DRAGON_DEATH, 2.0f, 1.0f);
+        this.playSound(SoundRegistry.DRAKE_DEATH.get(), 2.0f, 1.0f);
         return null;
     }
 
