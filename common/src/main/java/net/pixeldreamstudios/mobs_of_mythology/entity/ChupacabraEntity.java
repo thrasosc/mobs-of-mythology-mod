@@ -1,5 +1,6 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity;
 
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,10 +21,33 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.abstraction.AbstractMythMonsterEntity;
+import net.tslat.smartbrainlib.api.SmartBrainOwner;
+import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FleeTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
+import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
+import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 
-public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity, Enemy {
+import java.util.List;
+
+public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity, SmartBrainOwner<ChupacabraEntity>, Enemy {
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
+        navigation = new SmoothGroundNavigation(this, level());
         this.xpReward = Enemy.XP_REWARD_MEDIUM;
     }
 
@@ -45,6 +69,51 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Animal.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+    }
+
+    @Override
+    public List<ExtendedSensor<ChupacabraEntity>> getSensors() {
+        return ObjectArrayList.of(
+                new NearbyLivingEntitySensor<ChupacabraEntity>()
+                        .setPredicate((target, entity) -> target instanceof Player),
+                new HurtBySensor<>()
+        );
+    }
+
+    //TODO finish Chupcabra AI
+    @Override
+    public BrainActivityGroup<ChupacabraEntity> getCoreTasks() {
+        return BrainActivityGroup.coreTasks(
+                new FloatToSurfaceOfFluid<>(),
+                new LookAtTarget(),
+                new MoveToWalkTarget<>());
+    }
+
+    @Override
+    public BrainActivityGroup<ChupacabraEntity> getIdleTasks() { // These are the tasks that run when the mob isn't doing anything else (usually)
+        return BrainActivityGroup.idleTasks(
+                new FirstApplicableBehaviour<KoboldEntity>(      // Run only one of the below behaviours, trying each one in order. Include the generic type because JavaC is silly
+                        new TargetOrRetaliate<>(),            // Set the attack target and walk target based on nearby entities
+                        new SetPlayerLookTarget<>(),          // Set the look target for the nearest player
+                        new SetRandomLookTarget<>()),         // Set a random look target
+                new OneRandomBehaviour<>(                 // Run a random task from the below options
+                        new SetRandomWalkTarget<>(),          // Set a random walk target to a nearby position
+                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)))); // Do nothing for 1.5->3 seconds
+    }
+
+    @Override
+    public BrainActivityGroup<ChupacabraEntity> getFightTasks() { // These are the tasks that handle fighting
+        return BrainActivityGroup.fightTasks(
+                new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+                new SetWalkTargetToAttackTarget<>(),
+                new AnimatableMeleeAttack<>(10),
+                new FleeTarget<>()
+        );
+    }
+
+    @Override
+    protected void customServerAiStep() {
+        tickBrain(this);
     }
 
     @Override

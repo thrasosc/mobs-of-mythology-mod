@@ -54,9 +54,10 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
         this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75f));
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal(this, Villager.class, true));
-        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
-        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal(this, true));
+        this.targetSelector.addGoal(1, (new HurtByTargetGoal(this)).setAlertOthers());
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal(this, Villager.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal(this, Player.class, true));
+        this.targetSelector.addGoal(4, new ResetUniversalAngerTargetGoal(this, true));
     }
 
     @Override
