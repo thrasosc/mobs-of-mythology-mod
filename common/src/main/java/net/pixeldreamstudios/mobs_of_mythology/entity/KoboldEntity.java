@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -80,6 +82,7 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
 
     public void setItemStack(ItemStack itemStack) {
         this.getEntityData().set(DATA_ITEM_STACK, itemStack);
+        this.playSound(SoundEvents.VINDICATOR_CELEBRATE, 1.0f, 2.0f);
         this.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
     }
 
@@ -142,11 +145,11 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
     @Override
     public BrainActivityGroup<KoboldEntity> getFightTasks() { // These are the tasks that handle fighting
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)), // Cancel fighting if the target is no longer valid
-                new SetWalkTargetToAttackTarget<>(),      // Set the walk target to the attack target
+                new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+                new SetWalkTargetToAttackTarget<>().startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),      // Set the walk target to the attack target
                 new AnimatableMeleeAttack<>(10)
                         .startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
-                        .stopIf(mob -> !getItemStack().isEmpty())// || getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
+                        .stopIf(mob -> !getItemStack().isEmpty())
                         .whenStopping(mob -> {
                             LivingEntity target = getTarget();
 		                    setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
@@ -154,8 +157,18 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
                         }),
                 new FleeTarget<>()
                         .speedModifier(2.0f)
-                        .startCondition(pathfinderMob -> !getItemStack().isEmpty())
+                        .startCondition(mob -> !getItemStack().isEmpty() || getTarget().is(getLastAttacker()))
         );
+    }
+
+    public void tick() {
+        super.tick();
+        ItemStack itemStack = getItemStack();
+        if (!itemStack.isEmpty()) {
+            if (itemStack.is(ItemTags.WOLF_FOOD)) {
+                eat(level(), itemStack);
+            }
+        }
     }
 
     @Override

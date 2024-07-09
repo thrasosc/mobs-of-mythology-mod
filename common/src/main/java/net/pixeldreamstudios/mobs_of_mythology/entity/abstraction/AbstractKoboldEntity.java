@@ -48,24 +48,24 @@ public abstract class AbstractKoboldEntity extends AbstractMythMonsterEntity imp
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.PILLAGER_AMBIENT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.VINDICATOR_AMBIENT, 1.0f, 2.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.PILLAGER_HURT, 1.0f, 3.0f);
+        this.playSound(SoundEvents.VINDICATOR_HURT, 1.0f, 2.0f);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.PILLAGER_DEATH, 1.0f, 3.0f);
+        this.playSound(SoundEvents.VINDICATOR_DEATH, 1.0f, 2.0f);
         return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.WOLF_STEP, 0.5f, 1.0f);
+        this.playSound(SoundEvents.WOLF_STEP, 1.0f, 2.0f);
     }
 }
