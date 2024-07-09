@@ -10,6 +10,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
@@ -18,7 +19,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
@@ -29,16 +29,19 @@ import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FleeTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
@@ -51,7 +54,8 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
 
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);
-        this.setItemStack(new ItemStack(Items.APPLE, 3));
+        navigation = new SmoothGroundNavigation(this, level());
+//        this.setItemStack(new ItemStack(Items.APPLE, 3));
     }
 
     @Override
@@ -63,11 +67,15 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
+        if (!getItemStack().isEmpty()) {
+            nbt.put("ItemStack", this.getItemStack().save(this.registryAccess()));
+        }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
+        this.setItemStack(ItemStack.parse(this.registryAccess(), nbt.getCompound("ItemStack")).orElse(ItemStack.EMPTY));
     }
 
     public void setItemStack(ItemStack itemStack) {
@@ -102,17 +110,6 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
-//    @Override
-//    protected void registerGoals() {
-//        this.goalSelector.addGoal(0, new FloatGoal(this));
-//        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25f, false));
-//        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75f));
-//        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
-//        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-//        this.targetSelector.addGoal(2, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
-//        this.targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal(this, true));
-//    }
-
     @Override
     public List<ExtendedSensor<KoboldEntity>> getSensors() {
         return ObjectArrayList.of(
@@ -146,8 +143,18 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
     public BrainActivityGroup<KoboldEntity> getFightTasks() { // These are the tasks that handle fighting
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)), // Cancel fighting if the target is no longer valid
-//                new SetWalkTargetToAttackTarget<>().closeEnoughDist((entity, target) -> 1).whenStopping(),      // Set the walk target to the attack target
-                new FleeTarget<>().startCondition(pathfinderMob -> !getItemStack().isEmpty())
+                new SetWalkTargetToAttackTarget<>(),      // Set the walk target to the attack target
+                new AnimatableMeleeAttack<>(10)
+                        .startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
+                        .stopIf(mob -> !getItemStack().isEmpty())// || getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
+                        .whenStopping(mob -> {
+                            LivingEntity target = getTarget();
+		                    setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
+                            target.getItemInHand(InteractionHand.MAIN_HAND).shrink(getItemStack().getCount());
+                        }),
+                new FleeTarget<>()
+                        .speedModifier(2.0f)
+                        .startCondition(pathfinderMob -> !getItemStack().isEmpty())
         );
     }
 
@@ -161,51 +168,9 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
         tickBrain(this);
     }
 
-//    @Override
-//    public void tick() {
-//        super.tick();
-//        if (isHoldingItem()) {
-//            heldCounter++;
-//            if (heldCounter == 20 * 3) {
-//                if (this.getItemInHand(InteractionHand.MAIN_HAND).is(Items.DIAMOND)) {
-//                    this.playSound(SoundEvents.VILLAGER_YES, 1.0f, 1.5f);
-//                    this.produceParticles(ParticleTypes.HAPPY_VILLAGER);
-//                    Random random = new Random();
-//                    this.spawnAtLocation(new ItemStack(ItemRegistry.BRONZE_INGOT, random.nextInt(3)));
-//                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-//                    this.getBrain().eraseMemory(MemoryModuleType.LIKED_PLAYER);
-//                    heldCounter = 0;
-//                } else {
-//                    this.playSound(SoundEvents.VILLAGER_NO, 1.0f, 1.5f);
-//                    this.produceParticles(ParticleTypes.ANGRY_VILLAGER);
-//                    this.spawnAtLocation(getItemInHand(InteractionHand.MAIN_HAND));
-//                    this.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-//                    this.getBrain().eraseMemory(MemoryModuleType.LIKED_PLAYER);
-//                    heldCounter = 0;
-//                }
-//            }
-//        }
-//    }
-
     private void setVariant(KoboldVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
     }
-
-//    @Override
-//    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-//        ItemStack playerStack = player.getItemInHand(hand);
-//        if (!isHoldingItem() && !playerStack.isEmpty()) {
-//            ItemStack koboldStack2 = playerStack.copy();
-//            koboldStack2.setCount(1);
-//            setItemInHand(InteractionHand.MAIN_HAND, koboldStack2);
-//            decrementStackUnlessInCreative(player, playerStack);
-//            level().playSound(player, this, SoundEvents.VILLAGER_TRADE, SoundSource.NEUTRAL, 2.0F, 1.5f);
-//            this.produceParticles(ParticleTypes.POOF);
-//            getBrain().setMemory(MemoryModuleType.LIKED_PLAYER, player.getUUID());
-//            return InteractionResult.SUCCESS;
-//        }
-//        return super.mobInteract(player, hand);
-//    }
 
     @Override
     protected Brain.Provider<?> brainProvider() {
