@@ -5,8 +5,12 @@
   "name": "Mobs of Mythology",
   "description": "Discover a World of Mythological Creatures in Minecraft!",
   "authors": [
-    "kyber-6",
-    "Pixel Dream Studios"
+    "kyber-6"
+  ],
+  "contributors": [
+    "Pixel Dream Studios",
+    "steficy",
+    "karelien"
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/mobs-of-mythology",
