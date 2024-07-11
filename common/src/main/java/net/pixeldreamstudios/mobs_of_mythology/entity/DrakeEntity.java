@@ -168,16 +168,22 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
                     state.getController().setAnimation(DefaultAnimations.WALK);
                     return PlayState.CONTINUE;
                 }
-            } else if (swinging) {
-                state.getController().setAnimation(DefaultAnimations.ATTACK);
-                return PlayState.CONTINUE;
             }
             state.getController().setAnimation(DefaultAnimations.IDLE);
             return PlayState.CONTINUE;
-        }));
+        })).add(new AnimationController<>(this, "attackController", 0, event -> {
+            swinging = false;
+            return PlayState.STOP;
+        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
     }
 
     @Override
+    public boolean doHurtTarget(Entity entity) {
+        this.triggerAnim("attackController", "attack");
+        return super.doHurtTarget(entity);
+    }
+
+        @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }

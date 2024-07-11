@@ -7,8 +7,7 @@ import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
@@ -36,13 +35,20 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
                 }
                 state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;
-            } else if (swinging) {
-                state.getController().setAnimation(DefaultAnimations.ATTACK);
-                return PlayState.CONTINUE;
             }
             state.getController().setAnimation(DefaultAnimations.IDLE);
             return PlayState.CONTINUE;
-        }));
+        })).add(new AnimationController<>(this, "attackController", 0, event -> {
+            swinging = false;
+            return PlayState.STOP;
+        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        this.triggerAnim("attackController", "attack");
+
+        return super.doHurtTarget(entity);
     }
 
     protected void produceParticles(ParticleOptions parameters) {
@@ -54,9 +60,4 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
         }
     }
 
-    @Override
-    public void die(DamageSource damageSource) {
-        produceParticles(ParticleTypes.POOF);
-        super.die(damageSource);
-    }
 }

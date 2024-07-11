@@ -7,8 +7,7 @@ import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
@@ -36,17 +35,23 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
                 }
                 state.getController().setAnimation(DefaultAnimations.WALK);
                 return PlayState.CONTINUE;
-            } else if (swinging) {
-                state.getController().setAnimation(DefaultAnimations.ATTACK);
-                return PlayState.CONTINUE;
             }
             state.getController().setAnimation(DefaultAnimations.IDLE);
             return PlayState.CONTINUE;
-        }));
+        })).add(new AnimationController<>(this, "attackController", 0, event -> {
+            swinging = false;
+            return PlayState.STOP;
+        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        this.triggerAnim("attackController", "attack");
+        return super.doHurtTarget(entity);
     }
 
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 2; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
@@ -54,9 +59,4 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
         }
     }
 
-    @Override
-    public void die(DamageSource damageSource) {
-        produceParticles(ParticleTypes.POOF);
-        super.die(damageSource);
-    }
 }

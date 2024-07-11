@@ -116,11 +116,13 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     }
 
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 2; ++i) {
-            double d = this.random.nextGaussian() * 0.02;
-            double e = this.random.nextGaussian() * 0.02;
-            double f = this.random.nextGaussian() * 0.02;
-            this.level().addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d, e, f);
+        if (this.level().isClientSide) {
+            for (int i = 0; i < 2; ++i) {
+                double d = this.random.nextGaussian() * 0.02;
+                double e = this.random.nextGaussian() * 0.02;
+                double f = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d, e, f);
+            }
         }
     }
 
