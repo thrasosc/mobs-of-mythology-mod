@@ -42,7 +42,7 @@ dependencies {
 
     modImplementation "mod.azure.azurelib:azurelib-fabric-${minecraft_version}:${azurelib_version}"
     modApi "com.terraformersmc:modmenu:${modmenu_version}" // Fabric bug is requiring this
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-1.21:${sbl_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
 }
 
 processResources {
