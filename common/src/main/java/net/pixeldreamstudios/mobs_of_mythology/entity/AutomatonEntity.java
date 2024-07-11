@@ -23,17 +23,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.*;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -45,6 +40,7 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
 public class AutomatonEntity extends TamableAnimal implements GeoEntity {
@@ -53,7 +49,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
 
     public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
-//        this.navigation = new SmoothGroundNavigation(this, level);
+        this.navigation = new SmoothGroundNavigation(this, level);
     }
 
     @Nullable
@@ -104,6 +100,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Monster.class, false));
         this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal(this, true));
     }
 
@@ -113,6 +110,11 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.25)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
                 .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.automatonAttackDamage);
+    }
+
+    @Override
+    public boolean isPushable() {
+        return false;
     }
 
     protected void produceParticles(ParticleOptions parameters) {
@@ -209,10 +211,18 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
                 return event.setAndContinue(DefaultAnimations.WALK);
             }
             return event.setAndContinue(DefaultAnimations.IDLE);
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
+        })).add(new AnimationController<>(this, "attackController", 0, event -> {
             swinging = false;
             return PlayState.STOP;
         }).triggerableAnim("attack", DefaultAnimations.ATTACK).triggerableAnim("attack2", DefaultAnimations.ATTACK2));
+    }
+
+    @Override
+    public boolean doHurtTarget(Entity entity) {
+        this.triggerAnim("attackController", "attack");
+//        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 255));
+        this.getNavigation().stop();
+        return super.doHurtTarget(entity);
     }
 
     @Override

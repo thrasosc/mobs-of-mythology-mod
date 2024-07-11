@@ -17,7 +17,7 @@ public class EntityRegistry {
 
     public static final RegistrySupplier<EntityType<AutomatonEntity>> AUTOMATON = ENTITIES.register("automaton", () ->
             EntityType.Builder.of(AutomatonEntity::new, MobCategory.CREATURE)
-                    .sized(1.5f, 3.0f)
+                    .sized(1.5f, 2.9f)
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "automaton").toString()));
 
     public static final RegistrySupplier<EntityType<ChupacabraEntity>> CHUPACABRA = ENTITIES.register("chupacabra", () ->
