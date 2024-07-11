@@ -7,7 +7,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -161,15 +160,15 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
         );
     }
 
-    public void tick() {
-        super.tick();
-        ItemStack itemStack = getItemStack();
-        if (!itemStack.isEmpty()) {
-            if (itemStack.is(ItemTags.WOLF_FOOD)) {
-                eat(level(), itemStack);
-            }
-        }
-    }
+//    public void tick() {
+//        super.tick();
+//        ItemStack itemStack = getItemStack();
+//        if (!itemStack.isEmpty()) {
+//            if (itemStack.is(ItemTags.WOLF_FOOD)) {
+//                eat(level(), itemStack);
+//            }
+//        }
+//    }
 
     @Override
     public <T> T getVariant() {
