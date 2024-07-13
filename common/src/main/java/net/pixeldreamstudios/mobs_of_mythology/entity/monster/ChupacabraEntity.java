@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Animal;
@@ -20,11 +21,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
 import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Panic;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.ReactToUnreachableTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FleeTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
@@ -36,12 +40,16 @@ import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTar
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
+import net.tslat.smartbrainlib.api.core.sensor.custom.UnreachableTargetSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
+import net.tslat.smartbrainlib.util.BrainUtils;
 
 import java.util.List;
 
 public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity, SmartBrainOwner<ChupacabraEntity>, Enemy {
+    private boolean unreachableTarget = false;
+
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         navigation = new SmoothGroundNavigation(this, level());
@@ -71,9 +79,9 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
     @Override
     public List<ExtendedSensor<ChupacabraEntity>> getSensors() {
         return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<ChupacabraEntity>()
-                        .setPredicate((target, entity) -> target instanceof Player || target instanceof Animal),
-                new HurtBySensor<>()
+                new NearbyLivingEntitySensor<>(),
+                new HurtBySensor<>(),
+                new UnreachableTargetSensor<>()
         );
     }
 
@@ -102,9 +110,23 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
     public BrainActivityGroup<ChupacabraEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>(),
-                new AnimatableMeleeAttack<>(10),
+                new SetWalkTargetToAttackTarget<>()
+                        .speedMod((mob, livingEntity) -> 1.25f)
+                        .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
                 new FleeTarget<>()
+                        .speedModifier(1.75f)
+                        .startCondition(pathfinderMob ->
+                                BrainUtils.getTargetOfEntity(this) instanceof Player || BrainUtils.getLastAttacker(this) instanceof Player),
+                new Panic<>()
+                        .speedMod(pathfinderMob -> 1.5f)
+                        .panicIf((pathfinderMob, damageSource) -> unreachableTarget)
+                        .whenStopping(pathfinderMob -> unreachableTarget = false),
+                new AnimatableMeleeAttack<>(12),
+                new ReactToUnreachableTarget<>()
+//                        .timeBeforeReacting(entity -> 10)
+                        .reaction((livingEntity, aBoolean) -> {
+                            unreachableTarget = true;
+                        })
         );
     }
 
@@ -119,6 +141,11 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
             }
         }
         return super.doHurtTarget(entity);
+    }
+
+    @Override
+    protected Brain.Provider<?> brainProvider() {
+        return new SmartBrainProvider<>(this);
     }
 
     @Override
