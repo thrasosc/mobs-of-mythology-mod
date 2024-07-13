@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity;
+package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
 
 import net.minecraft.Util;
 import net.minecraft.world.DifficultyInstance;
@@ -19,7 +19,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.abstraction.AbstractKoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldWarriorVariant;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import org.jetbrains.annotations.Nullable;

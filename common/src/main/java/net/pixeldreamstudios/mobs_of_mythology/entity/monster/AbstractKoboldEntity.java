@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.abstraction;
+package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

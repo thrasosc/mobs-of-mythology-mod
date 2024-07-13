@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.KoboldWarriorEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.monster.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.KoboldWarriorModel;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldWarriorVariant;
 import org.jetbrains.annotations.Nullable;

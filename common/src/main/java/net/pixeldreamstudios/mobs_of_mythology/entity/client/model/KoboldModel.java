@@ -8,7 +8,7 @@ import mod.azure.azurelib.core.animation.AnimationState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.KoboldEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.monster.KoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldRenderer;
 
 public class KoboldModel extends GeoModel<KoboldEntity> {

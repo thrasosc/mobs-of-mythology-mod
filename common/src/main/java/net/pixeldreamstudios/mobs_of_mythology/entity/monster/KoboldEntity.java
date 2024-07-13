@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity;
+package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.abstraction.AbstractKoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;

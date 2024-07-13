@@ -8,7 +8,7 @@ import mod.azure.azurelib.core.animation.AnimationState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.AutomatonEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.animal.AutomatonEntity;
 
 public class AutomatonModel extends GeoModel<AutomatonEntity> {
 

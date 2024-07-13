@@ -10,7 +10,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.*;
+import net.pixeldreamstudios.mobs_of_mythology.entity.animal.AutomatonEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.animal.DrakeEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.animal.SporelingEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.monster.ChupacabraEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.monster.KoboldEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.monster.KoboldWarriorEntity;
 
 public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.ENTITY_TYPE);

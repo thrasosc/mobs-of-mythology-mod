@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.abstraction;
+package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
@@ -9,14 +9,14 @@ import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 
-public abstract class AbstractMythEntity extends PathfinderMob implements GeoEntity {
+public abstract class AbstractMythMonsterEntity extends Monster implements GeoEntity {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    protected AbstractMythEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -47,12 +47,11 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
     @Override
     public boolean doHurtTarget(Entity entity) {
         this.triggerAnim("attackController", "attack");
-
         return super.doHurtTarget(entity);
     }
 
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 2; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
