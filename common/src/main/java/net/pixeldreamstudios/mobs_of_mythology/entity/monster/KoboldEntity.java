@@ -45,6 +45,7 @@ import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
+import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -55,7 +56,6 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);
         navigation = new SmoothGroundNavigation(this, level());
-//        this.setItemStack(new ItemStack(Items.APPLE, 3));
     }
 
     @Override
@@ -129,22 +129,22 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
     }
 
     @Override
-    public BrainActivityGroup<KoboldEntity> getIdleTasks() { // These are the tasks that run when the mob isn't doing anything else (usually)
+    public BrainActivityGroup<KoboldEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<KoboldEntity>(      // Run only one of the below behaviours, trying each one in order. Include the generic type because JavaC is silly
-                        new TargetOrRetaliate<>(),            // Set the attack target and walk target based on nearby entities
-                        new SetPlayerLookTarget<>(),          // Set the look target for the nearest player
-                        new SetRandomLookTarget<>()),         // Set a random look target
-                new OneRandomBehaviour<>(                 // Run a random task from the below options
-                        new SetRandomWalkTarget<>(),          // Set a random walk target to a nearby position
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60)))); // Do nothing for 1.5->3 seconds
+                new FirstApplicableBehaviour<KoboldEntity>(
+                        new TargetOrRetaliate<>(),
+                        new SetPlayerLookTarget<>(),
+                        new SetRandomLookTarget<>()),
+                new OneRandomBehaviour<>(
+                        new SetRandomWalkTarget<>(),
+                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
     }
 
     @Override
-    public BrainActivityGroup<KoboldEntity> getFightTasks() { // These are the tasks that handle fighting
+    public BrainActivityGroup<KoboldEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>().startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),      // Set the walk target to the attack target
+                new SetWalkTargetToAttackTarget<>().startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),
                 new AnimatableMeleeAttack<>(10)
                         .startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
                         .stopIf(mob -> !getItemStack().isEmpty())
@@ -155,11 +155,13 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
                         }),
                 new FleeTarget<>()
                         .speedModifier(2.0f)
-                        .startCondition(mob -> !getItemStack().isEmpty() || getTarget().is(getLastAttacker()))
+                        .startCondition(mob -> !getItemStack().isEmpty() || BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this)))
         );
     }
 
+    // TODO implement eating (see gigeresque)
 //    public void tick() {
+//        super.tick();
 //        super.tick();
 //        ItemStack itemStack = getItemStack();
 //        if (!itemStack.isEmpty()) {
