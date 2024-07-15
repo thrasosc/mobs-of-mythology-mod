@@ -27,7 +27,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Panic;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.ReactToUnreachableTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FleeTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
@@ -116,11 +115,11 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                 new FleeTarget<>()
                         .speedModifier(1.75f)
                         .startCondition(pathfinderMob ->
-                                BrainUtils.getTargetOfEntity(this) instanceof Player || BrainUtils.getLastAttacker(this) instanceof Player),
-                new Panic<>()
-                        .speedMod(pathfinderMob -> 1.5f)
-                        .panicIf((pathfinderMob, damageSource) -> unreachableTarget)
-                        .whenStopping(pathfinderMob -> unreachableTarget = false),
+                                BrainUtils.getTargetOfEntity(this) instanceof Player || BrainUtils.getLastAttacker(this) instanceof Player || unreachableTarget),
+//                new Panic<>()
+//                        .speedMod(pathfinderMob -> 1.5f)
+//                        .panicIf((pathfinderMob, damageSource) -> unreachableTarget)
+//                        .whenStopping(pathfinderMob -> unreachableTarget = false),
                 new AnimatableMeleeAttack<>(12),
                 new ReactToUnreachableTarget<>()
 //                        .timeBeforeReacting(entity -> 10)
