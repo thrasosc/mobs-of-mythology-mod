@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,7 +41,6 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.DrakeVariant;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
-import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
@@ -52,6 +52,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> HAS_EGG;
     public static final Predicate<LivingEntity> PREY_SELECTOR;
+    private static final float START_HEALTH = 8.0F;
 
     public DrakeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -82,6 +83,16 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 //    }
 
     @Override
+    protected void applyTamingSideEffects() {
+        if (this.isTame()) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.drakeHealth * 2);
+            this.setHealth((float) (MobsOfMythology.config.drakeHealth * 2));
+        } else {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.drakeHealth);
+        }
+    }
+
+    @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_ID_TYPE_VARIANT, 0);
@@ -104,7 +115,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(TagRegistry.DRAKE_FOOD);
+        return itemStack.is(ItemTags.WOLF_FOOD);
     }
 
     public DrakeVariant getVariant() {
