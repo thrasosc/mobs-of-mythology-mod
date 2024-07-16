@@ -2,15 +2,15 @@ name: "Bug report"
 description: "The game crashed or something is not working as intended."
 labels: ["bug"]
 body:
-  - type: dropdown
-    attributes:
-      label: "Confirm mod version"
-      description: "Please confirm that you are using the active in-development version of the mod, which is 1.21."
-      options:
-        - "Yes, I am using version 1.21"
-        - "No, I am not using version 1.21"
-    validations:
-      required: true
+#  - type: dropdown
+#    attributes:
+#      label: "Confirm mod version"
+#      description: "Please confirm that you are using the active in-development version of the mod, which is 1.21."
+#      options:
+#        - "Yes, I am using version 1.21"
+#        - "No, I am not using version 1.21"
+#    validations:
+#      required: true
   - type: textarea
     attributes:
       label: "Describe the bug"
