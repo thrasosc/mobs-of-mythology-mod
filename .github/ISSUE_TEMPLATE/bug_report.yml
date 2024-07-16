@@ -1,40 +1,40 @@
 name: "Bug report"
 description: "The game crashed or something is not working as intended."
-labels: [ "bug" ]
+labels: ["bug"]
 body:
-    -   type: textarea
-        attributes:
-            label: "Describe the bug"
-            description: "A clear and concise description of what the bug is."
-        validations:
-            required: true
-    -   type: textarea
-        attributes:
-            label: "Reproduction steps"
-            description: "Steps to reproduce the behavior."
-        validations:
-            required: true
-    -   type: textarea
-        attributes:
-            label: "Screenshots"
-            description: "If applicable, attach screenshots or videos to help explain your problem."
-        validations:
-            required: false
-    -   type: textarea
-        attributes:
-            label: "Logs & crash-reports"
-            description: "If applicable, provide a crash-report or the latest log."
-        validations:
-            required: false
-    -   type: input
-        attributes:
-            label: "Mod version"
-            description: "The mod version you were using. (e.g. 1.0)"
-        validations:
-            required: true
-    -   type: input
-        attributes:
-            label: "Minecraft version"
-            description: "The Minecraft version you were using. (e.g. 1.20.1)"
-        validations:
-            required: true
+    - type: checkbox
+      attributes:
+          label: "Confirm mod version"
+          description: "I confirm that I am using the active in-development version of the mod, which is 1.21."
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: "Describe the bug"
+          description: "Provide a clear and concise description of what the bug is."
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: "Reproduction steps"
+          description: "Detail the steps to reproduce the behavior."
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: "Screenshots"
+          description: "Attach screenshots or videos to help explain your problem (if applicable)."
+      validations:
+          required: false
+    - type: textarea
+      attributes:
+          label: "Logs & crash-reports"
+          description: "Provide a crash report or the latest log (if applicable)."
+      validations:
+          required: false
+    - type: input
+      attributes:
+          label: "Mod version"
+          description: "Specify the mod version you were using (e.g., 2.0)."
+      validations:
+          required: true

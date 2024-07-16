@@ -1,10 +1,22 @@
 name: "Feature request"
-description: "Make a suggestion."
-labels: [ "enhancement" ]
+description: "Suggest a new feature or improvement."
+labels: ["enhancement"]
 body:
-    -   type: textarea
-        attributes:
-            label: "Describe your suggestion"
-            description: "Make a brief description and justification of your suggestion."
-        validations:
-            required: true
+    - type: textarea
+      attributes:
+          label: "Describe your suggestion"
+          description: "Provide a clear and concise description of your suggestion, along with the reasons for it."
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: "Benefits of the feature"
+          description: "Explain how this feature will benefit users and improve the mod."
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: "Additional context"
+          description: "Add any other context or screenshots about the feature request (if applicable)."
+      validations:
+          required: false
