@@ -52,6 +52,16 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         this.navigation = new SmoothGroundNavigation(this, level);
     }
 
+    @Override
+    protected void applyTamingSideEffects() {
+        if (this.isTame()) {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.automatonHealth * 2);
+            this.setHealth((float) (MobsOfMythology.config.automatonHealth * 2));
+        } else {
+            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.automatonHealth);
+        }
+    }
+
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
