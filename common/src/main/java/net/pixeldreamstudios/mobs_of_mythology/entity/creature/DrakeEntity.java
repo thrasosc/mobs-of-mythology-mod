@@ -5,7 +5,6 @@ import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.animation.RawAnimation;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -47,12 +46,8 @@ import java.util.function.Predicate;
 
 public class DrakeEntity extends TamableAnimal implements GeoEntity {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    public static final RawAnimation FIRE = RawAnimation.begin().thenLoop("fire");
-    private boolean firing = false;
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> HAS_EGG;
     public static final Predicate<LivingEntity> PREY_SELECTOR;
-    private static final float START_HEALTH = 8.0F;
 
     public DrakeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
@@ -77,11 +72,6 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         return true;
     }
 
-//    @Override
-//    public boolean isBreedingItem(@NotNull ItemStack stack) {
-//        return stack.getItem() == Items.GOLDEN_APPLE;
-//    }
-
     @Override
     protected void applyTamingSideEffects() {
         if (this.isTame()) {
@@ -96,21 +86,18 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         super.defineSynchedData(builder);
         builder.define(DATA_ID_TYPE_VARIANT, 0);
-        builder.define(HAS_EGG, false);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("Variant", this.getTypeVariant());
-        nbt.putBoolean("HasEgg", this.hasEgg());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         this.entityData.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
-        this.setHasEgg(nbt.getBoolean("HasEgg"));
     }
 
     @Override
@@ -142,10 +129,8 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-//        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
         this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
-//        this.goalSelector.addGoal(7, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
@@ -161,7 +146,6 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
             EntityType<?> entityType = livingEntity.getType();
             return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
         };
-        HAS_EGG = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.BOOLEAN);
     }
 
     @Override
@@ -267,80 +251,4 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.WOLF_STEP, 0.75f, 1.0f);
     }
-
-    public boolean hasEgg() {
-        return (Boolean) this.entityData.get(HAS_EGG);
-    }
-
-    void setHasEgg(boolean hasEgg) {
-        this.entityData.set(HAS_EGG, hasEgg);
-    }
-
-//    private static class LayEggGoal extends MoveToTargetPosGoal {
-//        private final DrakeEntity drake;
-//
-//        LayEggGoal(DrakeEntity drake, double speed) {
-//            super(drake, speed, 16);
-//            this.drake = drake;
-//        }
-//
-//        public boolean canStart() {
-//            return this.drake.hasEgg() ? super.canStart() : false;
-//        }
-//
-//        public boolean shouldContinue() {
-//            return super.shouldContinue() && this.drake.hasEgg();
-//        }
-//
-//        public void tick() {
-//            super.tick();
-//            BlockPos blockPos = this.drake.getBlockPos();
-//            if (!this.drake.isTouchingWater() && this.hasReached()) {
-//                World world = this.drake.world;
-//                world.playSound((PlayerEntity) null, blockPos, SoundEvents.ENTITY_TURTLE_LAY_EGG, SoundCategory.BLOCKS, 1.0f, 1.25f);
-//                world.setBlockState(this.targetPos.up(), (BlockState) BlockRegistry.DRAKE_EGG_BLOCK.getDefaultState());
-//                this.drake.setHasEgg(false);
-//                this.drake.setLoveTicks(600);
-//            }
-//
-//        }
-//
-//        protected boolean isTargetPos(WorldView world, BlockPos pos) {
-//            return !world.isAir(pos.up());
-//        }
-//    }
-
-//    private static class MateGoal extends AnimalMateGoal {
-//        private final DrakeEntity drake;
-//
-//        MateGoal(DrakeEntity drake, double speed) {
-//            super(drake, speed);
-//            this.drake = drake;
-//        }
-//
-//        public boolean canStart() {
-//            return super.canStart() && !this.drake.hasEgg();
-//        }
-//
-//        protected void breed() {
-//            ServerPlayerEntity serverPlayerEntity = this.animal.getLovingPlayer();
-//            if (serverPlayerEntity == null && this.mate.getLovingPlayer() != null) {
-//                serverPlayerEntity = this.mate.getLovingPlayer();
-//            }
-//
-//            if (serverPlayerEntity != null) {
-//                serverPlayerEntity.incrementStat(Stats.ANIMALS_BRED);
-//                Criteria.BRED_ANIMALS.trigger(serverPlayerEntity, this.animal, this.mate, (PassiveEntity) null);
-//            }
-//
-//            this.drake.setHasEgg(true);
-//            this.animal.resetLoveTicks();
-//            this.mate.resetLoveTicks();
-//            Random random = this.animal.getRandom();
-//            if (this.world.getGameRules().getBoolean(GameRules.DO_MOB_LOOT)) {
-//                this.world.spawnEntity(new ExperienceOrbEntity(this.world, this.animal.getX(), this.animal.getY(), this.animal.getZ(), random.nextInt(7) + 1));
-//            }
-//
-//        }
-//    }
 }
