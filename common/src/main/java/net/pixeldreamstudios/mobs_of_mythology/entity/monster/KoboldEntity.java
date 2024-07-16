@@ -140,6 +140,7 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
                         new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
     }
 
+    //TODO re-implement item stealing using `ItemTemptingSensor` and `FollowTemptation`
     @Override
     public BrainActivityGroup<KoboldEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
