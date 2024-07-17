@@ -44,6 +44,7 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
         }).triggerableAnim("attack", DefaultAnimations.ATTACK));
     }
 
+    //TODO replace all `doHurtTarget` with `AnimatableMeleeAttack.whenStarting`
     @Override
     public boolean doHurtTarget(Entity entity) {
         this.triggerAnim("attackController", "attack");
