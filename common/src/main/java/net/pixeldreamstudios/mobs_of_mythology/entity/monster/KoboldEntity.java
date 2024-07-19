@@ -1,6 +1,5 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -14,43 +13,24 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
-import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
-import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
-import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
-import net.tslat.smartbrainlib.api.core.behaviour.FirstApplicableBehaviour;
-import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FleeTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.target.InvalidateAttackTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetPlayerLookTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.SetRandomLookTarget;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.target.TargetOrRetaliate;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
-import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
-import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
-public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwner<KoboldEntity> {
+public class KoboldEntity extends AbstractKoboldEntity {
     private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity .class, EntityDataSerializers.ITEM_STACK);;
 
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
@@ -111,42 +91,16 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
-    @Override
-    public List<ExtendedSensor<KoboldEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<KoboldEntity>()
-                        .setPredicate((target, entity) -> target instanceof Player),
-                new HurtBySensor<>()
-        );
-    }
-
-    @Override
-    public BrainActivityGroup<KoboldEntity> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
-                new FloatToSurfaceOfFluid<>(),
-                new LookAtTarget(),
-                new MoveToWalkTarget<>());
-    }
-
-    @Override
-    public BrainActivityGroup<KoboldEntity> getIdleTasks() {
-        return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<KoboldEntity>(
-                        new TargetOrRetaliate<>(),
-                        new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()),
-                new OneRandomBehaviour<>(
-                        new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
-    }
-
     //TODO re-implement item stealing using `ItemTemptingSensor` and `FollowTemptation`
     @Override
-    public BrainActivityGroup<KoboldEntity> getFightTasks() {
+    public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
                 new SetWalkTargetToAttackTarget<>().startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),
-                new AnimatableMeleeAttack<>(10)
+                new AnimatableMeleeAttack<>(6)
+                        .whenStarting(mob -> {
+                            this.triggerAnim("attackController", "attack");
+                        })
                         .startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
                         .stopIf(mob -> !getItemStack().isEmpty())
                         .whenStopping(mob -> {
@@ -177,17 +131,7 @@ public class KoboldEntity extends AbstractKoboldEntity implements SmartBrainOwne
         return (T) KoboldVariant.byId(this.getTypeVariant() & 255);
     }
 
-    @Override
-    protected void customServerAiStep() {
-        tickBrain(this);
-    }
-
     private void setVariant(KoboldVariant variant) {
         this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-    }
-
-    @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
     }
 }
