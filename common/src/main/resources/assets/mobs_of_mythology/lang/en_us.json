@@ -27,5 +27,19 @@
   "item.mobs_of_mythology.gear": "Automaton Gear",
 
   "block.mobs_of_mythology.bronze_block": "Bronze Block",
-  "block.mobs_of_mythology.cut_bronze_block": "Cut Bronze Block"
+  "block.mobs_of_mythology.cut_bronze_block": "Cut Bronze Block",
+
+  "config.screen.mobs_of_mythology": "Mobs of Mythology Config",
+  "config.mobs_of_mythology.option.automatonHealth": "Automaton Health",
+  "config.mobs_of_mythology.option.automatonAttackDamage": "Automaton Attack Damage",
+  "config.mobs_of_mythology.option.chupacabraHealth": "Chupacabra Health",
+  "config.mobs_of_mythology.option.chupacabraAttackDamage": "Chupacabra Attack Damage",
+  "config.mobs_of_mythology.option.koboldHealth": "Kobold Health",
+  "config.mobs_of_mythology.option.koboldAttackDamage": "Kobold Attack Damage",
+  "config.mobs_of_mythology.option.koboldWarriorHealth": "Kobold Warrior Health",
+  "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Kobold Warrior Attack Damage",
+  "config.mobs_of_mythology.option.koboldWarriorArmor": "Kobold Warrior Armor",
+  "config.mobs_of_mythology.option.drakeHealth": "Drake Health",
+  "config.mobs_of_mythology.option.drakeAttackDamage": "Drake Attack Damage",
+  "config.mobs_of_mythology.option.mushroomHealth": "Mushroom Health"
 }
