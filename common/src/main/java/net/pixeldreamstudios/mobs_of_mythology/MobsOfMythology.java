@@ -17,7 +17,6 @@ public final class MobsOfMythology {
     public static void init() {
         AzureLib.initialize();
         config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties()).getConfigInstance();
-
         SoundRegistry.init();
         EntityRegistry.init();
         ItemRegistry.init();
@@ -26,7 +25,6 @@ public final class MobsOfMythology {
     }
 
     public static void initClient() {
-        LOGGER.info("Initialising client...");
         EntityRendererRegistry.register(EntityRegistry.AUTOMATON, AutomatonRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.CHUPACABRA, ChupacabraRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.KOBOLD, KoboldRenderer::new);
