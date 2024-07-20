@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
+package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import net.minecraft.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +20,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;

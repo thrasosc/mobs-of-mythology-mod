@@ -10,12 +10,12 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.creature.AutomatonEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.creature.DrakeEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.creature.SporelingEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.monster.ChupacabraEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.monster.KoboldEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.monster.KoboldWarriorEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.AutomatonEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.DrakeEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.SporelingEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.ChupacabraEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 
 public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.ENTITY_TYPE);

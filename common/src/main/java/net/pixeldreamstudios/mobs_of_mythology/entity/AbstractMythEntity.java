@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
+package net.pixeldreamstudios.mobs_of_mythology.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
@@ -8,11 +8,9 @@ import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
@@ -23,7 +21,6 @@ import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
-import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
@@ -37,10 +34,10 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 
 import java.util.List;
 
-public abstract class AbstractMythMonsterEntity extends Monster implements GeoEntity, SmartBrainOwner<AbstractMythMonsterEntity> {
+public abstract class AbstractMythEntity extends PathfinderMob implements GeoEntity, SmartBrainOwner<AbstractMythEntity> {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
+    protected AbstractMythEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -68,15 +65,8 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
         }).triggerableAnim("attack", DefaultAnimations.ATTACK));
     }
 
-    //TODO replace all `doHurtTarget` with `AnimatableMeleeAttack.whenStarting`
-    @Override
-    public boolean doHurtTarget(Entity entity) {
-        this.triggerAnim("attackController", "attack");
-        return super.doHurtTarget(entity);
-    }
-
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 5; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
@@ -85,26 +75,24 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
     }
 
     @Override
-    public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
+    public List<ExtendedSensor<AbstractMythEntity>> getSensors() {
         return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
-                        .setPredicate((target, entity) -> target instanceof Player),
+                new NearbyLivingEntitySensor<>(),
                 new HurtBySensor<>()
         );
     }
 
     @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getCoreTasks() {
+    public BrainActivityGroup<AbstractMythEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
-                new FloatToSurfaceOfFluid<>(),
                 new LookAtTarget<>(),
                 new MoveToWalkTarget<>());
     }
 
     @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getIdleTasks() {
+    public BrainActivityGroup<AbstractMythEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<AbstractMythMonsterEntity>(
+                new FirstApplicableBehaviour<AbstractMythEntity>(
                         new TargetOrRetaliate<>(),
                         new SetPlayerLookTarget<>(),
                         new SetRandomLookTarget<>()),
@@ -114,7 +102,7 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
     }
 
     @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
+    public BrainActivityGroup<AbstractMythEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>()
                         .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),

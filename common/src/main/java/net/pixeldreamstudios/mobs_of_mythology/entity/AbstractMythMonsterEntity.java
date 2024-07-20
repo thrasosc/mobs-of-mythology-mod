@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.creature;
+package net.pixeldreamstudios.mobs_of_mythology.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
@@ -9,8 +9,9 @@ import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
@@ -21,6 +22,7 @@ import net.tslat.smartbrainlib.api.core.behaviour.OneRandomBehaviour;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.look.LookAtTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.Idle;
+import net.tslat.smartbrainlib.api.core.behaviour.custom.move.FloatToSurfaceOfFluid;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.move.MoveToWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetRandomWalkTarget;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.path.SetWalkTargetToAttackTarget;
@@ -34,10 +36,10 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 
 import java.util.List;
 
-public abstract class AbstractMythEntity extends PathfinderMob implements GeoEntity, SmartBrainOwner<AbstractMythEntity> {
+public abstract class AbstractMythMonsterEntity extends Monster implements GeoEntity, SmartBrainOwner<AbstractMythMonsterEntity> {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    protected AbstractMythEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -66,7 +68,7 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
     }
 
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 5; ++i) {
+        for (int i = 0; i < 2; ++i) {
             double d = this.random.nextGaussian() * 0.02;
             double e = this.random.nextGaussian() * 0.02;
             double f = this.random.nextGaussian() * 0.02;
@@ -75,24 +77,26 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
     }
 
     @Override
-    public List<ExtendedSensor<AbstractMythEntity>> getSensors() {
+    public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
         return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<>(),
+                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
+                        .setPredicate((target, entity) -> target instanceof Player),
                 new HurtBySensor<>()
         );
     }
 
     @Override
-    public BrainActivityGroup<AbstractMythEntity> getCoreTasks() {
+    public BrainActivityGroup<AbstractMythMonsterEntity> getCoreTasks() {
         return BrainActivityGroup.coreTasks(
+                new FloatToSurfaceOfFluid<>(),
                 new LookAtTarget<>(),
                 new MoveToWalkTarget<>());
     }
 
     @Override
-    public BrainActivityGroup<AbstractMythEntity> getIdleTasks() {
+    public BrainActivityGroup<AbstractMythMonsterEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<AbstractMythEntity>(
+                new FirstApplicableBehaviour<AbstractMythMonsterEntity>(
                         new TargetOrRetaliate<>(),
                         new SetPlayerLookTarget<>(),
                         new SetRandomLookTarget<>()),
@@ -102,7 +106,7 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
     }
 
     @Override
-    public BrainActivityGroup<AbstractMythEntity> getFightTasks() {
+    public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>()
                         .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),

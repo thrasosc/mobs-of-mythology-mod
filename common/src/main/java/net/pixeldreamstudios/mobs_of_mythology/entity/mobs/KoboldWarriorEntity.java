@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
+package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.creature.AutomatonEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldWarriorVariant;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;

@@ -5,7 +5,7 @@ import mod.azure.azurelib.common.api.client.renderer.layer.AutoGlowingGeoLayer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.monster.ChupacabraEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.ChupacabraEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.ChupacabraModel;
 
 public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {

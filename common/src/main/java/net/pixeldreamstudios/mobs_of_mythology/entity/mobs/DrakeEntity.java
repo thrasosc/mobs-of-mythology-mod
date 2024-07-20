@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.creature;
+package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;

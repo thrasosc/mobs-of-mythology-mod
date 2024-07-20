@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.creature;
+package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
@@ -35,6 +35,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.SporelingVariant;
 import org.jetbrains.annotations.Nullable;
 

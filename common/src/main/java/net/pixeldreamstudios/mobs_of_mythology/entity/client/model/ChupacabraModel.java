@@ -3,7 +3,7 @@ package net.pixeldreamstudios.mobs_of_mythology.entity.client.model;
 import mod.azure.azurelib.common.api.client.model.GeoModel;
 import net.minecraft.resources.ResourceLocation;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.monster.ChupacabraEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.ChupacabraEntity;
 
 public class ChupacabraModel extends GeoModel<ChupacabraEntity> {
 

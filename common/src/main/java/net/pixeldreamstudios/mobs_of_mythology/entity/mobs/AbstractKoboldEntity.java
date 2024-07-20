@@ -1,4 +1,4 @@
-package net.pixeldreamstudios.mobs_of_mythology.entity.monster;
+package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +13,7 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
 
 public abstract class AbstractKoboldEntity extends AbstractMythMonsterEntity implements Enemy {
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(AbstractKoboldEntity.class, EntityDataSerializers.INT);

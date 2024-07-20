@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
 import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
-import net.pixeldreamstudios.mobs_of_mythology.entity.creature.AutomatonEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.AutomatonEntity;
 import net.pixeldreamstudios.mobs_of_mythology.registry.BlockRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.EntityRegistry;
 import org.spongepowered.asm.mixin.Final;
