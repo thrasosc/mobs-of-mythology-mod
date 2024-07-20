@@ -43,6 +43,7 @@ import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
+//TODO Use `DelayedBehaviour` for charging attack
 public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
     private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(AutomatonEntity.class, EntityDataSerializers.INT);
