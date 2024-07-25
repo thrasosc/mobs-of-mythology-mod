@@ -36,7 +36,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.DrakeVariant;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
@@ -152,24 +152,24 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
             if (isInSittingPose()) {
-                state.getController().setAnimation(DefaultAnimations.SIT);
+                state.getController().setAnimation(DefaultMythAnimations.SIT);
                 return PlayState.CONTINUE;
             } else if (state.isMoving() && !swinging) {
                 if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultAnimations.RUN);
+                    state.getController().setAnimation(DefaultMythAnimations.RUN);
                     return PlayState.CONTINUE;
                 }
                 else {
-                    state.getController().setAnimation(DefaultAnimations.WALK);
+                    state.getController().setAnimation(DefaultMythAnimations.WALK);
                     return PlayState.CONTINUE;
                 }
             }
-            state.getController().setAnimation(DefaultAnimations.IDLE);
+            state.getController().setAnimation(DefaultMythAnimations.IDLE);
             return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 0, event -> {
+        })).add(new AnimationController<>(this, "attackController", 3, event -> {
             swinging = false;
             return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
+        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
     }
 
     @Override

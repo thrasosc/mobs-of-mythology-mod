@@ -12,7 +12,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.level.Level;
-import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -51,26 +51,28 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
             if (state.isMoving() && !swinging) {
                 if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultAnimations.RUN);
+                    state.getController().setAnimation(DefaultMythAnimations.RUN);
                     return PlayState.CONTINUE;
                 }
-                state.getController().setAnimation(DefaultAnimations.WALK);
+                state.getController().setAnimation(DefaultMythAnimations.WALK);
                 return PlayState.CONTINUE;
             }
-            state.getController().setAnimation(DefaultAnimations.IDLE);
+            state.getController().setAnimation(DefaultMythAnimations.IDLE);
             return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 0, event -> {
+        })).add(new AnimationController<>(this, "attackController", 3, event -> {
             swinging = false;
             return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultAnimations.ATTACK));
+        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
     }
 
     protected void produceParticles(ParticleOptions parameters) {
-        for (int i = 0; i < 5; ++i) {
-            double d = this.random.nextGaussian() * 0.02;
-            double e = this.random.nextGaussian() * 0.02;
-            double f = this.random.nextGaussian() * 0.02;
-            this.level().addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d, e, f);
+        if (level().isClientSide()) {
+            for (int i = 0; i < 2; ++i) {
+                double d = this.random.nextGaussian() * 0.02;
+                double e = this.random.nextGaussian() * 0.02;
+                double f = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d, e, f);
+            }
         }
     }
 

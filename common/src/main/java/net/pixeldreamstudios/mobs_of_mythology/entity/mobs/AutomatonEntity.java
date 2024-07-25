@@ -10,11 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +19,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -37,7 +35,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
@@ -46,7 +44,6 @@ import org.jetbrains.annotations.Nullable;
 //TODO Use `DelayedBehaviour` for charging attack
 public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
-    private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(AutomatonEntity.class, EntityDataSerializers.INT);
 
     public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
@@ -67,32 +64,6 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     @Override
     public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
         return null;
-    }
-
-    public int getAttckingState() {
-        return entityData.get(STATE);
-    }
-
-    public void setAttackingState(int time) {
-        entityData.set(STATE, time);
-    }
-
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(STATE, 0);
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putInt("state", getAttckingState());
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        this.setAttackingState(nbt.getInt("state"));
     }
 
     @Override
@@ -144,10 +115,14 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         super.tick();
         if (getHealth() < (double) 50) {
             if (getHealth() < (double) 25) {
-                produceParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE);
+                if (level().isClientSide()) {
+                    produceParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE);
+                }
                 return;
             }
-            produceParticles(ParticleTypes.SMOKE);
+            if (level().isClientSide()) {
+                produceParticles(ParticleTypes.SMOKE);
+            }
         }
     }
 
@@ -216,23 +191,23 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
             if (event.isMoving() && !swinging) {
-                if (isAggressive()) {
-                    return event.setAndContinue(DefaultAnimations.RUN);
-                }
-                return event.setAndContinue(DefaultAnimations.WALK);
+//                if (isAggressive()) {
+//                    return event.setAndContinue(DefaultAnimations.RUN);
+//                }
+                return event.setAndContinue(DefaultMythAnimations.WALK);
             }
-            return event.setAndContinue(DefaultAnimations.IDLE);
-        })).add(new AnimationController<>(this, "attackController", 0, event -> {
+            return event.setAndContinue(DefaultMythAnimations.IDLE);
+        })).add(new AnimationController<>(this, "attackController", 3, event -> {
             swinging = false;
             return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultAnimations.ATTACK).triggerableAnim("attack2", DefaultAnimations.ATTACK2));
+        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK).triggerableAnim("attack2", DefaultMythAnimations.ATTACK2));
     }
 
     @Override
     public boolean doHurtTarget(Entity entity) {
         this.triggerAnim("attackController", "attack");
-//        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 255));
-        this.getNavigation().stop();
+        this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 255));
+//        this.getNavigation().stop();
         return super.doHurtTarget(entity);
     }
 

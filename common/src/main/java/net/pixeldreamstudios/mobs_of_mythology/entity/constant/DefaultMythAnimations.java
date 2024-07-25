@@ -3,7 +3,7 @@ package net.pixeldreamstudios.mobs_of_mythology.entity.constant;
 import mod.azure.azurelib.core.animation.Animation;
 import mod.azure.azurelib.core.animation.RawAnimation;
 
-public final class DefaultAnimations {
+public final class DefaultMythAnimations {
     public static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
     public static final RawAnimation WALK = RawAnimation.begin().thenLoop("walk");
     public static final RawAnimation RUN = RawAnimation.begin().thenLoop("run");

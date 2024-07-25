@@ -24,6 +24,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -34,15 +35,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultAnimations;
-import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.SporelingVariant;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class SporelingEntity extends AbstractMythEntity implements GeoEntity {
+public class SporelingEntity extends PathfinderMob implements GeoEntity {
     private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(SporelingEntity.class, EntityDataSerializers.INT);
@@ -51,13 +51,12 @@ public class SporelingEntity extends AbstractMythEntity implements GeoEntity {
     private List<String> greetings;
     private int lineCooldown = 60;
     private boolean touched = false;
-
     private boolean startCountdown = false;
     private boolean talk = true;
     private SoundEvent interactSound;
 
-    public SporelingEntity(EntityType<? extends AbstractMythEntity> entityType, Level world) {
-        super(entityType, world);
+    public SporelingEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+        super(entityType, level);
         this.xpReward = 1;
     }
 
@@ -130,10 +129,10 @@ public class SporelingEntity extends AbstractMythEntity implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
             if (state.isMoving()) {
-                state.getController().setAnimation(DefaultAnimations.WALK);
+                state.getController().setAnimation(DefaultMythAnimations.WALK);
                 return PlayState.CONTINUE;
             }
-            state.getController().setAnimation(DefaultAnimations.IDLE);
+            state.getController().setAnimation(DefaultMythAnimations.IDLE);
             return PlayState.CONTINUE;
         }));
         controllerRegistrar.add(new AnimationController<>(this, "bounceController", 3, state -> {

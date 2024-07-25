@@ -86,12 +86,10 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                 new AnimatableMeleeAttack<>(8)
                         .whenStarting(mob -> {
                             this.triggerAnim("attackController", "attack");
-                            if (level().isClientSide()) {
-                                produceParticles(ParticleTypes.CRIMSON_SPORE);
-                                if (getHealth() < getMaxHealth()) {
-                                    this.heal(1.5f);
-                                    produceParticles(ParticleTypes.HAPPY_VILLAGER);
-                                }
+                            produceParticles(ParticleTypes.CRIMSON_SPORE);
+                            if (getHealth() < getMaxHealth()) {
+                                this.heal(1.5f);
+                                produceParticles(ParticleTypes.HAPPY_VILLAGER);
                             }
                         }),
                 new ReactToUnreachableTarget<>()
