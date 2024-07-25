@@ -102,7 +102,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(ItemTags.WOLF_FOOD);
+        return itemStack.is(ItemTags.MEAT);
     }
 
     public DrakeVariant getVariant() {
@@ -123,22 +123,23 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
                 .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.drakeAttackDamage)
                 .add(Attributes.ATTACK_SPEED, 2)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.addGoal(6, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
-        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(10, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
-        this.targetSelector.addGoal(5, new NonTameRandomTargetGoal(this, Animal.class, false, PREY_SELECTOR));
-        this.targetSelector.addGoal(8, new ResetUniversalAngerTargetGoal(this, true));
+        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal(this, Animal.class, false, PREY_SELECTOR));
+        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
     }
 
     static {

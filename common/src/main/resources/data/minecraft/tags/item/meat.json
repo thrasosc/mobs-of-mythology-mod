@@ -1,6 +1,7 @@
 {
+  "replace": false,
   "values": [
-    "#minecraft:meat",
+    "mobs_of_mythology:chupacabra_meat",
     "mobs_of_mythology:cooked_chupacabra_meat"
   ]
 }
