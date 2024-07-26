@@ -40,5 +40,12 @@
     "fabric-api": "*",
     "azurelib": ">=2.3.4",
     "smartbrainlib": ">=1.14.2"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.com/invite/pixel-dream-studios-872788557553610802"
+      }
+    }
   }
 }
