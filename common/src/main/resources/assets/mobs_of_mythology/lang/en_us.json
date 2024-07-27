@@ -1,6 +1,9 @@
 {
   "category.mobs_of_mythology": "Mobs of Mythology",
 
+  "advancements.mobs_of_mythology.title": "Mobs of Mythology",
+  "advancements.mobs_of_mythology.description": "Discover a World of Mythological Creatures in Minecraft!",
+
   "sound.mobs_of_mythology.drake_roar": "Drake roar",
   "sound.mobs_of_mythology.drake_death": "Drake death",
   "sound.mobs_of_mythology.robotic_voice": "Robotic voice",

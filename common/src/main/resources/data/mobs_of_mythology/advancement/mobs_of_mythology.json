@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "id": "mobs_of_mythology:automaton_head"
+    },
+    "title": {
+      "translate": "advancements.mobs_of_mythology.title"
+    },
+    "description": {
+      "translate": "advancements.mobs_of_mythology.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "mobs_of_mythology:textures/block/bronze_block_cut_side.png"
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}
