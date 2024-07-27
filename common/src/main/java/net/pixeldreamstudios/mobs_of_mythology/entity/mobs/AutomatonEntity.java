@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -144,6 +145,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
                 return InteractionResult.SUCCESS;
             }
             if ((interactionResult = super.mobInteract(player, interactionHand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player)) return interactionResult;
+            this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
             if (getServer() != null) {
                 getServer().tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(isInSittingPose() ? "I will follow you." : "I will wait for you."), true)));
             }
@@ -162,6 +164,11 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
             this.navigation.stop();
             this.setTarget(null);
             this.setOrderedToSit(true);
+            this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
+            MinecraftServer server = player.getServer();
+            if (server != null) {
+                server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."), true)));
+            }
             ((Level)this.level()).broadcastEntityEvent(this, (byte)7);
             return InteractionResult.SUCCESS;
         } else {
