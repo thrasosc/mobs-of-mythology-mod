@@ -26,17 +26,17 @@ public class EntityRegistry {
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "automaton").toString()));
 
     public static final RegistrySupplier<EntityType<ChupacabraEntity>> CHUPACABRA = ENTITIES.register("chupacabra", () ->
-            EntityType.Builder.of(ChupacabraEntity::new, MobCategory.MONSTER)
+            EntityType.Builder.of(ChupacabraEntity::new, MobCategory.CREATURE)
                     .sized(1.25f, 1.0f)
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "chupacabra").toString()));
 
     public static final RegistrySupplier<EntityType<KoboldEntity>> KOBOLD = ENTITIES.register("kobold", () ->
-            EntityType.Builder.of(KoboldEntity::new, MobCategory.MONSTER)
+            EntityType.Builder.of(KoboldEntity::new, MobCategory.CREATURE)
                     .sized(0.75f, 1.75f)
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "kobold").toString()));
 
     public static final RegistrySupplier<EntityType<KoboldWarriorEntity>> KOBOLD_WARRIOR = ENTITIES.register("kobold_warrior", () ->
-            EntityType.Builder.of(KoboldWarriorEntity::new, MobCategory.MONSTER)
+            EntityType.Builder.of(KoboldWarriorEntity::new, MobCategory.CREATURE)
                     .sized(0.75f, 1.75f)
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "kobold_warrior").toString()));
 
@@ -51,10 +51,10 @@ public class EntityRegistry {
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "sporeling").toString()));
 
     private static void initSpawns() {
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD.get(), 50, 1, 3)));
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), 50, 1, 2)));
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DRY_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(DRAKE.get(), 10, 1, 1)));
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.TEMPERATE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CHUPACABRA.get(), 90, 1, 1)));
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(KOBOLD.get(), 70, 1, 3)));
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), 60, 1, 2)));
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DRY_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(DRAKE.get(), 10, 1, 1)));
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.TEMPERATE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(CHUPACABRA.get(), 50, 1, 1)));
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.MUSHROOM_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(SPORELING.get(), 8, 4, 8)));
     }
 
