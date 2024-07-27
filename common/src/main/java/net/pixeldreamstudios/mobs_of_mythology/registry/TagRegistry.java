@@ -17,7 +17,7 @@ public record TagRegistry() {
 
     // BIOME TAGS
     public static TagKey<Biome> WET_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_wet"));
-    public static TagKey<Biome> DRY_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_dry"));
+    public static TagKey<Biome> BADLANDS_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_badlands"));
     public static TagKey<Biome> MUSHROOM_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_mushroom"));
     public static TagKey<Biome> TEMPERATE_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_temperate"));
 }

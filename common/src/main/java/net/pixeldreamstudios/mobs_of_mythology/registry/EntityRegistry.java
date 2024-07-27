@@ -56,7 +56,7 @@ public class EntityRegistry {
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), 60, 2, 3)));
 
         SpawnPlacementsRegistry.register(EntityRegistry.DRAKE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DrakeEntity::checkMobSpawnRules);
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DRY_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(DRAKE.get(), 10, 1, 1)));
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.BADLANDS_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(DRAKE.get(), 10, 1, 1)));
 
         SpawnPlacementsRegistry.register(EntityRegistry.CHUPACABRA, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChupacabraEntity::checkMobSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.TEMPERATE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(CHUPACABRA.get(), 50, 1, 1)));
