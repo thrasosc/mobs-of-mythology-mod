@@ -49,17 +49,17 @@ public class EntityRegistry {
                     .build(new ResourceLocation(MobsOfMythology.MOD_ID, "sporeling").toString()));
 
     private static void initSpawns() {
-        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldEntity::checkMobSpawnRules);
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(KOBOLD.get(), 70, 2, 4)));
+        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldEntity::checkAnyLightMonsterSpawnRules);
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD.get(), 70, 2, 4)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD_WARRIOR, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldWarriorEntity::checkMobSpawnRules);
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), 60, 2, 3)));
+        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD_WARRIOR, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldWarriorEntity::checkAnyLightMonsterSpawnRules);
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), 60, 2, 3)));
 
         SpawnPlacementsRegistry.register(EntityRegistry.DRAKE, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DrakeEntity::checkMobSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.BADLANDS_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(DRAKE.get(), 10, 1, 1)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.CHUPACABRA, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChupacabraEntity::checkMobSpawnRules);
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.TEMPERATE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(CHUPACABRA.get(), 50, 1, 1)));
+        SpawnPlacementsRegistry.register(EntityRegistry.CHUPACABRA, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChupacabraEntity::checkAnyLightMonsterSpawnRules);
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.TEMPERATE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CHUPACABRA.get(), 50, 1, 1)));
 
         SpawnPlacementsRegistry.register(EntityRegistry.SPORELING, SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SporelingEntity::checkMobSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.MUSHROOM_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(SPORELING.get(), 16, 4, 6)));
