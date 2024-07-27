@@ -45,6 +45,7 @@
   "config.mobs_of_mythology.option.koboldWarriorArmor": "Kobold Warrior Armor",
   "config.mobs_of_mythology.option.drakeHealth": "Drake Health",
   "config.mobs_of_mythology.option.drakeAttackDamage": "Drake Attack Damage",
+  "config.mobs_of_mythology.option.mushroomHealth": "Mushroom Health",
   "config.mobs_of_mythology.option.redMushroomLines": "Red Mushroom Lines",
   "config.mobs_of_mythology.option.brownMushroomLines": "Brown Mushroom Lines"
 }
