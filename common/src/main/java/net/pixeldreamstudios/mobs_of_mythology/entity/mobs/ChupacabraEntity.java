@@ -1,7 +1,7 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
+import mod.azure.azurelib.animatable.GeoEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;

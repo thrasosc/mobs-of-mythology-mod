@@ -6,7 +6,5 @@
   "ingredient": {
     "item": "mobs_of_mythology:chupacabra_meat"
   },
-  "result": {
-    "id": "mobs_of_mythology:cooked_chupacabra_meat"
-  }
+  "result": "mobs_of_mythology:cooked_chupacabra_meat"
 }

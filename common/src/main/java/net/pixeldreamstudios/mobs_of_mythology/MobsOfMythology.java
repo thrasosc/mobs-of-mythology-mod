@@ -1,9 +1,9 @@
 package net.pixeldreamstudios.mobs_of_mythology;
 
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
-import mod.azure.azurelib.common.internal.common.AzureLib;
-import mod.azure.azurelib.common.internal.common.AzureLibMod;
-import mod.azure.azurelib.common.internal.common.config.format.ConfigFormats;
+import mod.azure.azurelib.AzureLib;
+import mod.azure.azurelib.AzureLibMod;
+import mod.azure.azurelib.config.format.ConfigFormats;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.*;
 import net.pixeldreamstudios.mobs_of_mythology.registry.*;
 import org.slf4j.Logger;

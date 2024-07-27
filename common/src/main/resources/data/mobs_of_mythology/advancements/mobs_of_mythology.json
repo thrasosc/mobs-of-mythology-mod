@@ -1,7 +1,7 @@
 {
   "display": {
     "icon": {
-      "id": "mobs_of_mythology:automaton_head"
+      "item": "mobs_of_mythology:automaton_head"
     },
     "title": {
       "translate": "advancements.mobs_of_mythology.title"
@@ -15,7 +15,7 @@
     "background": "mobs_of_mythology:textures/block/bronze_block_cut_side.png"
   },
   "criteria": {
-    "requirement": {
+    "tick": {
       "trigger": "minecraft:tick"
     }
   }

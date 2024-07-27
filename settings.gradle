@@ -11,4 +11,3 @@ rootProject.name = 'mobs_of_mythology'
 
 include 'common'
 include 'fabric'
-include 'neoforge'

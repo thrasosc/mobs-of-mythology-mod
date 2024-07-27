@@ -2,6 +2,7 @@ package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EntityType;
@@ -34,14 +35,14 @@ import java.util.List;
 public class KoboldWarriorEntity extends AbstractKoboldEntity {
     public KoboldWarriorEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_MEDIUM);
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemRegistry.KOBOLD_SPEAR, 1));
+        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemRegistry.KOBOLD_SPEAR.get(), 1));
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         KoboldWarriorVariant variant = Util.getRandom(KoboldWarriorVariant.values(), this.random);
         setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     public static AttributeSupplier.Builder createAttributes() {

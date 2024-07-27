@@ -4,10 +4,10 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import mod.azure.azurelib.common.api.client.renderer.DynamicGeoEntityRenderer;
-import mod.azure.azurelib.common.api.client.renderer.layer.BlockAndItemGeoLayer;
-import mod.azure.azurelib.common.internal.common.cache.object.BakedGeoModel;
-import mod.azure.azurelib.common.internal.common.cache.object.GeoBone;
+import mod.azure.azurelib.cache.object.BakedGeoModel;
+import mod.azure.azurelib.cache.object.GeoBone;
+import mod.azure.azurelib.renderer.DynamicGeoEntityRenderer;
+import mod.azure.azurelib.renderer.layer.BlockAndItemGeoLayer;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.KoboldWarriorModel;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldWarriorVariant;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,11 +31,11 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
     public static final Map<KoboldWarriorVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldWarriorVariant.class), (map) -> {
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_1,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_1.png"));
+                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_1.png"));
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_2,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_2.png"));
+                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_2.png"));
                 map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_3,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_3.png"));
+                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_3.png"));
             });
     public KoboldWarriorRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new KoboldWarriorModel());

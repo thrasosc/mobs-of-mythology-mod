@@ -24,9 +24,9 @@ public abstract class AbstractKoboldEntity extends AbstractMythMonsterEntity imp
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ID_TYPE_VARIANT, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     protected int getTypeVariant() {

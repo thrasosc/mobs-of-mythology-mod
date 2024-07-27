@@ -1,20 +1,20 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.client.model;
 
-import mod.azure.azurelib.common.api.client.model.GeoModel;
-import mod.azure.azurelib.common.internal.client.model.data.EntityModelData;
-import mod.azure.azurelib.common.internal.common.constant.DataTickets;
+import mod.azure.azurelib.constant.DataTickets;
 import mod.azure.azurelib.core.animatable.model.CoreGeoBone;
 import mod.azure.azurelib.core.animation.AnimationState;
+import mod.azure.azurelib.model.GeoModel;
+import mod.azure.azurelib.model.data.EntityModelData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldWarriorRenderer;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 
 public class KoboldWarriorModel extends GeoModel<KoboldWarriorEntity> {
     @Override
     public ResourceLocation getModelResource(KoboldWarriorEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/kobold_warrior.geo.json");
+        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/kobold_warrior.geo.json");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class KoboldWarriorModel extends GeoModel<KoboldWarriorEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(KoboldWarriorEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/kobold_warrior.animation.json");
+        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/kobold_warrior.animation.json");
     }
 
     @Override

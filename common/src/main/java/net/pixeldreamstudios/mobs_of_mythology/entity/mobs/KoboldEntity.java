@@ -40,23 +40,23 @@ public class KoboldEntity extends AbstractKoboldEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ITEM_STACK, ItemStack.EMPTY);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ITEM_STACK, ItemStack.EMPTY);
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         if (!getItemStack().isEmpty()) {
-            nbt.put("ItemStack", this.getItemStack().save(this.registryAccess()));
+            nbt.put("ItemStack", this.getItemStack().save(new CompoundTag()));
         }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        this.setItemStack(ItemStack.parse(this.registryAccess(), nbt.getCompound("ItemStack")).orElse(ItemStack.EMPTY));
+        this.setItemStack(ItemStack.of(nbt.getCompound("ItemStack")));
     }
 
     public void setItemStack(ItemStack itemStack) {
@@ -70,10 +70,10 @@ public class KoboldEntity extends AbstractKoboldEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         KoboldVariant variant = Util.getRandom(KoboldVariant.values(), this.random);
         setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
+import mod.azure.azurelib.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager;
@@ -8,7 +8,6 @@ import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,7 +15,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +27,6 @@ import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -55,10 +52,10 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData, @Nullable CompoundTag compoundTag) {
         DrakeVariant variant = Util.getRandom(DrakeVariant.values(), this.random);
         setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData, compoundTag);
     }
 
     @Nullable
@@ -73,8 +70,9 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
-    protected void applyTamingSideEffects() {
-        if (this.isTame()) {
+    public void setTame(boolean bl) {
+        super.setTame(bl);
+        if (bl) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.drakeHealth * 2);
             this.setHealth((float) (MobsOfMythology.config.drakeHealth * 2));
         } else {
@@ -83,9 +81,9 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ID_TYPE_VARIANT, 0);
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(DATA_ID_TYPE_VARIANT, 0);
     }
 
     @Override
@@ -102,7 +100,8 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(ItemTags.MEAT);
+        Item item = itemStack.getItem();
+        return item.isEdible() && item.getFoodProperties().isMeat();
     }
 
     public DrakeVariant getVariant() {
@@ -131,7 +130,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
@@ -188,34 +187,41 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         Item item = itemStack.getItem();
-        if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
+        if (((Level)this.level()).isClientSide) {
             boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
             return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
-        } else if (this.isTame()) {
+        }
+        if (this.isTame()) {
+            InteractionResult interactionResult;
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                itemStack.consume(1, player);
-                FoodProperties foodProperties = (FoodProperties)itemStack.get(DataComponents.FOOD);
-                float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
-                this.heal(2.0F * f);
-                return InteractionResult.sidedSuccess(this.level().isClientSide());
+                if (!player.getAbilities().instabuild) {
+                    itemStack.shrink(1);
+                }
+                this.heal(2.0f * item.getFoodProperties().getNutrition());
+                return InteractionResult.SUCCESS;
             }
-            InteractionResult interactionResult = super.mobInteract(player, interactionHand);
-            if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
-                this.setOrderedToSit(!this.isOrderedToSit());
-                this.jumping = false;
-                this.navigation.stop();
-                this.setTarget((LivingEntity)null);
-                return InteractionResult.SUCCESS_NO_ITEM_USED;
-            } else {
-                return interactionResult;
-            }
-        } else if (itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) {
-            itemStack.consume(1, player);
-            this.tryToTame(player);
+            if ((interactionResult = super.mobInteract(player, interactionHand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player)) return interactionResult;
+            this.setOrderedToSit(!this.isOrderedToSit());
+            this.jumping = false;
+            this.navigation.stop();
+            this.setTarget(null);
+            return InteractionResult.SUCCESS;
+        }
+        if (!itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) return super.mobInteract(player, interactionHand);
+        if (!player.getAbilities().instabuild) {
+            itemStack.shrink(1);
+        }
+        if (this.random.nextInt(3) == 0) {
+            this.tame(player);
+            this.navigation.stop();
+            this.setTarget(null);
+            this.setOrderedToSit(true);
+            ((Level)this.level()).broadcastEntityEvent(this, (byte)7);
             return InteractionResult.SUCCESS;
         } else {
-            return super.mobInteract(player, interactionHand);
+            ((Level)this.level()).broadcastEntityEvent(this, (byte)6);
         }
+        return InteractionResult.SUCCESS;
     }
 
     private void tryToTame(Player player) {

@@ -1,20 +1,20 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.client.model;
 
-import mod.azure.azurelib.common.api.client.model.GeoModel;
-import mod.azure.azurelib.common.internal.client.model.data.EntityModelData;
-import mod.azure.azurelib.common.internal.common.constant.DataTickets;
+import mod.azure.azurelib.constant.DataTickets;
 import mod.azure.azurelib.core.animatable.model.CoreGeoBone;
 import mod.azure.azurelib.core.animation.AnimationState;
+import mod.azure.azurelib.model.GeoModel;
+import mod.azure.azurelib.model.data.EntityModelData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldRenderer;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 
 public class KoboldModel extends GeoModel<KoboldEntity> {
     @Override
     public ResourceLocation getModelResource(KoboldEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/kobold.geo.json");
+        return new ResourceLocation(MobsOfMythology.MOD_ID, "geo/entity/kobold.geo.json");
     }
 
     @Override
@@ -24,7 +24,7 @@ public class KoboldModel extends GeoModel<KoboldEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(KoboldEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/kobold.animation.json");
+        return new ResourceLocation(MobsOfMythology.MOD_ID, "animations/entity/kobold.animation.json");
     }
 
     @Override

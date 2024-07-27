@@ -10,12 +10,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.AutomatonEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.DrakeEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.SporelingEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.ChupacabraEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.*;
 
 public class EntityRegistry {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.ENTITY_TYPE);
@@ -23,32 +18,32 @@ public class EntityRegistry {
     public static final RegistrySupplier<EntityType<AutomatonEntity>> AUTOMATON = ENTITIES.register("automaton", () ->
             EntityType.Builder.of(AutomatonEntity::new, MobCategory.CREATURE)
                     .sized(1.5f, 2.9f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "automaton").toString()));
+                    .build(new ResourceLocation(MobsOfMythology.MOD_ID, "automaton").toString()));
 
     public static final RegistrySupplier<EntityType<ChupacabraEntity>> CHUPACABRA = ENTITIES.register("chupacabra", () ->
             EntityType.Builder.of(ChupacabraEntity::new, MobCategory.MONSTER)
                     .sized(1.25f, 1.0f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "chupacabra").toString()));
+                    .build(new ResourceLocation(MobsOfMythology.MOD_ID, "chupacabra").toString()));
 
     public static final RegistrySupplier<EntityType<KoboldEntity>> KOBOLD = ENTITIES.register("kobold", () ->
             EntityType.Builder.of(KoboldEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 1.75f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "kobold").toString()));
+                    .build(new ResourceLocation(MobsOfMythology.MOD_ID, "kobold").toString()));
 
     public static final RegistrySupplier<EntityType<KoboldWarriorEntity>> KOBOLD_WARRIOR = ENTITIES.register("kobold_warrior", () ->
             EntityType.Builder.of(KoboldWarriorEntity::new, MobCategory.MONSTER)
                     .sized(0.75f, 1.75f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "kobold_warrior").toString()));
+                    .build(new ResourceLocation(MobsOfMythology.MOD_ID, "kobold_warrior").toString()));
 
     public static final RegistrySupplier<EntityType<DrakeEntity>> DRAKE = ENTITIES.register("drake", () ->
             EntityType.Builder.of(DrakeEntity::new, MobCategory.CREATURE)
                     .sized(1.25f, 1.0f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "drake").toString()));
+                    .build(new ResourceLocation(MobsOfMythology.MOD_ID, "drake").toString()));
 
     public static final RegistrySupplier<EntityType<SporelingEntity>> SPORELING = ENTITIES.register("sporeling", () ->
             EntityType.Builder.of(SporelingEntity::new, MobCategory.CREATURE)
                     .sized(1.0f, 0.8f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "sporeling").toString()));
+                    .build(new ResourceLocation(MobsOfMythology.MOD_ID, "sporeling").toString()));
 
     private static void initSpawns() {
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD.get(), 50, 1, 3)));

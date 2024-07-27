@@ -6,12 +6,12 @@
     }
   },
   "pattern": [
-    "###",
-    "###",
-    "###"
+    " # ",
+    "# #",
+    " # "
   ],
   "result": {
     "count": 1,
-    "id": "mobs_of_mythology:bronze_block"
+    "item": "mobs_of_mythology:gear"
   }
 }

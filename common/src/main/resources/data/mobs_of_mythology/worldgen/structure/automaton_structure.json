@@ -1,6 +1,6 @@
 {
   "type": "minecraft:jigsaw",
-  "biomes": "#c:is_mountain",
+  "biomes": "#c:mountain",
   "step": "surface_structures",
   "spawn_overrides": {},
   "start_pool": "mobs_of_mythology:automaton_structure",

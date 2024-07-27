@@ -4,10 +4,10 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import mod.azure.azurelib.common.api.client.renderer.DynamicGeoEntityRenderer;
-import mod.azure.azurelib.common.api.client.renderer.layer.BlockAndItemGeoLayer;
-import mod.azure.azurelib.common.internal.common.cache.object.BakedGeoModel;
-import mod.azure.azurelib.common.internal.common.cache.object.GeoBone;
+import mod.azure.azurelib.cache.object.BakedGeoModel;
+import mod.azure.azurelib.cache.object.GeoBone;
+import mod.azure.azurelib.renderer.DynamicGeoEntityRenderer;
+import mod.azure.azurelib.renderer.layer.BlockAndItemGeoLayer;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,8 +16,8 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.KoboldModel;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,9 +31,9 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     public static final Map<KoboldVariant, ResourceLocation> LOCATION_BY_VARIANT =
             Util.make(Maps.newEnumMap(KoboldVariant.class), (map) -> {
                 map.put(KoboldVariant.KOBOLD,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold.png"));
+                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold.png"));
                 map.put(KoboldVariant.KOBOLD_CLOTHED,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
+                        new ResourceLocation(MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
             });
 
     public KoboldRenderer(EntityRendererProvider.Context ctx) {
