@@ -32,6 +32,7 @@ public class ItemRegistry {
     public static final RegistrySupplier<Item> KOBOLD_SPEAR = ITEMS.register("kobold_spear", () -> new SwordItem(Tiers.IRON, new Item.Properties().attributes(SwordItem.createAttributes(Tiers.IRON, 3, -2.0F)).rarity(Rarity.UNCOMMON).arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
 
     // MISCELLANEOUS
+    public static final RegistrySupplier<Item> AUTOMATON_HEAD = ITEMS.register("automaton_head", () -> new Item(new Item.Properties().stacksTo(1)));
     public static final RegistrySupplier<Item> BRONZE_INGOT = ITEMS.register("bronze_ingot", () -> new Item(new Item.Properties().stacksTo(64).arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
     public static final RegistrySupplier<Item> GEAR = ITEMS.register("gear", () -> new Item(new Item.Properties().stacksTo(64).arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
 

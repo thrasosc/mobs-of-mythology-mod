@@ -15,7 +15,7 @@ public class TabRegistry {
             "mobs_of_mythology_tab", // Tab ID
             () -> CreativeTabRegistry.create(
                     Component.translatable("category.mobs_of_mythology"), // Tab Name
-                    () -> new ItemStack(ItemRegistry.GEAR.get()) // Icon
+                    () -> new ItemStack(ItemRegistry.AUTOMATON_HEAD.get()) // Icon
             )
     );
 
