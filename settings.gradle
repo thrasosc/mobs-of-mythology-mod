@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'mobs_of_mythology'
+rootProject.name = 'Mobs of Mythology 1.21'
 
 include 'common'
 include 'fabric'
