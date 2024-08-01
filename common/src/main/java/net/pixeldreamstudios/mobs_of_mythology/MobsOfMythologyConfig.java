@@ -23,12 +23,18 @@ public class MobsOfMythologyConfig {
     public double chupacabraAttackDamage = 6.0;
     @Configurable
     @Configurable.Synchronized
+    public int chupacabraSpawnWeight = 30;
+    @Configurable
+    @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
     public double koboldHealth = 20.0;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
     public double koboldAttackDamage = 2.5;
+    @Configurable
+    @Configurable.Synchronized
+    public int koboldSpawnWeight = 70;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
@@ -43,6 +49,9 @@ public class MobsOfMythologyConfig {
     public double koboldWarriorAttackDamage = 5.5;
     @Configurable
     @Configurable.Synchronized
+    public int koboldWarriorSpawnWeight = 60;
+    @Configurable
+    @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
     public double drakeHealth = 30.0;
     @Configurable
@@ -51,11 +60,14 @@ public class MobsOfMythologyConfig {
     public double drakeAttackDamage = 5.0;
     @Configurable
     @Configurable.Synchronized
-    @Configurable.DecimalRange(min = 1)
-    public double mushroomHealth = 6.0;
+    public int drakeSpawnWeight = 10;
     @Configurable
     @Configurable.Synchronized
-    public String[] redMushroomLines = {
+    @Configurable.DecimalRange(min = 1)
+    public double sporelingHealth = 6.0;
+    @Configurable
+    @Configurable.Synchronized
+    public String[] redSporelingLines = {
             "playerGreeting",
             "Seen any smurfs lately?",
             "I hate Gargamel...",
@@ -75,7 +87,7 @@ public class MobsOfMythologyConfig {
     };
     @Configurable
     @Configurable.Synchronized
-    public String[] brownMushroomLines = {
+    public String[] brownSporelingLines = {
             "Why do I feel like a fun-guy in a no-fun zone?",
             "You want a piece of my spore attitude? Take a hike!",
             "Life's a spore-t, and then you decompose.",
@@ -95,4 +107,7 @@ public class MobsOfMythologyConfig {
             "Let's get blazed! Go bring the blaze rod.",
             "Is it 4:20 already?"
     };
+    @Configurable
+    @Configurable.Synchronized
+    public int sporelingSpawnWeight = 16;
 }

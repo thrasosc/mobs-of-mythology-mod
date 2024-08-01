@@ -38,14 +38,19 @@
   "config.mobs_of_mythology.option.automatonAttackDamage": "Automaton Attack Damage",
   "config.mobs_of_mythology.option.chupacabraHealth": "Chupacabra Health",
   "config.mobs_of_mythology.option.chupacabraAttackDamage": "Chupacabra Attack Damage",
+  "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Chupacabra Spawn Weight",
   "config.mobs_of_mythology.option.koboldHealth": "Kobold Health",
   "config.mobs_of_mythology.option.koboldAttackDamage": "Kobold Attack Damage",
+  "config.mobs_of_mythology.option.koboldSpawnWeight": "Kobold Spawn Weight",
   "config.mobs_of_mythology.option.koboldWarriorHealth": "Kobold Warrior Health",
   "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Kobold Warrior Attack Damage",
   "config.mobs_of_mythology.option.koboldWarriorArmor": "Kobold Warrior Armor",
+  "config.mobs_of_mythology.option.koboldWarriorSpawnWeight": "Kobold Warrior Spawn Weight",
   "config.mobs_of_mythology.option.drakeHealth": "Drake Health",
   "config.mobs_of_mythology.option.drakeAttackDamage": "Drake Attack Damage",
-  "config.mobs_of_mythology.option.mushroomHealth": "Mushroom Health",
-  "config.mobs_of_mythology.option.redMushroomLines": "Red Mushroom Lines",
-  "config.mobs_of_mythology.option.brownMushroomLines": "Brown Mushroom Lines"
+  "config.mobs_of_mythology.option.drakeSpawnWeight": "Drake Spawn Weight",
+  "config.mobs_of_mythology.option.sporelingHealth": "Sporeling Health",
+  "config.mobs_of_mythology.option.redSporelingLines": "Red Sporeling Lines",
+  "config.mobs_of_mythology.option.brownSporelingLines": "Brown Sporeling Lines",
+  "config.mobs_of_mythology.option.sporelingSpawnWeight": "Sporeling Spawn Weight"
 }
