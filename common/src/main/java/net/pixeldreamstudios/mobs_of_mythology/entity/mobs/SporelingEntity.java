@@ -62,7 +62,7 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
 
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.mushroomHealth)
+                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.sporelingHealth)
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
@@ -155,7 +155,7 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
         if (getVariant().equals(SporelingVariant.RED)) {
             interactSound = SoundEvents.VILLAGER_YES;
             //TODO Make this data-driven
-            lines = MobsOfMythology.config.redMushroomLines;
+            lines = MobsOfMythology.config.redSporelingLines;
             greetings = Arrays.asList(
                     "Hello there, ",
                     "Hey there, ",
@@ -167,7 +167,7 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
             );
         } else {
             interactSound = SoundEvents.VILLAGER_NO;
-            lines = MobsOfMythology.config.brownMushroomLines;
+            lines = MobsOfMythology.config.brownSporelingLines;
         }
         currentLine = Component.literal(lines[random.nextInt(lines.length)]);
         if (talk) {
