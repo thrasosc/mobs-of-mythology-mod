@@ -63,24 +63,15 @@ remapJar {
     input.set shadowJar.archiveFile
 }
 
-task renameJarForPublication(type: Zip, dependsOn: remapJar) {
-    from remapJar.archiveFile.map { zipTree(it) }
-    metadataCharset "UTF-8"
-    archiveExtension = "jar"
-    destinationDirectory = base.libsDirectory
-    archiveClassifier = project.name
-}
-
-assemble.dependsOn renameJarForPublication
-
 unifiedPublishing {
     project {
+        displayName = "Mobs of Mythology $project.version"
         gameVersions = ["1.21"]
         gameLoaders = ["fabric"]
         releaseType = "release" // Optional, use "release", "beta" or "alpha"
-        changelog = "test"
+        changelog = rootProject.file("changelog.md").text
 
-        mainPublication renameJarForPublication // Declares the publicated jar
+        mainPublication tasks.remapJar // Declares the publicated jar
 
         relations {
             depends {

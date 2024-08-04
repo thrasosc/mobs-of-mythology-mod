@@ -61,10 +61,11 @@ remapJar {
 
 unifiedPublishing {
     project {
+        displayName = "Mobs of Mythology $project.version"
         gameVersions = ["1.21"]
         gameLoaders = ["neoforge"]
         releaseType = "release" // Optional, use "release", "beta" or "alpha"
-        changelog = "test"
+        changelog = rootProject.file("changelog.md").text
 
         mainPublication tasks.remapJar // Declares the publicated jar
 
