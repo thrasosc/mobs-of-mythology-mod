@@ -9,6 +9,8 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
@@ -110,8 +112,14 @@ public class KoboldEntity extends AbstractKoboldEntity {
                             target.getItemInHand(InteractionHand.MAIN_HAND).shrink(getItemStack().getCount());
                         }),
                 new FleeTarget<>()
-                        .speedModifier(2.0f)
+                        .fleeDistance(10)
+                        .speedModifier(MobsOfMythology.config.koboldFleeSpeedMod)
                         .startCondition(mob -> !getItemStack().isEmpty() || BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this)))
+                        .whenStarting(pathfinderMob -> {
+                            if (!getItemStack().isEmpty())
+                                this.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 255, false, false, false));
+                        })
+
         );
     }
 

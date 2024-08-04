@@ -41,6 +41,7 @@
   "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Chupacabra Spawn Weight",
   "config.mobs_of_mythology.option.koboldHealth": "Kobold Health",
   "config.mobs_of_mythology.option.koboldAttackDamage": "Kobold Attack Damage",
+  "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Kobold Flee Speed Modifier",
   "config.mobs_of_mythology.option.koboldSpawnWeight": "Kobold Spawn Weight",
   "config.mobs_of_mythology.option.koboldWarriorHealth": "Kobold Warrior Health",
   "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Kobold Warrior Attack Damage",

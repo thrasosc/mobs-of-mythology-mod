@@ -34,6 +34,10 @@ public class MobsOfMythologyConfig {
     public double koboldAttackDamage = 2.5;
     @Configurable
     @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 1.0f)
+    public float koboldFleeSpeedMod = 2.0f;
+    @Configurable
+    @Configurable.Synchronized
     public int koboldSpawnWeight = 70;
     @Configurable
     @Configurable.Synchronized
