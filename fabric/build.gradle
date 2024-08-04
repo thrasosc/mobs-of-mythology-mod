@@ -1,5 +1,6 @@
 plugins {
     id 'com.github.johnrengelman.shadow'
+    id "me.shedaniel.unified-publishing"
 }
 
 architectury {
@@ -60,4 +61,56 @@ shadowJar {
 
 remapJar {
     input.set shadowJar.archiveFile
+}
+
+task renameJarForPublication(type: Zip, dependsOn: remapJar) {
+    from remapJar.archiveFile.map { zipTree(it) }
+    metadataCharset "UTF-8"
+    archiveExtension = "jar"
+    destinationDirectory = base.libsDirectory
+    archiveClassifier = project.name
+}
+
+assemble.dependsOn renameJarForPublication
+
+unifiedPublishing {
+    project {
+        gameVersions = ["1.21"]
+        gameLoaders = ["fabric"]
+        releaseType = "release" // Optional, use "release", "beta" or "alpha"
+        changelog = "test"
+
+        mainPublication renameJarForPublication // Declares the publicated jar
+
+        relations {
+            depends {
+                curseforge = "architectury-api"
+                modrinth = "architectury-api"
+            }
+            depends {
+                curseforge = "azurelib"
+                modrinth = "azurelib"
+            }
+            depends {
+                curseforge = "smartbrainlib"
+                modrinth = "smartbrainlib"
+            }
+        }
+
+        var cfToken = System.getenv("CURSEFORGE_TOKEN")
+        if (cfToken != null) {
+            curseforge {
+                token = cfToken
+                id = "699989" // Required, must be a string, ID of CurseForge project
+            }
+        }
+
+        var mrToken = System.getenv("MODRINTH_TOKEN")
+        if (mrToken != null) {
+            modrinth {
+                token = mrToken
+                id = "avrKhvsK" // Required, must be a string, ID of Modrinth project
+            }
+        }
+    }
 }
