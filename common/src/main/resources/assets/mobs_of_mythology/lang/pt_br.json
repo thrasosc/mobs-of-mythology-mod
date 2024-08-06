@@ -1,0 +1,53 @@
+{
+  "category.mobs_of_mythology": "Mobs of Mythology",
+
+  "advancements.mobs_of_mythology.title": "Mobs of Mythology",
+  "advancements.mobs_of_mythology.description": "Um mundo místico!",
+
+  "entity.mobs_of_mythology.automaton": "Autômato",
+  "entity.mobs_of_mythology.kobold": "Kobold",
+  "entity.mobs_of_mythology.kobold_warrior": "Guerreiro Kobold",
+  "entity.mobs_of_mythology.chupacabra": "Chupa-cabra",
+  "entity.mobs_of_mythology.drake": "Drake",
+  "entity.mobs_of_mythology.sporeling": "Esporos",
+
+  "item.mobs_of_mythology.automaton_spawn_egg": "Ovo gerador de Autômato",
+  "item.mobs_of_mythology.kobold_spawn_egg": "Ovo gerador de Kobold",
+  "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Ovo gerador de guerreiro Kobold",
+  "item.mobs_of_mythology.chupacabra_spawn_egg": "Ovo gerador de Chupa-cabra",
+  "item.mobs_of_mythology.wendigo_spawn_egg": "Ovo gerador de Wendigo",
+  "item.mobs_of_mythology.drake_spawn_egg": "Ovo gerador de Drake",
+  "item.mobs_of_mythology.sporeling_spawn_egg": "Ovo gerador de Esporos",
+
+  "item.mobs_of_mythology.automaton_head": "Cabeça de Autômato",
+  "item.mobs_of_mythology.kobold_spear": "Lança Kobold",
+  "item.mobs_of_mythology.bronze_ingot": "Barra de bronze",
+  "item.mobs_of_mythology.chupacabra_meat": "Carne crua de Chupa-cabra",
+  "item.mobs_of_mythology.cooked_chupacabra_meat": "Carne cozida de Chupa-cabra",
+  "item.mobs_of_mythology.gear": "Engrenagem de Autômato",
+
+  "block.mobs_of_mythology.bronze_block": "Bloco de bronze",
+  "block.mobs_of_mythology.cut_bronze_block": "Bloco de bronze talhado",
+
+  "config.screen.mobs_of_mythology": "Opções de Mobs of Mythology",
+  "config.mobs_of_mythology.option.automatonHealth": "Vida do Autômato",
+  "config.mobs_of_mythology.option.automatonAttackDamage": "Dano de ataque do Autômato",
+  "config.mobs_of_mythology.option.chupacabraHealth": "Vida do Chupa-cabra",
+  "config.mobs_of_mythology.option.chupacabraAttackDamage": "Dano de ataque do Chupa-cabra",
+  "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Taxa de geração de Chupa-cabra",
+  "config.mobs_of_mythology.option.koboldHealth": "Vida do Kobold",
+  "config.mobs_of_mythology.option.koboldAttackDamage": "Dano de ataque do Kobold",
+  "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Modificador de velocidade de fuga do Kobold",
+  "config.mobs_of_mythology.option.koboldSpawnWeight": "Taxa de geração de Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorHealth": "Vida do Guerreiro Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Dano de ataque do Guerreiro Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorArmor": "Armadura do Guerreiro Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorSpawnWeight": "Taxa de geração de Guerreiro Kobold",
+  "config.mobs_of_mythology.option.drakeHealth": "Vida do Drake",
+  "config.mobs_of_mythology.option.drakeAttackDamage": "Dano de ataque do Drake",
+  "config.mobs_of_mythology.option.drakeSpawnWeight": "Taxa de geração de Drake",
+  "config.mobs_of_mythology.option.sporelingHealth": "Vida dos Esporos",
+  "config.mobs_of_mythology.option.redSporelingLines": "Falas dos Esporos Vermelhos",
+  "config.mobs_of_mythology.option.brownSporelingLines": "Falhas dos Esporos Marrons",
+  "config.mobs_of_mythology.option.sporelingSpawnWeight": "Taxa de geração de Esporos"
+}

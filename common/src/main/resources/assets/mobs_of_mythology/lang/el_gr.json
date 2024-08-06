@@ -1,0 +1,53 @@
+{
+  "category.mobs_of_mythology": "Mobs of Mythology",
+
+  "advancements.mobs_of_mythology.title": "Mobs of Mythology",
+  "advancements.mobs_of_mythology.description": "Ένας μυθικός κόσμος!",
+
+  "entity.mobs_of_mythology.automaton": "Ρομπότ",
+  "entity.mobs_of_mythology.kobold": "Καλικάντζαρος",
+  "entity.mobs_of_mythology.kobold_warrior": "Καλικάντζαρος Πολεμιστής",
+  "entity.mobs_of_mythology.chupacabra": "Τσουπακαμπρά",
+  "entity.mobs_of_mythology.drake": "Δράκος",
+  "entity.mobs_of_mythology.sporeling": "Σπορίδιο",
+
+  "item.mobs_of_mythology.automaton_spawn_egg": "Αυγό Γέννησης Ρομπότ",
+  "item.mobs_of_mythology.kobold_spawn_egg": "Αυγό Γέννησης Καλικάντζαρου",
+  "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Αυγό Γέννησης Καλικάντζαρου Πολεμιστή",
+  "item.mobs_of_mythology.chupacabra_spawn_egg": "Αυγό Γέννησης Τσουπακάμπρα",
+  "item.mobs_of_mythology.wendigo_spawn_egg": "Αυγό Γέννησης Γουέντιγκο",
+  "item.mobs_of_mythology.drake_spawn_egg": "Αυγό Γέννησης Δράκου",
+  "item.mobs_of_mythology.sporeling_spawn_egg": "Αυγό Γέννησης Σπορίδιου",
+
+  "item.mobs_of_mythology.automaton_head": "Κεφάλι Ρομπότ",
+  "item.mobs_of_mythology.kobold_spear": "Ακόντιο Καλικάντζαρου",
+  "item.mobs_of_mythology.bronze_ingot": "Ράβδος Ορείχαλκου",
+  "item.mobs_of_mythology.chupacabra_meat": "Ωμό Κρέας Τσουπακάμπρα",
+  "item.mobs_of_mythology.cooked_chupacabra_meat": "Σουβλάκι Τσουπακάμπρα",
+  "item.mobs_of_mythology.gear": "Γρανάζι Ρομπότ",
+
+  "block.mobs_of_mythology.bronze_block": "Κύβος Ορείχαλκου",
+  "block.mobs_of_mythology.cut_bronze_block": "Κομμένος Ορείχαλκος",
+
+  "config.screen.mobs_of_mythology": "Ρυθμίσεις Mobs of Mythology",
+  "config.mobs_of_mythology.option.automatonHealth": "Ζωή Αυτόματου",
+  "config.mobs_of_mythology.option.automatonAttackDamage": "Δύναμη Αυτόματου",
+  "config.mobs_of_mythology.option.chupacabraHealth": "Ζωή Τσουπακάμπρα",
+  "config.mobs_of_mythology.option.chupacabraAttackDamage": "Δύναμη Τσουπακάμπρα",
+  "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Ρυθμός Γέννησης Τσουπακάμπρα",
+  "config.mobs_of_mythology.option.koboldHealth": "Ζωή Καλικάντζαρου",
+  "config.mobs_of_mythology.option.koboldAttackDamage": "Δύναμη Καλικάντζαρου",
+  "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Τροποποιητής Ταχύτητας Διαφυγής Καλικάντζαρου",
+  "config.mobs_of_mythology.option.koboldSpawnWeight": "Ρυθμός Γέννησης Καλικάντζαρου",
+  "config.mobs_of_mythology.option.koboldWarriorHealth": "Ζωή Καλικάντζαρου Πολεμιστή",
+  "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Δύναμη Καλικάντζαρου Πολεμιστή",
+  "config.mobs_of_mythology.option.koboldWarriorArmor": "Αντίσταση Καλικάντζαρου Πολεμιστή",
+  "config.mobs_of_mythology.option.koboldWarriorSpawnWeight": "Ρυθμός Γέννησης Καλικάντζαρου Πολεμιστή",
+  "config.mobs_of_mythology.option.drakeHealth": "Ζωή Δράκου",
+  "config.mobs_of_mythology.option.drakeAttackDamage": "Δύναμη Δράκου",
+  "config.mobs_of_mythology.option.drakeSpawnWeight": "Ρυθμός Γέννησης Δράκου",
+  "config.mobs_of_mythology.option.sporelingHealth": "Ζωή Σπορίδιου",
+  "config.mobs_of_mythology.option.redSporelingLines": "Λόγια Κόκκινου Σπορίδιου",
+  "config.mobs_of_mythology.option.brownSporelingLines": "Λόγια Καφέ Σπορίδιου",
+  "config.mobs_of_mythology.option.sporelingSpawnWeight": "Ρυθμός Γέννησης Σπορίδιου"
+}

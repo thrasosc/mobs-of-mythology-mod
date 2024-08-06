@@ -1,0 +1,53 @@
+{
+  "category.mobs_of_mythology": "Mobs of Mythology",
+
+  "advancements.mobs_of_mythology.title": "Mobs of Mythology",
+  "advancements.mobs_of_mythology.description": "Một thế giới thần thoại!",
+
+  "entity.mobs_of_mythology.automaton": "Máy tự động",
+  "entity.mobs_of_mythology.kobold": "Kobold",
+  "entity.mobs_of_mythology.kobold_warrior": "Chiến binh Kobold",
+  "entity.mobs_of_mythology.chupacabra": "Quỷ hút máu dê",
+  "entity.mobs_of_mythology.drake": "Drake",
+  "entity.mobs_of_mythology.sporeling": "Bào tử con",
+
+  "item.mobs_of_mythology.automaton_spawn_egg": "Trứng máy tự động",
+  "item.mobs_of_mythology.kobold_spawn_egg": "Trứng Kobold",
+  "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Trứng chiến binh Kobold",
+  "item.mobs_of_mythology.chupacabra_spawn_egg": "Trứng Quỷ hút máu dê",
+  "item.mobs_of_mythology.wendigo_spawn_egg": "Trứng Wendigo",
+  "item.mobs_of_mythology.drake_spawn_egg": "Trứng Drake",
+  "item.mobs_of_mythology.sporeling_spawn_egg": "Trứng Bào tử con",
+
+  "item.mobs_of_mythology.automaton_head": "Đầu máy tự động",
+  "item.mobs_of_mythology.kobold_spear": "Giáo Kobold",
+  "item.mobs_of_mythology.bronze_ingot": "Thỏi đồng",
+  "item.mobs_of_mythology.chupacabra_meat": "Thịt Quỷ hút máu dê sống",
+  "item.mobs_of_mythology.cooked_chupacabra_meat": "Thịt Quỷ hút máu dê nướng xiên",
+  "item.mobs_of_mythology.gear": "Bánh răng máy tự động",
+
+  "block.mobs_of_mythology.bronze_block": "Khối Đồng",
+  "block.mobs_of_mythology.cut_bronze_block": "Khối Đồng cắt",
+
+  "config.screen.mobs_of_mythology": "Tùy chọn Mobs of Mythology",
+  "config.mobs_of_mythology.option.automatonHealth": "Máu của máy tự động",
+  "config.mobs_of_mythology.option.automatonAttackDamage": "Sát thương của máy tự động",
+  "config.mobs_of_mythology.option.chupacabraHealth": "Máu của Quỷ hút máu dê",
+  "config.mobs_of_mythology.option.chupacabraAttackDamage": "Sát thương của Quỷ hút máu dê",
+  "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Tần suất xuất hiện của Quỷ hút máu dê",
+  "config.mobs_of_mythology.option.koboldHealth": "Máu của Kobold",
+  "config.mobs_of_mythology.option.koboldAttackDamage": "Sát thương của Kobold",
+  "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Tốc độ chạy trốn của Kobold",
+  "config.mobs_of_mythology.option.koboldSpawnWeight": "Tần suất xuất hiện của Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorHealth": "Máu của chiến binh Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Sát thương của chiến binh Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorArmor": "Giáp của chiến binh Kobold",
+  "config.mobs_of_mythology.option.koboldWarriorSpawnWeight": "Tần suất xuất hiện của chiến binh Kobold",
+  "config.mobs_of_mythology.option.drakeHealth": "Máu của Drake",
+  "config.mobs_of_mythology.option.drakeAttackDamage": "Sát thương của Drake",
+  "config.mobs_of_mythology.option.drakeSpawnWeight": "Tần suất xuất hiện của Drake",
+  "config.mobs_of_mythology.option.sporelingHealth": "Máu của Bào tử con",
+  "config.mobs_of_mythology.option.redSporelingLines": "Vân đỏ từ Bào tử con",
+  "config.mobs_of_mythology.option.brownSporelingLines": "Vân nâu từ Bào tử con",
+  "config.mobs_of_mythology.option.sporelingSpawnWeight": "Tần suất xuất hiện của Bào tử con"
+}
