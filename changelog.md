@@ -3,6 +3,6 @@
 ## [2.0.5] - X/08/2024
 
 - update dependencies
-- 
+- allow chupacabra to walk over fences
 
 [![Bisect Hosting](https://www.bisecthosting.com/images/CF/Mobs_of_Mythology/BH_MOM_promo.webp)](https://bisecthosting.com/PixelDream)
