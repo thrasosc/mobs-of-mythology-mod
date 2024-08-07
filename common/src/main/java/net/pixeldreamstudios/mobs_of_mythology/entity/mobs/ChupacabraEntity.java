@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
@@ -39,6 +40,8 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         navigation = new SmoothGroundNavigation(this, level());
+        GroundPathNavigation mobNavigation = (GroundPathNavigation)this.getNavigation();
+        mobNavigation.setCanWalkOverFences(true);
         this.xpReward = Enemy.XP_REWARD_MEDIUM;
     }
 
