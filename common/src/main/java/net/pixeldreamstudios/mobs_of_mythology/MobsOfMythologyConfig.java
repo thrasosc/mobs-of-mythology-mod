@@ -62,14 +62,14 @@ public class MobsOfMythologyConfig {
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
     public double drakeAttackDamage = 5.0;
-//    @Configurable
-//    @Configurable.Synchronized
-//    @Configurable.DecimalRange(min = 1)
-//    public double basiliskHealth = 50.0;
-//    @Configurable
-//    @Configurable.Synchronized
-//    @Configurable.DecimalRange(min = 1)
-//    public double basiliskAttackDamage = 6.0;
+    @Configurable
+    @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 1)
+    public double basiliskHealth = 100.0;
+    @Configurable
+    @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 1)
+    public double basiliskAttackDamage = 8.0;
     @Configurable
     @Configurable.Synchronized
     public int drakeSpawnWeight = 10;

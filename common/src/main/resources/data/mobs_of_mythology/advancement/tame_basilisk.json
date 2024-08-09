@@ -1,0 +1,26 @@
+{
+  "parent": "mobs_of_mythology:mobs_of_mythology",
+  "criteria": {
+    "tamed_animal": {
+      "trigger": "minecraft:tame_animal"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.mobs_of_mythology.tame_basilisk.description"
+    },
+    "icon": {
+      "count": 1,
+      "id": "mobs_of_mythology:basilisk_head"
+    },
+    "title": {
+      "translate": "advancements.mobs_of_mythology.tame_basilisk.title"
+    }
+  },
+  "requirements": [
+    [
+      "tamed_animal"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

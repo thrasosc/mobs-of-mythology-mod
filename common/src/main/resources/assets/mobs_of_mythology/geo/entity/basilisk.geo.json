@@ -48,6 +48,16 @@
 					]
 				},
 				{
+					"name": "chest_right",
+					"parent": "body",
+					"pivot": [-7, 18, 0]
+				},
+				{
+					"name": "chest_left",
+					"parent": "body",
+					"pivot": [7, 18, 0]
+				},
+				{
 					"name": "left_spikes",
 					"parent": "body",
 					"pivot": [2, 23, 0],
