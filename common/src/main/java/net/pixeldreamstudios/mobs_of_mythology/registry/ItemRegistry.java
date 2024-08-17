@@ -24,6 +24,7 @@ public class ItemRegistry {
     public static final RegistrySupplier<Item> DRAKE_SPAWN_EGG = ITEMS.register("drake_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.DRAKE, 0xFE6F42, 0xE54B1A, new Item.Properties().arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
     public static final RegistrySupplier<Item> SPORELING_SPAWN_EGG = ITEMS.register("sporeling_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.SPORELING, 0xE53935, 0xFEFEFE, new Item.Properties().arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
     public static final RegistrySupplier<Item> BASILISK_SPAWN_EGG = ITEMS.register("basilisk_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.BASILISK, 0x586e7a, 0x323847, new Item.Properties().arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
+    public static final RegistrySupplier<Item> PEGASUS_SPAWN_EGG = ITEMS.register("pegasus_spawn_egg", () -> new ArchitecturySpawnEggItem(EntityRegistry.PEGASUS, 0xf3f2ec, 0xd4a650, new Item.Properties().arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));
 
     // FOODS
     public static final RegistrySupplier<Item> CHUPACABRA_MEAT = ITEMS.register("chupacabra_meat", () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.1F).effect(new MobEffectInstance(MobEffects.HUNGER, 600, 0), 0.8F).build()).arch$tab(TabRegistry.MOBS_OF_MYTHOLOGY_TAB)));

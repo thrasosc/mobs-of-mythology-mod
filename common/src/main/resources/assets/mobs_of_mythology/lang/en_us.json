@@ -17,6 +17,7 @@
   "entity.mobs_of_mythology.drake": "Drake",
   "entity.mobs_of_mythology.sporeling": "Sporeling",
   "entity.mobs_of_mythology.basilisk": "Basilisk",
+  "entity.mobs_of_mythology.pegasus": "Pegasus",
 
   "item.mobs_of_mythology.automaton_spawn_egg": "Automaton Spawn Egg",
   "item.mobs_of_mythology.kobold_spawn_egg": "Kobold Spawn Egg",
@@ -26,6 +27,7 @@
   "item.mobs_of_mythology.drake_spawn_egg": "Drake Spawn Egg",
   "item.mobs_of_mythology.sporeling_spawn_egg": "Sporeling Spawn Egg",
   "item.mobs_of_mythology.basilisk_spawn_egg": "Basilisk Spawn Egg",
+  "item.mobs_of_mythology.pegasus_spawn_egg": "Pegasus Spawn Egg",
 
   "item.mobs_of_mythology.automaton_head": "Automaton Head",
   "item.mobs_of_mythology.basilisk_head": "Automaton Head",
@@ -60,5 +62,6 @@
   "config.mobs_of_mythology.option.brownSporelingLines": "Brown Sporeling Lines",
   "config.mobs_of_mythology.option.sporelingSpawnWeight": "Sporeling Spawn Weight",
   "config.mobs_of_mythology.option.basiliskHealth": "Basilisk Health",
-  "config.mobs_of_mythology.option.basiliskAttackDamage": "Basilisk Attack Damage"
+  "config.mobs_of_mythology.option.basiliskAttackDamage": "Basilisk Attack Damage",
+  "config.mobs_of_mythology.option.pegasusHealth": "Pegasus Health"
 }

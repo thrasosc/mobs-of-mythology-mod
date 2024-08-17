@@ -53,6 +53,11 @@ public class EntityRegistry {
                     .sized(2.0f, 1.5f)
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "basilisk").toString()));
 
+    public static final RegistrySupplier<EntityType<PegasusEntity>> PEGASUS = ENTITIES.register("pegasus", () ->
+            EntityType.Builder.of(PegasusEntity::new, MobCategory.CREATURE)
+                    .sized(2.0f, 1.5f)
+                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "pegasus").toString()));
+
     private static void initSpawns() {
         SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldEntity::checkAnyLightMonsterSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.WET_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD.get(), MobsOfMythology.config.koboldSpawnWeight, 2, 4)));
@@ -79,6 +84,7 @@ public class EntityRegistry {
         EntityAttributeRegistry.register(DRAKE, DrakeEntity::createAttributes);
         EntityAttributeRegistry.register(SPORELING, SporelingEntity::createAttributes);
         EntityAttributeRegistry.register(BASILISK, BasiliskEntity::createAttributes);
+        EntityAttributeRegistry.register(PEGASUS, PegasusEntity::createAttributes);
     }
 
     public static void init() {

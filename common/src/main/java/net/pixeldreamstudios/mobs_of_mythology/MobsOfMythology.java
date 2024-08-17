@@ -32,5 +32,6 @@ public final class MobsOfMythology {
         EntityRendererRegistry.register(EntityRegistry.DRAKE, DrakeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.SPORELING, SporelingRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.BASILISK, BasiliskRenderer::new);
+        EntityRendererRegistry.register(EntityRegistry.PEGASUS, PegasusRenderer::new);
     }
 }

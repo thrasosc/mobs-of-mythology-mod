@@ -72,6 +72,10 @@ public class MobsOfMythologyConfig {
     public double basiliskAttackDamage = 8.0;
     @Configurable
     @Configurable.Synchronized
+    @Configurable.DecimalRange(min = 1)
+    public double pegasusHealth = 50.0;
+    @Configurable
+    @Configurable.Synchronized
     public int drakeSpawnWeight = 10;
     @Configurable
     @Configurable.Synchronized
