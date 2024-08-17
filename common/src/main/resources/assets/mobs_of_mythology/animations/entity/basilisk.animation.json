@@ -532,11 +532,17 @@
 				"left_spikes": {
 					"rotation": {
 						"vector": [0, 0, 60]
+					},
+					"scale": {
+						"vector": [1, 0.2, 1]
 					}
 				},
 				"right_spikes": {
 					"rotation": {
 						"vector": [0, 0, -62.5]
+					},
+					"scale": {
+						"vector": [1, 0.2, 1]
 					}
 				}
 			}
@@ -1312,11 +1318,17 @@
 				"left_spikes": {
 					"rotation": {
 						"vector": [0, 0, 60]
+					},
+					"scale": {
+						"vector": [1, 0.2, 1]
 					}
 				},
 				"right_spikes": {
 					"rotation": {
 						"vector": [0, 0, -62.5]
+					},
+					"scale": {
+						"vector": [1, 0.2, 1]
 					}
 				}
 			}
@@ -2132,11 +2144,17 @@
 				"left_spikes": {
 					"rotation": {
 						"vector": [0, 0, 60]
+					},
+					"scale": {
+						"vector": [1, 0.2, 1]
 					}
 				},
 				"right_spikes": {
 					"rotation": {
 						"vector": [0, 0, -62.5]
+					},
+					"scale": {
+						"vector": [1, 0.2, 1]
 					}
 				}
 			}
@@ -2538,5 +2556,5 @@
 			}
 		}
 	},
-	"geckolib_format_version": 2
+	"azurelib_format_version": 2
 }

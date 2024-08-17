@@ -48,6 +48,16 @@
 					]
 				},
 				{
+					"name": "saddle",
+					"parent": "body",
+					"pivot": [0, 22, 0],
+					"cubes": [
+						{"origin": [-6, 8, -10], "size": [12, 15, 11], "inflate": 0.1, "uv": [37, 83]},
+						{"origin": [-6, 19, 0], "size": [12, 6, 6], "inflate": 0.15, "uv": [54, 70]},
+						{"origin": [-6, 19, -12], "size": [12, 5, 4], "inflate": 0.15, "uv": [48, 55]}
+					]
+				},
+				{
 					"name": "chest_right",
 					"parent": "body",
 					"pivot": [-7, 18, 0]
