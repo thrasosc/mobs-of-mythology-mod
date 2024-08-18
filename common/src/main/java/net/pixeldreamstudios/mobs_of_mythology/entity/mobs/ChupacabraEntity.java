@@ -3,7 +3,6 @@ package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.damagesource.DamageSource;
@@ -53,22 +52,11 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
-//    @Override
-//    protected void registerGoals() {
-//        this.goalSelector.addGoal(0, new FloatGoal(this));
-//        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.5f, true));
-//        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75f));
-//        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
-//        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
-//        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-//        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Animal.class, false));
-//        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
-//    }
-
     @Override
     public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
         return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<>(),
+                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
+                        .setPredicate((target, entity) -> target instanceof Animal || target instanceof Player),
                 new HurtBySensor<>(),
                 new UnreachableTargetSensor<>()
         );
@@ -89,10 +77,8 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                 new AnimatableMeleeAttack<>(8)
                         .whenStarting(mob -> {
                             this.triggerAnim("attackController", "attack");
-                            produceParticles(ParticleTypes.CRIMSON_SPORE);
                             if (getHealth() < getMaxHealth()) {
                                 this.heal(1.5f);
-                                produceParticles(ParticleTypes.HAPPY_VILLAGER);
                             }
                         }),
                 new ReactToUnreachableTarget<>()
