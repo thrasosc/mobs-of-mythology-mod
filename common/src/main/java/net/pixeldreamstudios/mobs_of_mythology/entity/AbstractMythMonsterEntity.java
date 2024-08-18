@@ -7,7 +7,6 @@ import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCa
 import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.monster.Monster;
@@ -65,17 +64,6 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
             swinging = false;
             return PlayState.STOP;
         }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
-
-    protected void produceParticles(ParticleOptions parameters) {
-        if (level().isClientSide()) {
-            for (int i = 0; i < 2; ++i) {
-                double d = this.random.nextGaussian() * 0.02;
-                double e = this.random.nextGaussian() * 0.02;
-                double f = this.random.nextGaussian() * 0.02;
-                this.level().addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d, e, f);
-            }
-        }
     }
 
     @Override
