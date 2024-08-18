@@ -94,7 +94,6 @@ public class KoboldEntity extends AbstractKoboldEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
-    //TODO re-implement item stealing using `ItemTemptingSensor` and `FollowTemptation`
     @Override
     public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(

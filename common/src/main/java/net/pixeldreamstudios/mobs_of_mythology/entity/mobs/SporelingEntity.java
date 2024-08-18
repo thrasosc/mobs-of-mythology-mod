@@ -154,7 +154,6 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (getVariant().equals(SporelingVariant.RED)) {
             interactSound = SoundEvents.VILLAGER_YES;
-            //TODO Make this data-driven
             lines = MobsOfMythology.config.redSporelingLines;
             greetings = Arrays.asList(
                     "Hello there, ",
