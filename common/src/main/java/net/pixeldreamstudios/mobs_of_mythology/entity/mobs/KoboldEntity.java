@@ -81,8 +81,11 @@ public class KoboldEntity extends AbstractKoboldEntity {
     @Override
     public void die(DamageSource arg) {
         super.die(arg);
-        this.spawnAtLocation(getItemStack());
-        setItemStack(ItemStack.EMPTY);
+        ItemStack itemStack = getItemStack();
+        if (!itemStack.isEmpty()) {
+            this.spawnAtLocation(itemStack.split(1)); // Split off 1 item from the stack and drop it
+            setItemStack(ItemStack.EMPTY); // Clear the mob's inventory of the item
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
