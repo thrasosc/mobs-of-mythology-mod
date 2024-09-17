@@ -59,6 +59,12 @@ public class KoboldEntity extends AbstractKoboldEntity {
         this.setItemStack(ItemStack.of(nbt.getCompound("ItemStack")));
     }
 
+    @Override
+    protected boolean shouldDropLoot() {
+        return false;
+    }
+
+
     public void setItemStack(ItemStack itemStack) {
         this.getEntityData().set(DATA_ITEM_STACK, itemStack);
         this.playSound(SoundEvents.VINDICATOR_CELEBRATE, 1.0f, 2.0f);
@@ -79,8 +85,11 @@ public class KoboldEntity extends AbstractKoboldEntity {
     @Override
     public void die(DamageSource arg) {
         super.die(arg);
-        this.spawnAtLocation(getItemStack());
-        setItemStack(ItemStack.EMPTY);
+        ItemStack itemStack = getItemStack();
+        if (!itemStack.isEmpty()) {
+            this.spawnAtLocation(itemStack.split(1)); // Split off 1 item from the stack and drop it
+            setItemStack(ItemStack.EMPTY); // Clear the mob's inventory of the item
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
