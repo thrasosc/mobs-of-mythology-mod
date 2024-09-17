@@ -1,6 +1,6 @@
 # Mobs of Mythology
 
-## [2.0.5] - X/08/2024
+## [2.0.5] - 17/09/2024
 
 - update dependencies
 - allow chupacabra to walk over fences
