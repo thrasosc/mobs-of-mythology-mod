@@ -79,12 +79,16 @@ public class KoboldEntity extends AbstractKoboldEntity {
     }
 
     @Override
+    protected boolean shouldDropLoot() {
+        return false;
+    }
+
+    @Override
     public void die(DamageSource arg) {
         super.die(arg);
         this.spawnAtLocation(getItemStack());
         setItemStack(ItemStack.EMPTY);
     }
-
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, MobsOfMythology.config.koboldHealth)
@@ -93,7 +97,6 @@ public class KoboldEntity extends AbstractKoboldEntity {
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
-
     @Override
     public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
