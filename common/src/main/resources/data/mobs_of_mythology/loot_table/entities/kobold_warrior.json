@@ -11,10 +11,17 @@
               "add": false,
               "count": {
                 "type": "minecraft:uniform",
-                "max": 2.0,
+                "max": 1.0,
                 "min": 0.0
               },
               "function": "minecraft:set_count"
+            }
+          ],
+          "conditions": [
+            {
+              "chances": [
+                0.2
+              ]
             }
           ],
           "name": "mobs_of_mythology:kobold_spear"
@@ -36,6 +43,13 @@
                 "min": 3.0
               },
               "function": "minecraft:set_count"
+            }
+          ],
+          "conditions": [
+            {
+              "chances": [
+                0.3
+              ]
             }
           ],
           "name": "minecraft:emerald"
