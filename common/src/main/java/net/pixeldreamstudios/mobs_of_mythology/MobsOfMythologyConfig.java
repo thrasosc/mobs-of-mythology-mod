@@ -23,7 +23,7 @@ public class MobsOfMythologyConfig {
     public double chupacabraAttackDamage = 6.0;
     @Configurable
     @Configurable.Synchronized
-    public int chupacabraSpawnWeight = 30;
+    public int chupacabraSpawnWeight = 15;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
@@ -38,7 +38,7 @@ public class MobsOfMythologyConfig {
     public float koboldFleeSpeedMod = 2.0f;
     @Configurable
     @Configurable.Synchronized
-    public int koboldSpawnWeight = 70;
+    public int koboldSpawnWeight = 20;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
@@ -53,7 +53,7 @@ public class MobsOfMythologyConfig {
     public double koboldWarriorAttackDamage = 5.5;
     @Configurable
     @Configurable.Synchronized
-    public int koboldWarriorSpawnWeight = 60;
+    public int koboldWarriorSpawnWeight = 10;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
