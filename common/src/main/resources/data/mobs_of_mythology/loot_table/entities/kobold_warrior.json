@@ -1,62 +1,45 @@
 {
   "type": "minecraft:entity",
+  "random_sequence": "mobs_of_mythology:entities/kobold_warrior",
   "pools": [
     {
-      "bonus_rolls": 0.0,
+      "rolls": 1.0,
       "entries": [
         {
+          "name": "mobs_of_mythology:kobold_spear",
           "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 1.0,
-                "min": 0.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "conditions": [
             {
-              "chances": [
-                0.2
-              ]
+              "condition": "random_chance",
+              "chance": 0.2
             }
-          ],
-          "name": "mobs_of_mythology:kobold_spear"
+          ]
         }
-      ],
-      "rolls": 1.0
+      ]
     },
     {
-      "bonus_rolls": 0.0,
+      "rolls": 1.0,
       "entries": [
         {
+          "name": "minecraft:emerald",
           "type": "minecraft:item",
           "functions": [
             {
-              "add": false,
+              "function": "minecraft:set_count",
               "count": {
-                "type": "minecraft:uniform",
                 "max": 5.0,
                 "min": 3.0
-              },
-              "function": "minecraft:set_count"
+              }
             }
           ],
           "conditions": [
             {
-              "chances": [
-                0.3
-              ]
+              "condition": "random_chance",
+              "chance": 0.3
             }
-          ],
-          "name": "minecraft:emerald"
+          ]
         }
-      ],
-      "rolls": 1.0
+      ]
     }
-  ],
-  "random_sequence": "mobs_of_mythology:entities/kobold_warrior"
+  ]
 }
