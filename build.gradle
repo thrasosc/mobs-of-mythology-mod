@@ -27,7 +27,7 @@ subprojects {
 
     repositories {
         maven { url 'https://dl.cloudsmith.io/public/tslat/sbl/maven/' }
-        maven { url 'https://maven.azuredoom.com/mods' }
+        maven {url 'https://maven.azuredoom.com/mods'}
     }
 
     loom {
