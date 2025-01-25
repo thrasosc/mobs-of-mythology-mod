@@ -35,6 +35,7 @@
 
   "config.screen.mobs_of_mythology": "Mobs of Mythology Config",
   "config.mobs_of_mythology.option.automatonHealth": "Automaton Health",
+  "config.mobs_of_mythology.option.automatonAlwaysHostile": "Automaton Hostile always",
   "config.mobs_of_mythology.option.automatonAttackDamage": "Automaton Attack Damage",
   "config.mobs_of_mythology.option.chupacabraHealth": "Chupacabra Health",
   "config.mobs_of_mythology.option.chupacabraAttackDamage": "Chupacabra Attack Damage",

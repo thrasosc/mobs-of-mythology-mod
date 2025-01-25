@@ -1,0 +1,37 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "mobs_of_mythology"
+version = "${version}"
+displayName = "Mobs of Mythology"
+authors = "Pixel Dream Studios, Thrasos, Steficy, AzureDoom, Karelien, Bandit-Bytes"
+description = '''
+Discover a World of Mythological Creatures in Minecraft!
+'''
+#logoFile = ""
+
+[[dependencies.mobs_of_mythology]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.mobs_of_mythology]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.mobs_of_mythology]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+

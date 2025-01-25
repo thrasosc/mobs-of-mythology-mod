@@ -1,0 +1,73 @@
+plugins {
+    id 'com.github.johnrengelman.shadow'
+}
+
+loom {
+    forge {
+        mixinConfig "mobs_of_mythology.mixins.json"
+    }
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+configurations {
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+
+    // Files in this configuration will be bundled into your mod using the Shadow plugin.
+    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
+}
+repositories {
+    maven { url 'https://maven.shedaniel.me/' }
+    maven { url 'https://maven.kosmx.dev/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://api.modrinth.com/maven' }
+    maven { url "https://www.cursemaven.com"}
+    maven {
+        name = "Illusive Soulworks maven"
+        url = "https://maven.theillusivec4.top/"
+    }
+    maven {url 'https://maven.azuredoom.com/mods'}
+
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:$rootProject.forge_version"
+
+    // Architectury API. This is optional, and you can comment it out if you don't need it.
+    modImplementation "dev.architectury:architectury-forge:$rootProject.architectury_api_version"
+    modImplementation "mod.azure.azurelib:azurelib-neo-${minecraft_version}:${azurelib_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-${minecraft_version}:${sbl_version}"
+
+    common(project(path: ':common', configuration: 'namedElements')) { transitive false }
+    shadowBundle project(path: ':common', configuration: 'transformProductionForge')
+
+}
+processResources {
+    inputs.property 'version', project.version
+
+    filesMatching('META-INF/mods.toml') {
+        expand version: project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowBundle]
+    archiveClassifier = 'dev-shadow'
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+}

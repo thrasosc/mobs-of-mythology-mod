@@ -30,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -76,15 +77,17 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.2, 8.0F, 2.0F, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
-        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Monster.class, false));
-        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
+        this.targetSelector.addGoal(4, new NearestAttackableTargetGoal<>(this, Monster.class, true));
+        if (MobsOfMythology.config.automatonAlwaysHostile) {
+            this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        }
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -138,11 +141,15 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         if (this.isTame()) {
             InteractionResult interactionResult;
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
+                // Null check for food properties
+                FoodProperties foodProperties = item.getFoodProperties();
+                if (foodProperties != null) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                    }
+                    this.heal(2.0f * foodProperties.getNutrition());
+                    return InteractionResult.SUCCESS;
                 }
-                this.heal(2.0f * item.getFoodProperties().getNutrition());
-                return InteractionResult.SUCCESS;
             }
             if ((interactionResult = super.mobInteract(player, interactionHand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player)) return interactionResult;
             this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
