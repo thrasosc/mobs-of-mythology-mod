@@ -1,0 +1,53 @@
+{
+  "category.mobs_of_mythology": "Мітичні моби",
+
+  "advancements.mobs_of_mythology.title": "Мітичні моби",
+  "advancements.mobs_of_mythology.description": "Мітичний світ!",
+
+  "entity.mobs_of_mythology.automaton": "Автоматон",
+  "entity.mobs_of_mythology.kobold": "Кобольд",
+  "entity.mobs_of_mythology.kobold_warrior": "Воїн-кобольд",
+  "entity.mobs_of_mythology.chupacabra": "Чупакабра",
+  "entity.mobs_of_mythology.drake": "Дракончик",
+  "entity.mobs_of_mythology.sporeling": "Споровичок",
+
+  "item.mobs_of_mythology.automaton_spawn_egg": "Яйце виклику автоматона",
+  "item.mobs_of_mythology.kobold_spawn_egg": "Яйце виклику кобольда",
+  "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Яйце виклику воїна-кобольда",
+  "item.mobs_of_mythology.chupacabra_spawn_egg": "Яйце виклику чупакабри",
+  "item.mobs_of_mythology.wendigo_spawn_egg": "Яйце виклику вендиго",
+  "item.mobs_of_mythology.drake_spawn_egg": "Яйце виклику дракончика",
+  "item.mobs_of_mythology.sporeling_spawn_egg": "Яйце виклику споровичка",
+
+  "item.mobs_of_mythology.automaton_head": "Голова автоматона",
+  "item.mobs_of_mythology.kobold_spear": "Спис кобольда",
+  "item.mobs_of_mythology.bronze_ingot": "Бронзовий злиток",
+  "item.mobs_of_mythology.chupacabra_meat": "Сире м'ясо чупакабри",
+  "item.mobs_of_mythology.cooked_chupacabra_meat": "М'ясо на шампурі з чупакабри",
+  "item.mobs_of_mythology.gear": "Шестерня автоматона",
+
+  "block.mobs_of_mythology.bronze_block": "Бронзовий блок",
+  "block.mobs_of_mythology.cut_bronze_block": "Тесаний бронзовий блок",
+
+  "config.screen.mobs_of_mythology": "Параметри мітичних моб",
+  "config.mobs_of_mythology.option.automatonHealth": "Здоров'я автоматона",
+  "config.mobs_of_mythology.option.automatonAttackDamage": "Шкода від атаки автоматона",
+  "config.mobs_of_mythology.option.chupacabraHealth": "Здоров'я чупакабри",
+  "config.mobs_of_mythology.option.chupacabraAttackDamage": "Шкода від атаки чупакабри",
+  "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Вага появи чупакабри",
+  "config.mobs_of_mythology.option.koboldHealth": "Здоров'я кобольда",
+  "config.mobs_of_mythology.option.koboldAttackDamage": "Шкода від атаки кобольда",
+  "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Модифікатор швидкості втечі кобольда",
+  "config.mobs_of_mythology.option.koboldSpawnWeight": "Вага появи кобольда",
+  "config.mobs_of_mythology.option.koboldWarriorHealth": "Здоров'я воїна-кобольда",
+  "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Шкода від атаки воїна-кобольда",
+  "config.mobs_of_mythology.option.koboldWarriorArmor": "Броня воїна-кобольда",
+  "config.mobs_of_mythology.option.koboldWarriorSpawnWeight": "Вага появи воїна-кобольда",
+  "config.mobs_of_mythology.option.drakeHealth": "Здоров'я дракончика",
+  "config.mobs_of_mythology.option.drakeAttackDamage": "Шкода від атаки дракончика",
+  "config.mobs_of_mythology.option.drakeSpawnWeight": "Вага появи дракончика",
+  "config.mobs_of_mythology.option.sporelingHealth": "Здоров'я споровичка",
+  "config.mobs_of_mythology.option.redSporelingLines": "Червоні лінії від споровичка",
+  "config.mobs_of_mythology.option.brownSporelingLines": "Коричневі лінії від споровичка",
+  "config.mobs_of_mythology.option.sporelingSpawnWeight": "Вага появи споровичка"
+}

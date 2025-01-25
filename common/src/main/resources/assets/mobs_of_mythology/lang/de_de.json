@@ -1,0 +1,53 @@
+{
+  "category.mobs_of_mythology": "Mythische Mobs",
+
+  "advancements.mobs_of_mythology.title": "Mythische Mobs",
+  "advancements.mobs_of_mythology.description": "Eine mythische Welt!",
+
+  "entity.mobs_of_mythology.automaton": "Automat",
+  "entity.mobs_of_mythology.kobold": "Kobold",
+  "entity.mobs_of_mythology.kobold_warrior": "Kobold Krieger",
+  "entity.mobs_of_mythology.chupacabra": "Chupacabra",
+  "entity.mobs_of_mythology.drake": "Drake",
+  "entity.mobs_of_mythology.sporeling": "Sporenling",
+
+  "item.mobs_of_mythology.automaton_spawn_egg": "Automat Spawn Ei",
+  "item.mobs_of_mythology.kobold_spawn_egg": "Kobold Spawn Ei",
+  "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Kobold Krieger Spawn Ei",
+  "item.mobs_of_mythology.chupacabra_spawn_egg": "Chupacabra Spawn Ei",
+  "item.mobs_of_mythology.wendigo_spawn_egg": "Wendigo Spawn Ei",
+  "item.mobs_of_mythology.drake_spawn_egg": "Drake Spawn Ei",
+  "item.mobs_of_mythology.sporeling_spawn_egg": "Sporenling Spawn Ei",
+
+  "item.mobs_of_mythology.automaton_head": "Automat Kopf",
+  "item.mobs_of_mythology.kobold_spear": "Kobold Speer",
+  "item.mobs_of_mythology.bronze_ingot": "Bronze Barren",
+  "item.mobs_of_mythology.chupacabra_meat": "Rohes Chupacabra Fleisch",
+  "item.mobs_of_mythology.cooked_chupacabra_meat": "Chupacabra Spies",
+  "item.mobs_of_mythology.gear": "Automaton Ausrüstung",
+
+  "block.mobs_of_mythology.bronze_block": "Bronze Block",
+  "block.mobs_of_mythology.cut_bronze_block": "Geschnittener Bronze Block",
+
+  "config.screen.mobs_of_mythology": "Mythische Mobs Optionen",
+  "config.mobs_of_mythology.option.automatonHealth": "Automat Leben",
+  "config.mobs_of_mythology.option.automatonAttackDamage": "Automat Angriffsschaden",
+  "config.mobs_of_mythology.option.chupacabraHealth": "Chupacabra Leben",
+  "config.mobs_of_mythology.option.chupacabraAttackDamage": "Chupacabra Angriffsschaden",
+  "config.mobs_of_mythology.option.chupacabraSpawnWeight": "Chupacabra Spawn Gewicht",
+  "config.mobs_of_mythology.option.koboldHealth": "Kobold Leben",
+  "config.mobs_of_mythology.option.koboldAttackDamage": "Kobold Angriffsschaden",
+  "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Kobold Fluchtgeschwindigkeit Modifikator",
+  "config.mobs_of_mythology.option.koboldSpawnWeight": "Kobold Spawn Gewicht",
+  "config.mobs_of_mythology.option.koboldWarriorHealth": "Kobold Krieger Leben",
+  "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Kobold Krieger Angriffsschaden",
+  "config.mobs_of_mythology.option.koboldWarriorArmor": "Kobold Krieger Rüstung",
+  "config.mobs_of_mythology.option.koboldWarriorSpawnWeight": "Kobold Krieger Spawn Gewicht",
+  "config.mobs_of_mythology.option.drakeHealth": "Drake Leben",
+  "config.mobs_of_mythology.option.drakeAttackDamage": "Drake Angriffsschaden",
+  "config.mobs_of_mythology.option.drakeSpawnWeight": "Drake Spawn Gewicht",
+  "config.mobs_of_mythology.option.sporelingHealth": "Sporenling Leben",
+  "config.mobs_of_mythology.option.redSporelingLines": "Roter Sporenling Linien",
+  "config.mobs_of_mythology.option.brownSporelingLines": "Brauner Sporenling Linien",
+  "config.mobs_of_mythology.option.sporelingSpawnWeight": "Sporenling Spawn Gewicht"
+}
