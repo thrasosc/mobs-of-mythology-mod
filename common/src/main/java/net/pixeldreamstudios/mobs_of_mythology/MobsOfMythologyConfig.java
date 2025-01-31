@@ -27,18 +27,18 @@ public class MobsOfMythologyConfig {
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
-    public double koboldHealth = 20.0;
+    public double koboldHealth = 10.0;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
-    public double koboldAttackDamage = 2.5;
+    public double koboldAttackDamage = 1.5;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1.0f)
     public float koboldFleeSpeedMod = 2.0f;
     @Configurable
     @Configurable.Synchronized
-    public int koboldSpawnWeight = 20;
+    public int koboldSpawnWeight = 10;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
