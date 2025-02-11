@@ -15,9 +15,9 @@ public record TagRegistry() {
     public static final TagKey<Item> PICKAXES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "pickaxes"));
     public static final TagKey<Item> BRONZE_INGOTS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "bronze_ingots"));
 
-    // BIOME TAGS
-    public static TagKey<Biome> WET_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_wet"));
-    public static TagKey<Biome> BADLANDS_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_badlands"));
-    public static TagKey<Biome> MUSHROOM_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_mushroom"));
-    public static TagKey<Biome> TEMPERATE_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("c", "is_temperate"));
+    // MOB BIOME SPAWN TAGS
+    public static TagKey<Biome> KOBOLD_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "kobolds_spawn_in"));
+    public static TagKey<Biome> DRAKE_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "drakes_spawn_in"));
+    public static TagKey<Biome> CHUPACABRA_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "chupacabras_spawn_in"));
+    public static TagKey<Biome> SPORELING_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "sporelings_spawn_in"));
 }
