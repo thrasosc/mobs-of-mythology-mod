@@ -1,7 +1,7 @@
 # Mobs of Mythology
 
-## [2.0.9] - 08/01/2025
+## [2.1.0] - 11/02/2025
 
-- Fix ChupacabraEntity Spawn to match basic light levels (thank you @Bandit)
+- Create custom tags for mob spawns (you can now modify mob spawns easier with datapacks!)
 
 [![Bisect Hosting](https://www.bisecthosting.com/images/CF/Mobs_of_Mythology/BH_MOM_promo.webp)](https://bisecthosting.com/PixelDream)
