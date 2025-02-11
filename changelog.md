@@ -1,6 +1,6 @@
 # Mobs of Mythology
 
-## [2.1.0] - 11/02/2025
+## [2.1.1] - 11/02/2025
 
 - Create custom tags for mob spawns (you can now modify mob spawns easier with datapacks!)
 
