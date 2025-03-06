@@ -8,10 +8,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.block.state.pattern.BlockPattern;
 import net.minecraft.world.level.block.state.pattern.BlockPatternBuilder;
-import net.minecraft.world.level.block.state.predicate.BlockStatePredicate;
 import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.AutomatonEntity;
-import net.pixeldreamstudios.mobs_of_mythology.registry.BlockRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.EntityRegistry;
+import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -32,7 +31,7 @@ public class CarvedPumpkinBlockMixin {
 
     private BlockPattern getOrCreateAutomatonFull() {
         if (this.automatonFull == null) {
-            this.automatonFull = BlockPatternBuilder.start().aisle(new String[]{"~^~", "###", "~#~"}).where('^', BlockInWorld.hasState(PUMPKINS_PREDICATE)).where('#', BlockInWorld.hasState(BlockStatePredicate.forBlock(BlockRegistry.BRONZE_BLOCK.get()))).where('~', (blockInWorld) -> blockInWorld.getState().isAir()).build();
+            this.automatonFull = BlockPatternBuilder.start().aisle(new String[]{"~^~", "###", "~#~"}).where('^', BlockInWorld.hasState(PUMPKINS_PREDICATE)).where('#', BlockInWorld.hasState(blockState -> blockState.is(TagRegistry.BRONZE_BLOCKS))).where('~', (blockInWorld) -> blockInWorld.getState().isAir()).build();
         }
         return this.automatonFull;
     }
