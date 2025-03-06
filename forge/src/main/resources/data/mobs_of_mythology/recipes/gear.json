@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "pattern": [
+    " # ",
+    "# #",
+    " # "
+  ],
+  "result": {
+    "count": 1,
+    "item": "mobs_of_mythology:gear"
+  }
+}
