@@ -1,5 +1,7 @@
 {
   "values": [
-    "#c:is_badlands"
+    "#c:is_badlands",
+    "#c:is_desert"
+
   ]
 }

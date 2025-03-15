@@ -17,6 +17,7 @@ public record TagRegistry() {
 
     // MOB BIOME SPAWN TAGS
     public static TagKey<Biome> KOBOLD_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "kobolds_spawn_in"));
+    public static TagKey<Biome> PEGASUS_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "pegasus_spawn_in"));
     public static TagKey<Biome> DRAKE_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "drakes_spawn_in"));
     public static TagKey<Biome> CHUPACABRA_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "chupacabras_spawn_in"));
     public static TagKey<Biome> SPORELING_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath("mobs_of_mythology", "sporelings_spawn_in"));

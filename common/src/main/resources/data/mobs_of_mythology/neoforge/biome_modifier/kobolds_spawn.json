@@ -1,0 +1,18 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#mobs_of_mythology:kobolds_spawn_in",
+  "spawners": [
+    {
+      "type": "mobs_of_mythology:kobold_warrior",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 4
+    },
+    {
+      "type": "mobs_of_mythology:kobold",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 3
+    }
+  ]
+}
