@@ -1,5 +1,6 @@
 {
   "values": [
-    "#c:is_temperate"
+    "#c:is_temperate",
+    "#c:is_hot"
   ]
 }

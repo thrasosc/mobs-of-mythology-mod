@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#mobs_of_mythology:drakes_spawn_in",
+  "spawners": [
+    {
+      "type": "mobs_of_mythology:drake",
+      "weight": 10,
+      "minCount": 1,
+      "maxCount": 3
+    }
+  ]
+}
