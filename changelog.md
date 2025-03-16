@@ -1,7 +1,8 @@
 # Mobs of Mythology
 
-## [2.1.6] - 07/03/2025
+## [2.1.7] - 16/03/2025
 
-- fix Pegasus AI (thanks to Bandit)
+- fix NeoForge spawns using biome modifiers (big thanks to Bandit)
+- update dependencies
 
 [![Bisect Hosting](https://www.bisecthosting.com/images/CF/Mobs_of_Mythology/BH_MOM_promo.webp)](https://bisecthosting.com/PixelDream)
