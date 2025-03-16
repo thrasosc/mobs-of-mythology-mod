@@ -1,6 +1,5 @@
 {
   "values": [
-    "#c:is_wet",
-    "#c:is_swamp"
+    "#c:is_wet"
   ]
 }
