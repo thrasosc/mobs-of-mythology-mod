@@ -87,8 +87,8 @@ public class KoboldEntity extends AbstractKoboldEntity {
         super.die(arg);
         ItemStack itemStack = getItemStack();
         if (!itemStack.isEmpty()) {
-            this.spawnAtLocation(itemStack.split(1)); // Split off 1 item from the stack and drop it
-            setItemStack(ItemStack.EMPTY); // Clear the mob's inventory of the item
+            this.spawnAtLocation(itemStack.split(1));
+            setItemStack(ItemStack.EMPTY);
         }
     }
 
@@ -111,11 +111,16 @@ public class KoboldEntity extends AbstractKoboldEntity {
                         .whenStarting(mob -> {
                             this.triggerAnim("attackController", "attack");
                         })
-                        .startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
+                        .startCondition(mob ->
+                                MobsOfMythology.config.shouldKoboldsSteal &&
+                                        getItemStack().isEmpty() &&
+                                        !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
+                        )
                         .stopIf(mob -> !getItemStack().isEmpty())
                         .whenStopping(mob -> {
+                            if (!MobsOfMythology.config.shouldKoboldsSteal) return;
                             LivingEntity target = getTarget();
-		                    setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
+                            setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
                             target.getItemInHand(InteractionHand.MAIN_HAND).shrink(getItemStack().getCount());
                         }),
                 new FleeTarget<>()
