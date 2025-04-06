@@ -10,6 +10,9 @@ public class MobsOfMythologyConfig {
     public boolean automatonAlwaysHostile = false;
     @Configurable
     @Configurable.Synchronized
+    public boolean shouldKoboldsSteal = true;
+    @Configurable
+    @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
     public double automatonHealth = 100.0;
     @Configurable
