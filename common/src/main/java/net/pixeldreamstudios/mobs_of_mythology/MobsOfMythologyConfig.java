@@ -41,6 +41,9 @@ public class MobsOfMythologyConfig {
     public int koboldSpawnWeight = 10;
     @Configurable
     @Configurable.Synchronized
+    public boolean shouldKoboldsSteal = true;
+    @Configurable
+    @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
     public double koboldWarriorHealth = 20.0;
     @Configurable
