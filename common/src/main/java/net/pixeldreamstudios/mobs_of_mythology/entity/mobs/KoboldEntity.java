@@ -107,7 +107,9 @@ public class KoboldEntity extends AbstractKoboldEntity {
                             this.triggerAnim("attackController", "attack");
                         })
                         .startCondition(mob ->
-                                MobsOfMythology.config.shouldKoboldsSteal && getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
+                                MobsOfMythology.config.shouldKoboldsSteal &&
+                                        getItemStack().isEmpty() &&
+                                        !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
                         .stopIf(mob -> !getItemStack().isEmpty())
                         .whenStopping(mob -> {
                             if (!MobsOfMythology.config.shouldKoboldsSteal) return;
