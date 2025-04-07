@@ -34,7 +34,7 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class KoboldEntity extends AbstractKoboldEntity {
-    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity .class, EntityDataSerializers.ITEM_STACK);;
+    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity .class, EntityDataSerializers.ITEM_STACK);
 
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);

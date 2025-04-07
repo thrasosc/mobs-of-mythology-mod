@@ -57,11 +57,7 @@ public class BasiliskRenderer extends GeoEntityRenderer<BasiliskEntity> {
     @Override
     public void preRender(PoseStack poseStack, BasiliskEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
-        if (animatable.isSaddled()) {
-            model.getBone("saddle").get().setHidden(false);
-        } else {
-            model.getBone("saddle").get().setHidden(true);
-        }
+        model.getBone("saddle").get().setHidden(!animatable.isSaddled());
     }
 
         @Override

@@ -50,7 +50,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class DrakeEntity extends TamableAnimal implements GeoEntity {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
     public static final Predicate<LivingEntity> PREY_SELECTOR;
 
@@ -142,7 +142,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(4, new NonTameRandomTargetGoal(this, Animal.class, false, PREY_SELECTOR));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
     }
@@ -199,7 +199,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         } else if (this.isTame()) {
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
                 itemStack.consume(1, player);
-                FoodProperties foodProperties = (FoodProperties)itemStack.get(DataComponents.FOOD);
+                FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
                 float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
                 this.heal(2.0F * f);
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
@@ -209,7 +209,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
                 this.setOrderedToSit(!this.isOrderedToSit());
                 this.jumping = false;
                 this.navigation.stop();
-                this.setTarget((LivingEntity)null);
+                this.setTarget(null);
                 return InteractionResult.SUCCESS_NO_ITEM_USED;
             } else {
                 return interactionResult;
@@ -227,7 +227,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         if (this.random.nextInt(3) == 0) {
             this.tame(player);
             this.navigation.stop();
-            this.setTarget((LivingEntity)null);
+            this.setTarget(null);
             this.setOrderedToSit(true);
             this.level().broadcastEntityEvent(this, (byte)7);
         } else {

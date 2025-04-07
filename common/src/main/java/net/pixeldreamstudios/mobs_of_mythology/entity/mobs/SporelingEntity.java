@@ -43,7 +43,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SporelingEntity extends PathfinderMob implements GeoEntity {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(SporelingEntity.class, EntityDataSerializers.INT);
     private Component currentLine;

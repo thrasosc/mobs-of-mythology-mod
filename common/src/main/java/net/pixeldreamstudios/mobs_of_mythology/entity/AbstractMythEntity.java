@@ -44,7 +44,7 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import java.util.List;
 
 public abstract class AbstractMythEntity extends PathfinderMob implements GeoEntity, SmartBrainOwner<AbstractMythEntity> {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     protected AbstractMythEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);

@@ -81,7 +81,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, new Class[0])).setAlertOthers(new Class[0]));
+        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
         this.targetSelector.addGoal(4, new NearestAttackableTargetGoal(this, Monster.class, false));
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
     }
@@ -136,7 +136,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         } else if (this.isTame()) {
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
                 itemStack.consume(1, player);
-                FoodProperties foodProperties = (FoodProperties)itemStack.get(DataComponents.FOOD);
+                FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
                 float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
                 this.heal(2.0F * f);
                 return InteractionResult.sidedSuccess(this.level().isClientSide());
@@ -151,7 +151,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
                 }
                 this.jumping = false;
                 this.navigation.stop();
-                this.setTarget((LivingEntity)null);
+                this.setTarget(null);
                 return InteractionResult.SUCCESS_NO_ITEM_USED;
             } else {
                 return interactionResult;
@@ -169,7 +169,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         if (this.random.nextInt(3) == 0) {
             this.tame(player);
             this.navigation.stop();
-            this.setTarget((LivingEntity)null);
+            this.setTarget(null);
             this.setOrderedToSit(true);
             this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
             MinecraftServer server = player.getServer();

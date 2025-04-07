@@ -31,14 +31,14 @@ public class CarvedPumpkinBlockMixin {
 
     private BlockPattern getOrCreateAutomatonFull() {
         if (this.automatonFull == null) {
-            this.automatonFull = BlockPatternBuilder.start().aisle(new String[]{"~^~", "###", "~#~"}).where('^', BlockInWorld.hasState(PUMPKINS_PREDICATE)).where('#', BlockInWorld.hasState(blockState -> blockState.is(TagRegistry.BRONZE_BLOCKS))).where('~', (blockInWorld) -> blockInWorld.getState().isAir()).build();
+            this.automatonFull = BlockPatternBuilder.start().aisle("~^~", "###", "~#~").where('^', BlockInWorld.hasState(PUMPKINS_PREDICATE)).where('#', BlockInWorld.hasState(blockState -> blockState.is(TagRegistry.BRONZE_BLOCKS))).where('~', (blockInWorld) -> blockInWorld.getState().isAir()).build();
         }
         return this.automatonFull;
     }
 
     @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/level/block/CarvedPumpkinBlock;trySpawnGolem(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)V")
     private void checkAutomatonSpawn(Level level, BlockPos blockPos, CallbackInfo ci) {
-        AutomatonEntity automatonEntity = (AutomatonEntity) EntityRegistry.AUTOMATON.get().create(level);
+        AutomatonEntity automatonEntity = EntityRegistry.AUTOMATON.get().create(level);
         BlockPattern.BlockPatternMatch blockPatternMatch3 = this.getOrCreateAutomatonFull().find(level, blockPos);
         if (blockPatternMatch3 != null) {
             spawnGolemInWorld(level, blockPatternMatch3, automatonEntity, blockPatternMatch3.getBlock(1, 2, 0).getPos());
