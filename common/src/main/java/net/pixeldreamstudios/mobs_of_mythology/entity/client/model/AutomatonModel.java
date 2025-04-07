@@ -24,11 +24,13 @@ public class AutomatonModel extends GeoModel<AutomatonEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(AutomatonEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/automaton.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                     "animations/entity/automaton.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(AutomatonEntity animatable, long instanceId, AnimationState<AutomatonEntity> animationState) {
+    public void setCustomAnimations(AutomatonEntity animatable, long instanceId,
+                                    AnimationState<AutomatonEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

@@ -34,11 +34,21 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class KoboldEntity extends AbstractKoboldEntity {
-    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity .class, EntityDataSerializers.ITEM_STACK);
+    private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity.class,
+                                                                                                    EntityDataSerializers.ITEM_STACK);
 
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);
         navigation = new SmoothGroundNavigation(this, level());
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.koboldHealth)
+                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.koboldAttackDamage)
+                .add(Attributes.ATTACK_SPEED, 2)
+                .add(Attributes.ATTACK_KNOCKBACK, 1)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
     @Override
@@ -51,28 +61,33 @@ public class KoboldEntity extends AbstractKoboldEntity {
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         if (!getItemStack().isEmpty()) {
-            nbt.put("ItemStack", this.getItemStack().save(this.registryAccess()));
+            nbt.put("ItemStack", this.getItemStack()
+                    .save(this.registryAccess()));
         }
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
-        this.setItemStack(ItemStack.parse(this.registryAccess(), nbt.getCompound("ItemStack")).orElse(ItemStack.EMPTY));
+        this.setItemStack(ItemStack.parse(this.registryAccess(), nbt.getCompound("ItemStack"))
+                                  .orElse(ItemStack.EMPTY));
+    }
+
+    public ItemStack getItemStack() {
+        return this.getEntityData()
+                .get(DATA_ITEM_STACK);
     }
 
     public void setItemStack(ItemStack itemStack) {
-        this.getEntityData().set(DATA_ITEM_STACK, itemStack);
+        this.getEntityData()
+                .set(DATA_ITEM_STACK, itemStack);
         this.playSound(SoundEvents.VINDICATOR_CELEBRATE, 1.0f, 2.0f);
         this.setItemInHand(InteractionHand.MAIN_HAND, itemStack);
     }
 
-    public ItemStack getItemStack() {
-        return this.getEntityData().get(DATA_ITEM_STACK);
-    }
-
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
         KoboldVariant variant = Util.getRandom(KoboldVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
@@ -89,41 +104,42 @@ public class KoboldEntity extends AbstractKoboldEntity {
         this.spawnAtLocation(getItemStack());
         setItemStack(ItemStack.EMPTY);
     }
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.koboldHealth)
-                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.koboldAttackDamage)
-                .add(Attributes.ATTACK_SPEED, 2)
-                .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
-    }
+
     @Override
     public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>().startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),
+                new InvalidateAttackTarget<>().invalidateIf(
+                        (target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+                new SetWalkTargetToAttackTarget<>().startCondition(
+                        mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND)
+                                .isEmpty()),
                 new AnimatableMeleeAttack<>(6)
                         .whenStarting(mob -> {
                             this.triggerAnim("attackController", "attack");
                         })
                         .startCondition(mob ->
-                                MobsOfMythology.config.shouldKoboldsSteal &&
-                                        getItemStack().isEmpty() &&
-                                        !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
+                                                MobsOfMythology.config.shouldKoboldsSteal &&
+                                                        getItemStack().isEmpty() &&
+                                                        !getTarget().getItemInHand(InteractionHand.MAIN_HAND)
+                                                                .isEmpty())
                         .stopIf(mob -> !getItemStack().isEmpty())
                         .whenStopping(mob -> {
                             if (!MobsOfMythology.config.shouldKoboldsSteal) return;
                             LivingEntity target = getTarget();
-		                    setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
-                            target.getItemInHand(InteractionHand.MAIN_HAND).shrink(getItemStack().getCount());
+                            setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND)
+                                                 .copy());
+                            target.getItemInHand(InteractionHand.MAIN_HAND)
+                                    .shrink(getItemStack().getCount());
                         }),
                 new FleeTarget<>()
                         .fleeDistance(10)
                         .speedModifier(MobsOfMythology.config.koboldFleeSpeedMod)
-                        .startCondition(mob -> !getItemStack().isEmpty() || BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this)))
+                        .startCondition(mob -> !getItemStack().isEmpty() || BrainUtils.getTargetOfEntity(this)
+                                .is(BrainUtils.getLastAttacker(this)))
                         .whenStarting(pathfinderMob -> {
                             if (!getItemStack().isEmpty())
-                                this.addEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 255, false, false, false));
+                                this.addEffect(
+                                        new MobEffectInstance(MobEffects.GLOWING, 200, 255, false, false, false));
                         })
 
         );

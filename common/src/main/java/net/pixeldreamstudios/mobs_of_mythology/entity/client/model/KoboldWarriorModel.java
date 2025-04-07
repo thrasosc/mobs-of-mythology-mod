@@ -8,8 +8,8 @@ import mod.azure.azurelib.core.animation.AnimationState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldWarriorRenderer;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 
 public class KoboldWarriorModel extends GeoModel<KoboldWarriorEntity> {
     @Override
@@ -24,11 +24,13 @@ public class KoboldWarriorModel extends GeoModel<KoboldWarriorEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(KoboldWarriorEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/kobold_warrior.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                     "animations/entity/kobold_warrior.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(KoboldWarriorEntity animatable, long instanceId, AnimationState<KoboldWarriorEntity> animationState) {
+    public void setCustomAnimations(KoboldWarriorEntity animatable, long instanceId,
+                                    AnimationState<KoboldWarriorEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

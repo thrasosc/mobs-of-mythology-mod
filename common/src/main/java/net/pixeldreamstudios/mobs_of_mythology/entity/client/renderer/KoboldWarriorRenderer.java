@@ -16,27 +16,31 @@ import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.KoboldWarriorModel;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldWarriorEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldWarriorVariant;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
 public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarriorEntity> {
+    public static final Map<KoboldWarriorVariant, ResourceLocation> LOCATION_BY_VARIANT =
+            Util.make(Maps.newEnumMap(KoboldWarriorVariant.class), (map) -> {
+                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_1,
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                              "textures/entity/kobold_warrior/kobold_warrior_1.png"));
+                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_2,
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                              "textures/entity/kobold_warrior/kobold_warrior_2.png"));
+                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_3,
+                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                              "textures/entity/kobold_warrior/kobold_warrior_3.png"));
+            });
     private static final String RIGHT_HAND = "item";
     private static final String LEFT_HAND = "item2";
     protected ItemStack mainHandItem;
     protected ItemStack offHandItem;
-    public static final Map<KoboldWarriorVariant, ResourceLocation> LOCATION_BY_VARIANT =
-            Util.make(Maps.newEnumMap(KoboldWarriorVariant.class), (map) -> {
-                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_1,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_1.png"));
-                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_2,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_2.png"));
-                map.put(KoboldWarriorVariant.KOBOLD_WARRIOR_3,
-                        ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/kobold_warrior/kobold_warrior_3.png"));
-            });
+
     public KoboldWarriorRenderer(EntityRendererProvider.Context ctx) {
         super(ctx, new KoboldWarriorModel());
         this.shadowRadius = 0.4f;
@@ -60,7 +64,8 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
             }
 
             @Override
-            protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack, KoboldWarriorEntity animatable) {
+            protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack,
+                                                                  KoboldWarriorEntity animatable) {
                 // Apply the camera transform for the given hand
                 return switch (bone.getName()) {
                     case LEFT_HAND, RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
@@ -70,7 +75,9 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
 
             // Do some quick render modifications depending on what the item is
             @Override
-            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack, KoboldWarriorEntity animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay) {
+            protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack,
+                                              KoboldWarriorEntity animatable, MultiBufferSource bufferSource,
+                                              float partialTick, int packedLight, int packedOverlay) {
                 if (stack == KoboldWarriorRenderer.this.mainHandItem) {
                     poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
 
@@ -85,7 +92,8 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
                     }
                 }
 
-                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
+                super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight,
+                                         packedOverlay);
             }
         });
     }
@@ -96,8 +104,11 @@ public class KoboldWarriorRenderer extends DynamicGeoEntityRenderer<KoboldWarrio
     }
 
     @Override
-    public void preRender(PoseStack poseStack, KoboldWarriorEntity animatable, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int colour) {
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, colour);
+    public void preRender(PoseStack poseStack, KoboldWarriorEntity animatable, BakedGeoModel model,
+                          MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick,
+                          int packedLight, int packedOverlay, int colour) {
+        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight,
+                        packedOverlay, colour);
 
         this.mainHandItem = animatable.getMainHandItem();
         this.offHandItem = animatable.getOffhandItem();

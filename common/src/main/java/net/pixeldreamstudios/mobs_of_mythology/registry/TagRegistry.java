@@ -10,17 +10,34 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 
 public record TagRegistry() {
     // BLOCK TAGS
-    public static final TagKey<Block> BRONZE_BLOCKS = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "bronze_blocks"));
-    public static final TagKey<Block> MYTH_ENTITIES_SPAWNABLE_ON = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "myth_mob_spawnable_on"));
+    public static final TagKey<Block> BRONZE_BLOCKS = TagKey.create(Registries.BLOCK,
+                                                                    ResourceLocation.fromNamespaceAndPath("c",
+                                                                                                          "bronze_blocks"));
+    public static final TagKey<Block> MYTH_ENTITIES_SPAWNABLE_ON = TagKey.create(Registries.BLOCK,
+                                                                                 ResourceLocation.fromNamespaceAndPath(
+                                                                                         MobsOfMythology.MOD_ID,
+                                                                                         "myth_mob_spawnable_on"));
 
     // ITEM TAGS
-    public static final TagKey<Item> PICKAXES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "pickaxes"));
-    public static final TagKey<Item> BRONZE_INGOTS = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "bronze_ingots"));
+    public static final TagKey<Item> PICKAXES = TagKey.create(Registries.ITEM,
+                                                              ResourceLocation.fromNamespaceAndPath("c", "pickaxes"));
+    public static final TagKey<Item> BRONZE_INGOTS = TagKey.create(Registries.ITEM,
+                                                                   ResourceLocation.fromNamespaceAndPath("c",
+                                                                                                         "bronze_ingots"));
 
     // MOB BIOME SPAWN TAGS
-    public static TagKey<Biome> KOBOLD_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "kobolds_spawn_in"));
-    public static TagKey<Biome> PEGASUS_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "pegasus_spawn_in"));
-    public static TagKey<Biome> DRAKE_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "drakes_spawn_in"));
-    public static TagKey<Biome> CHUPACABRA_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "chupacabras_spawn_in"));
-    public static TagKey<Biome> SPORELING_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "sporelings_spawn_in"));
+    public static TagKey<Biome> KOBOLD_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(
+            MobsOfMythology.MOD_ID, "kobolds_spawn_in"));
+    public static TagKey<Biome> PEGASUS_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(
+            MobsOfMythology.MOD_ID, "pegasus_spawn_in"));
+    public static TagKey<Biome> DRAKE_BIOMES = TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(
+            MobsOfMythology.MOD_ID, "drakes_spawn_in"));
+    public static TagKey<Biome> CHUPACABRA_BIOMES = TagKey.create(Registries.BIOME,
+                                                                  ResourceLocation.fromNamespaceAndPath(
+                                                                          MobsOfMythology.MOD_ID,
+                                                                          "chupacabras_spawn_in"));
+    public static TagKey<Biome> SPORELING_BIOMES = TagKey.create(Registries.BIOME,
+                                                                 ResourceLocation.fromNamespaceAndPath(
+                                                                         MobsOfMythology.MOD_ID,
+                                                                         "sporelings_spawn_in"));
 }

@@ -8,18 +8,20 @@ public enum SporelingVariant {
 
     BROWN(1);
 
-    private static final SporelingVariant[] BY_ID = Arrays.stream(values()).sorted(Comparator.comparingInt(SporelingVariant::getId)).toArray(SporelingVariant[]::new);
+    private static final SporelingVariant[] BY_ID = Arrays.stream(values())
+            .sorted(Comparator.comparingInt(SporelingVariant::getId))
+            .toArray(SporelingVariant[]::new);
     private final int id;
 
     SporelingVariant(int id) {
         this.id = id;
     }
 
-    public int getId() {
-        return this.id;
-    }
-
     public static SporelingVariant byId(int id) {
         return BY_ID[id % BY_ID.length];
+    }
+
+    public int getId() {
+        return this.id;
     }
 }

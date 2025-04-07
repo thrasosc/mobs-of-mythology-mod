@@ -43,13 +43,14 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         navigation = new SmoothGroundNavigation(this, level());
-        GroundPathNavigation mobNavigation = (GroundPathNavigation)this.getNavigation();
+        GroundPathNavigation mobNavigation = (GroundPathNavigation) this.getNavigation();
         mobNavigation.setCanWalkOverFences(true);
         this.xpReward = Enemy.XP_REWARD_MEDIUM;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, MobsOfMythology.config.chupacabraHealth)
+        return Monster.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.chupacabraHealth)
                 .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.chupacabraAttackDamage)
                 .add(Attributes.ATTACK_SPEED, 1.25f)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
@@ -76,7 +77,9 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                         .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
                 new FleeTarget<>()
                         .speedModifier(1.75f)
-                        .startCondition(pathfinderMob -> BrainUtils.getTargetOfEntity(this) instanceof Player || BrainUtils.getLastAttacker(this) instanceof Player || unreachableTarget)
+                        .startCondition(pathfinderMob -> BrainUtils.getTargetOfEntity(
+                                this) instanceof Player || BrainUtils.getLastAttacker(
+                                this) instanceof Player || unreachableTarget)
                         .whenStopping(pathfinderMob -> unreachableTarget = false),
                 new AnimatableMeleeAttack<>(8)
                         .whenStarting(mob -> {

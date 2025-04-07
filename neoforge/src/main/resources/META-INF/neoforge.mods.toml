@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Mobs of Mythology"
 authors = "kyber-6"
 credits = "Pixel Dream Studios, steficy, AzureDoom, karelien"
-displayURL="https://www.curseforge.com/minecraft/mc-mods/mobs-of-mythology"
+displayURL = "https://www.curseforge.com/minecraft/mc-mods/mobs-of-mythology"
 description = '''
 Discover a World of Mythological Creatures in Minecraft!
 '''

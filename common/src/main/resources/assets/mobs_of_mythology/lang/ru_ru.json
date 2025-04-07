@@ -1,16 +1,13 @@
 {
   "category.mobs_of_mythology": "Мистические существа",
-
   "advancements.mobs_of_mythology.title": "Мистические существа",
   "advancements.mobs_of_mythology.description": "Мистический мир!",
-
   "entity.mobs_of_mythology.automaton": "Автомат",
   "entity.mobs_of_mythology.kobold": "Кобольд",
   "entity.mobs_of_mythology.kobold_warrior": "Кобольд воин",
   "entity.mobs_of_mythology.chupacabra": "Чупакабра",
   "entity.mobs_of_mythology.drake": "Дракон",
   "entity.mobs_of_mythology.sporeling": "Молодой спорофит",
-
   "item.mobs_of_mythology.automaton_spawn_egg": "Яйцо призыва автомата",
   "item.mobs_of_mythology.kobold_spawn_egg": "Яйцо призыва кобольда",
   "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Яйцо призыва кобольда воина",
@@ -18,17 +15,14 @@
   "item.mobs_of_mythology.wendigo_spawn_egg": "Яйцо призыва вендиго",
   "item.mobs_of_mythology.drake_spawn_egg": "Яйцо призыва дракона",
   "item.mobs_of_mythology.sporeling_spawn_egg": "Яйцо призыва молодого спорофита",
-
   "item.mobs_of_mythology.automaton_head": "Голова автомата",
   "item.mobs_of_mythology.kobold_spear": "Копьё кобольда",
   "item.mobs_of_mythology.bronze_ingot": "Бронзовый слиток",
   "item.mobs_of_mythology.chupacabra_meat": "Сырое мясо чупакабры",
   "item.mobs_of_mythology.cooked_chupacabra_meat": "Мясо на шампуре из чупакабры",
   "item.mobs_of_mythology.gear": "Шестерёнка автомата",
-
   "block.mobs_of_mythology.bronze_block": "Бронзовый блок",
   "block.mobs_of_mythology.cut_bronze_block": "Резной бронзовый блок",
-
   "config.screen.mobs_of_mythology": "Настройки Mobs of Mythology",
   "config.mobs_of_mythology.option.automatonHealth": "Здоровье автомата",
   "config.mobs_of_mythology.option.automatonAttackDamage": "Урон от атаки автомата",

@@ -11,12 +11,13 @@ import org.slf4j.LoggerFactory;
 
 public final class MobsOfMythology {
     public static final String MOD_ID = "mobs_of_mythology";
-    public static MobsOfMythologyConfig config;
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static MobsOfMythologyConfig config;
 
     public static void init() {
         AzureLib.initialize();
-        config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties()).getConfigInstance();
+        config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties())
+                .getConfigInstance();
         SoundRegistry.init();
         EntityRegistry.init();
         ItemRegistry.init();

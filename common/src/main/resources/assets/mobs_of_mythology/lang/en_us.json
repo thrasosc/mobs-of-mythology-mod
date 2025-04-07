@@ -1,15 +1,12 @@
 {
   "category.mobs_of_mythology": "Mobs of Mythology",
-
   "advancements.mobs_of_mythology.title": "Mobs of Mythology",
   "advancements.mobs_of_mythology.description": "Discover a World of Mythological Creatures in Minecraft!",
   "advancements.mobs_of_mythology.tame_basilisk.title": "Gentle Giant",
   "advancements.mobs_of_mythology.tame_basilisk.description": "Tame a deadly Basilisk",
-
   "sound.mobs_of_mythology.drake_roar": "Drake roar",
   "sound.mobs_of_mythology.drake_death": "Drake death",
   "sound.mobs_of_mythology.robotic_voice": "Robotic voice",
-
   "entity.mobs_of_mythology.automaton": "Automaton",
   "entity.mobs_of_mythology.kobold": "Kobold",
   "entity.mobs_of_mythology.kobold_warrior": "Kobold Warrior",
@@ -18,7 +15,6 @@
   "entity.mobs_of_mythology.sporeling": "Sporeling",
   "entity.mobs_of_mythology.basilisk": "Basilisk",
   "entity.mobs_of_mythology.pegasus": "Pegasus",
-
   "item.mobs_of_mythology.automaton_spawn_egg": "Automaton Spawn Egg",
   "item.mobs_of_mythology.kobold_spawn_egg": "Kobold Spawn Egg",
   "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Kobold Warrior Spawn Egg",
@@ -28,7 +24,6 @@
   "item.mobs_of_mythology.sporeling_spawn_egg": "Sporeling Spawn Egg",
   "item.mobs_of_mythology.basilisk_spawn_egg": "Basilisk Spawn Egg",
   "item.mobs_of_mythology.pegasus_spawn_egg": "Pegasus Spawn Egg",
-
   "item.mobs_of_mythology.automaton_head": "Automaton Head",
   "item.mobs_of_mythology.basilisk_head": "Automaton Head",
   "item.mobs_of_mythology.kobold_spear": "Kobold Spear",
@@ -36,10 +31,8 @@
   "item.mobs_of_mythology.chupacabra_meat": "Chupacabra Meat",
   "item.mobs_of_mythology.cooked_chupacabra_meat": "Cooked Chupacabra Meat",
   "item.mobs_of_mythology.gear": "Automaton Gear",
-
   "block.mobs_of_mythology.bronze_block": "Bronze Block",
   "block.mobs_of_mythology.cut_bronze_block": "Cut Bronze Block",
-
   "config.screen.mobs_of_mythology": "Mobs of Mythology Config",
   "config.mobs_of_mythology.option.automatonHealth": "Automaton Health",
   "config.mobs_of_mythology.option.automatonAttackDamage": "Automaton Attack Damage",

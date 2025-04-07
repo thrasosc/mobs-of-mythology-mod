@@ -10,7 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 
 public class TabRegistry {
-    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(MobsOfMythology.MOD_ID, Registries.CREATIVE_MODE_TAB);
+    public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(MobsOfMythology.MOD_ID,
+                                                                                         Registries.CREATIVE_MODE_TAB);
     public static final RegistrySupplier<CreativeModeTab> MOBS_OF_MYTHOLOGY_TAB = TABS.register(
             "mobs_of_mythology_tab", // Tab ID
             () -> CreativeTabRegistry.create(

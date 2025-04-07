@@ -24,11 +24,13 @@ public class BasiliskModel extends GeoModel<BasiliskEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(BasiliskEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/basilisk.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                     "animations/entity/basilisk.animation.json");
     }
 
     @Override
-    public void setCustomAnimations(BasiliskEntity animatable, long instanceId, AnimationState<BasiliskEntity> animationState) {
+    public void setCustomAnimations(BasiliskEntity animatable, long instanceId,
+                                    AnimationState<BasiliskEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
 
         if (head != null) {

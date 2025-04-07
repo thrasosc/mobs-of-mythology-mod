@@ -19,6 +19,7 @@ public class ChupacabraModel extends GeoModel<ChupacabraEntity> {
 
     @Override
     public ResourceLocation getAnimationResource(ChupacabraEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/chupacabra.animation.json");
+        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                     "animations/entity/chupacabra.animation.json");
     }
 }

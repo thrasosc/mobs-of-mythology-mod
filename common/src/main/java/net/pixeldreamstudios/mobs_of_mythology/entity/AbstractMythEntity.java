@@ -8,15 +8,11 @@ import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -50,15 +46,18 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
         super(entityType, level);
     }
 
-     /*
-      * Prevent myth mobs from spawning wherever they want to.
-      * Adapted from net.minecraft.world.entity.animal.Animal.checkAnimalSpawnRules.
-      */
+    /*
+     * Prevent myth mobs from spawning wherever they want to.
+     * Adapted from net.minecraft.world.entity.animal.Animal.checkAnimalSpawnRules.
+     */
     public static boolean checkMythEntitySpawnRules(
-            EntityType<? extends PathfinderMob> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource
+            EntityType<? extends PathfinderMob> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType,
+            BlockPos blockPos, RandomSource randomSource
     ) {
-        boolean bl = MobSpawnType.ignoresLightRequirements(mobSpawnType) || isBrightEnoughToSpawn(levelAccessor, blockPos);
-        return levelAccessor.getBlockState(blockPos.below()).is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
+        boolean bl = MobSpawnType.ignoresLightRequirements(mobSpawnType) || isBrightEnoughToSpawn(levelAccessor,
+                                                                                                  blockPos);
+        return levelAccessor.getBlockState(blockPos.below())
+                .is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
     }
 
     protected static boolean isBrightEnoughToSpawn(BlockAndTintGetter blockAndTintGetter, BlockPos blockPos) {
@@ -73,20 +72,24 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (state.isMoving() && !swinging) {
-                if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
+                    if (state.isMoving() && !swinging) {
+                        if (isAggressive() && !swinging) {
+                            state.getController()
+                                    .setAnimation(DefaultMythAnimations.RUN);
+                            return PlayState.CONTINUE;
+                        }
+                        state.getController()
+                                .setAnimation(DefaultMythAnimations.WALK);
+                        return PlayState.CONTINUE;
+                    }
+                    state.getController()
+                            .setAnimation(DefaultMythAnimations.IDLE);
                     return PlayState.CONTINUE;
-                }
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
-                return PlayState.CONTINUE;
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+                }))
+                .add(new AnimationController<>(this, "attackController", 3, event -> {
+                    swinging = false;
+                    return PlayState.STOP;
+                }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
     }
 
     @Override
@@ -113,7 +116,8 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
                         new SetRandomLookTarget<>()),
                 new OneRandomBehaviour<>(
                         new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+                        new Idle<>().runFor(entity -> entity.getRandom()
+                                .nextInt(30, 60))));
     }
 
     @Override

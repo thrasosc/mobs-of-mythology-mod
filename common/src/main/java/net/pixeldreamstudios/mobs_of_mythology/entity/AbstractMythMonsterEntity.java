@@ -53,10 +53,15 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
      * Adapted from net.minecraft.world.entity.monster.Monster.checkAnyLightMonsterSpawnRules.
      */
     public static boolean checkMythMonsterSpawnRules(
-            EntityType<? extends Monster> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource
+            EntityType<? extends Monster> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType,
+            BlockPos blockPos, RandomSource randomSource
     ) {
-        boolean bl =levelAccessor.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType, levelAccessor, mobSpawnType, blockPos, randomSource);
-        return levelAccessor.getBlockState(blockPos.below()).is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
+        boolean bl = levelAccessor.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType,
+                                                                                                levelAccessor,
+                                                                                                mobSpawnType, blockPos,
+                                                                                                randomSource);
+        return levelAccessor.getBlockState(blockPos.below())
+                .is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
     }
 
     @Override
@@ -67,20 +72,24 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (state.isMoving() && !swinging) {
-                if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
+                    if (state.isMoving() && !swinging) {
+                        if (isAggressive() && !swinging) {
+                            state.getController()
+                                    .setAnimation(DefaultMythAnimations.RUN);
+                            return PlayState.CONTINUE;
+                        }
+                        state.getController()
+                                .setAnimation(DefaultMythAnimations.WALK);
+                        return PlayState.CONTINUE;
+                    }
+                    state.getController()
+                            .setAnimation(DefaultMythAnimations.IDLE);
                     return PlayState.CONTINUE;
-                }
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
-                return PlayState.CONTINUE;
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+                }))
+                .add(new AnimationController<>(this, "attackController", 3, event -> {
+                    swinging = false;
+                    return PlayState.STOP;
+                }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
     }
 
     @Override
@@ -109,7 +118,8 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
                         new SetRandomLookTarget<>()),
                 new OneRandomBehaviour<>(
                         new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+                        new Idle<>().runFor(entity -> entity.getRandom()
+                                .nextInt(30, 60))));
     }
 
     @Override

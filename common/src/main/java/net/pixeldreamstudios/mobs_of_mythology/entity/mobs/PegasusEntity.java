@@ -5,14 +5,13 @@ import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
 import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.horse.AbstractChestedHorse;
@@ -25,10 +24,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
 
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    private boolean isFlying = false;
     private static final int FLYING_INTERVAL = 8;
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
     protected int flyingTime;
+    private boolean isFlying = false;
 
     public PegasusEntity(EntityType<? extends AbstractChestedHorse> entityType, Level level) {
         super(entityType, level);
@@ -69,7 +68,8 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
                     Vec3 currentMotion = this.getDeltaMovement();
                     this.setDeltaMovement(currentMotion.add(0.0, 0.05, 0.0));
                     super.travel(new Vec3(rider.xxa, currentMotion.y, rider.zza));
-                    this.setDeltaMovement(this.getDeltaMovement().multiply(0.91D, 0.98D, 0.91D));
+                    this.setDeltaMovement(this.getDeltaMovement()
+                                                  .multiply(0.91D, 0.98D, 0.91D));
                 } else {
                     this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
                     super.travel(new Vec3(rider.xxa, 0, rider.zza));
@@ -79,20 +79,19 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
             }
         }
     }
+
     @Override
     public void handleStartJump(int jumpPower) {
         if (!this.onGround()) {
             this.setStanding(false);
         }
     }
-    @Override
-    public void setJumping(boolean jumping) {
-        this.jumping = jumping;
-    }
+
     @Override
     public boolean canJump() {
         return super.canJump() && flyingTime <= 0;
     }
+
     @Override
     public void onPlayerJump(int jumpPower) {
 //        if (this.canJump()) {
@@ -100,14 +99,17 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
         this.flyingJump();
 
     }
+
     public void flyingJump() {
         if (flyingTime <= 0 && this.canJump()) {
             float jumpMotion = 1.6F;
-            this.setDeltaMovement(this.getDeltaMovement().add(0, jumpMotion, 0));
+            this.setDeltaMovement(this.getDeltaMovement()
+                                          .add(0, jumpMotion, 0));
             this.flyingTime = FLYING_INTERVAL;
             this.isFlying = true;
         }
     }
+
     @Override
     public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource source) {
         // Pegasus does not take fall damage
@@ -118,10 +120,17 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
     protected void playJumpSound() {
         this.playSound(SoundEvents.HORSE_JUMP, 0.4F, 1.0F);
     }
+
     @Override
     public boolean isJumping() {
         return false;
     }
+
+    @Override
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!this.level().isClientSide && !this.isVehicle()) {

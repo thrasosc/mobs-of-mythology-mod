@@ -16,9 +16,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,14 +27,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.armadillo.Armadillo;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
@@ -44,23 +40,42 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimat
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.DrakeVariant;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
-import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
 public class DrakeEntity extends TamableAnimal implements GeoEntity {
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
     public static final Predicate<LivingEntity> PREY_SELECTOR;
+    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(
+            DrakeEntity.class, EntityDataSerializers.INT);
+
+    static {
+        PREY_SELECTOR = (livingEntity) -> {
+            EntityType<?> entityType = livingEntity.getType();
+            return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
+        };
+    }
+
+    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
     public DrakeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
         super(entityType, world);
         this.xpReward = Monster.XP_REWARD_MEDIUM;
     }
 
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.drakeHealth)
+                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.drakeAttackDamage)
+                .add(Attributes.ATTACK_SPEED, 2)
+                .add(Attributes.ATTACK_KNOCKBACK, 1)
+                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+                .add(Attributes.MOVEMENT_SPEED, 0.3);
+    }
+
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
         DrakeVariant variant = Util.getRandom(DrakeVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
@@ -80,10 +95,12 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     @Override
     protected void applyTamingSideEffects() {
         if (this.isTame()) {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.drakeHealth * 2);
+            this.getAttribute(Attributes.MAX_HEALTH)
+                    .setBaseValue(MobsOfMythology.config.drakeHealth * 2);
             this.setHealth((float) (MobsOfMythology.config.drakeHealth * 2));
         } else {
-            this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.drakeHealth);
+            this.getAttribute(Attributes.MAX_HEALTH)
+                    .setBaseValue(MobsOfMythology.config.drakeHealth);
         }
     }
 
@@ -122,16 +139,6 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         return this.entityData.get(DATA_ID_TYPE_VARIANT);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.drakeHealth)
-                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.drakeAttackDamage)
-                .add(Attributes.ATTACK_SPEED, 2)
-                .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
-    }
-
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
         this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
@@ -147,35 +154,32 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
     }
 
-    static {
-        PREY_SELECTOR = (livingEntity) -> {
-            EntityType<?> entityType = livingEntity.getType();
-            return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
-        };
-    }
-
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (isInSittingPose()) {
-                state.getController().setAnimation(DefaultMythAnimations.SIT);
-                return PlayState.CONTINUE;
-            } else if (state.isMoving() && !swinging) {
-                if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
+                    if (isInSittingPose()) {
+                        state.getController()
+                                .setAnimation(DefaultMythAnimations.SIT);
+                        return PlayState.CONTINUE;
+                    } else if (state.isMoving() && !swinging) {
+                        if (isAggressive() && !swinging) {
+                            state.getController()
+                                    .setAnimation(DefaultMythAnimations.RUN);
+                            return PlayState.CONTINUE;
+                        } else {
+                            state.getController()
+                                    .setAnimation(DefaultMythAnimations.WALK);
+                            return PlayState.CONTINUE;
+                        }
+                    }
+                    state.getController()
+                            .setAnimation(DefaultMythAnimations.IDLE);
                     return PlayState.CONTINUE;
-                }
-                else {
-                    state.getController().setAnimation(DefaultMythAnimations.WALK);
-                    return PlayState.CONTINUE;
-                }
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+                }))
+                .add(new AnimationController<>(this, "attackController", 3, event -> {
+                    swinging = false;
+                    return PlayState.STOP;
+                }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
     }
 
     @Override
@@ -184,7 +188,7 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         return super.doHurtTarget(entity);
     }
 
-        @Override
+    @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
     }
@@ -194,15 +198,17 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         Item item = itemStack.getItem();
         if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
-            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
+            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(
+                    ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
             return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else if (this.isTame()) {
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
                 itemStack.consume(1, player);
                 FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
-                float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
+                float f = foodProperties != null ? (float) foodProperties.nutrition() : 1.0F;
                 this.heal(2.0F * f);
-                return InteractionResult.sidedSuccess(this.level().isClientSide());
+                return InteractionResult.sidedSuccess(this.level()
+                                                              .isClientSide());
             }
             InteractionResult interactionResult = super.mobInteract(player, interactionHand);
             if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
@@ -229,9 +235,11 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
             this.navigation.stop();
             this.setTarget(null);
             this.setOrderedToSit(true);
-            this.level().broadcastEntityEvent(this, (byte)7);
+            this.level()
+                    .broadcastEntityEvent(this, (byte) 7);
         } else {
-            this.level().broadcastEntityEvent(this, (byte)6);
+            this.level()
+                    .broadcastEntityEvent(this, (byte) 6);
         }
     }
 

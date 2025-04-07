@@ -37,13 +37,6 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
         this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemRegistry.KOBOLD_SPEAR, 1));
     }
 
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
-        KoboldWarriorVariant variant = Util.getRandom(KoboldWarriorVariant.values(), this.random);
-        setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
-    }
-
     public static AttributeSupplier.Builder createAttributes() {
         return Monster.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, MobsOfMythology.config.koboldWarriorHealth)
@@ -52,6 +45,14 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
                 .add(Attributes.ATTACK_SPEED, 2)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+        KoboldWarriorVariant variant = Util.getRandom(KoboldWarriorVariant.values(), this.random);
+        setVariant(variant);
+        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
     }
 
     @Override

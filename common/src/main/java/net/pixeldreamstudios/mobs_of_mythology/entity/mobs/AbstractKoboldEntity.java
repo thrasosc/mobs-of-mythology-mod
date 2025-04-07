@@ -16,7 +16,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
 
 public abstract class AbstractKoboldEntity extends AbstractMythMonsterEntity implements Enemy {
-    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(AbstractKoboldEntity.class, EntityDataSerializers.INT);
+    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(
+            AbstractKoboldEntity.class, EntityDataSerializers.INT);
 
     protected AbstractKoboldEntity(EntityType<? extends Monster> entityType, Level level, int XP) {
         super(entityType, level);

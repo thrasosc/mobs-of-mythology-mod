@@ -8,8 +8,8 @@ import mod.azure.azurelib.core.animation.AnimationState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
-import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldRenderer;
+import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 
 public class KoboldModel extends GeoModel<KoboldEntity> {
     @Override
@@ -28,7 +28,8 @@ public class KoboldModel extends GeoModel<KoboldEntity> {
     }
 
     @Override
-    public void setCustomAnimations(KoboldEntity animatable, long instanceId, AnimationState<KoboldEntity> animationState) {
+    public void setCustomAnimations(KoboldEntity animatable, long instanceId,
+                                    AnimationState<KoboldEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
         if (head != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);

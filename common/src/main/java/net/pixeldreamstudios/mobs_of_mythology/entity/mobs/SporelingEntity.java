@@ -43,9 +43,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SporelingEntity extends PathfinderMob implements GeoEntity {
+    public static final RawAnimation BOUNCE = RawAnimation.begin()
+            .thenPlay("bounce");
+    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(
+            SporelingEntity.class, EntityDataSerializers.INT);
     private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
-    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(SporelingEntity.class, EntityDataSerializers.INT);
     private Component currentLine;
     private String[] lines;
     private List<String> greetings;
@@ -67,7 +69,8 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
         SporelingVariant variant = Util.getRandom(SporelingVariant.values(), this.random);
         setVariant(variant);
         return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
@@ -129,16 +132,20 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
         controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
             if (state.isMoving()) {
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
+                state.getController()
+                        .setAnimation(DefaultMythAnimations.WALK);
                 return PlayState.CONTINUE;
             }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
+            state.getController()
+                    .setAnimation(DefaultMythAnimations.IDLE);
             return PlayState.CONTINUE;
         }));
         controllerRegistrar.add(new AnimationController<>(this, "bounceController", 3, state -> {
             if (touched) {
-                state.getController().forceAnimationReset();
-                state.getController().setAnimation(BOUNCE);
+                state.getController()
+                        .forceAnimationReset();
+                state.getController()
+                        .setAnimation(BOUNCE);
                 touched = false;
             }
             return PlayState.CONTINUE;
@@ -177,7 +184,8 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
             do {
                 currentLine = Component.literal(lines[random.nextInt(lines.length)]);
                 if (currentLine.equals(Component.literal("playerGreeting"))) {
-                    currentLine = Component.literal(greetings.get(random.nextInt(greetings.size())) + player.getScoreboardName() + '!');
+                    currentLine = Component.literal(
+                            greetings.get(random.nextInt(greetings.size())) + player.getScoreboardName() + '!');
                 }
             } while (currentLine.equals(previousLine));
             MinecraftServer server = player.getServer();

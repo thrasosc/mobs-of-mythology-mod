@@ -1,16 +1,13 @@
 {
   "category.mobs_of_mythology": "Mobs of Mythology",
-
   "advancements.mobs_of_mythology.title": "Mobs of Mythology",
   "advancements.mobs_of_mythology.description": "Một thế giới thần thoại!",
-
   "entity.mobs_of_mythology.automaton": "Máy tự động",
   "entity.mobs_of_mythology.kobold": "Kobold",
   "entity.mobs_of_mythology.kobold_warrior": "Chiến binh Kobold",
   "entity.mobs_of_mythology.chupacabra": "Quỷ hút máu dê",
   "entity.mobs_of_mythology.drake": "Drake",
   "entity.mobs_of_mythology.sporeling": "Bào tử con",
-
   "item.mobs_of_mythology.automaton_spawn_egg": "Trứng máy tự động",
   "item.mobs_of_mythology.kobold_spawn_egg": "Trứng Kobold",
   "item.mobs_of_mythology.kobold_warrior_spawn_egg": "Trứng chiến binh Kobold",
@@ -18,17 +15,14 @@
   "item.mobs_of_mythology.wendigo_spawn_egg": "Trứng Wendigo",
   "item.mobs_of_mythology.drake_spawn_egg": "Trứng Drake",
   "item.mobs_of_mythology.sporeling_spawn_egg": "Trứng Bào tử con",
-
   "item.mobs_of_mythology.automaton_head": "Đầu máy tự động",
   "item.mobs_of_mythology.kobold_spear": "Giáo Kobold",
   "item.mobs_of_mythology.bronze_ingot": "Thỏi đồng",
   "item.mobs_of_mythology.chupacabra_meat": "Thịt Quỷ hút máu dê sống",
   "item.mobs_of_mythology.cooked_chupacabra_meat": "Thịt Quỷ hút máu dê nướng xiên",
   "item.mobs_of_mythology.gear": "Bánh răng máy tự động",
-
   "block.mobs_of_mythology.bronze_block": "Khối Đồng",
   "block.mobs_of_mythology.cut_bronze_block": "Khối Đồng cắt",
-
   "config.screen.mobs_of_mythology": "Tùy chọn Mobs of Mythology",
   "config.mobs_of_mythology.option.automatonHealth": "Máu của máy tự động",
   "config.mobs_of_mythology.option.automatonAttackDamage": "Sát thương của máy tự động",

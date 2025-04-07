@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "mobs_of_mythology:block/bronze_block" }
+    "": {
+      "model": "mobs_of_mythology:block/bronze_block"
+    }
   }
 }
