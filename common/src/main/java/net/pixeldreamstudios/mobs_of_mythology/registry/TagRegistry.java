@@ -11,6 +11,7 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 public record TagRegistry() {
     // BLOCK TAGS
     public static final TagKey<Block> BRONZE_BLOCKS = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath("c", "bronze_blocks"));
+    public static final TagKey<Block> MYTH_ENTITIES_SPAWNABLE_ON = TagKey.create(Registries.BLOCK, ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "myth_mob_spawnable_on"));
 
     // ITEM TAGS
     public static final TagKey<Item> PICKAXES = TagKey.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath("c", "pickaxes"));

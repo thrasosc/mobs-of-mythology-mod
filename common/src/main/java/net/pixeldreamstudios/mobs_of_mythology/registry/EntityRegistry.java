@@ -10,9 +10,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacementTypes;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.*;
 
 public class EntityRegistry {
@@ -59,22 +62,22 @@ public class EntityRegistry {
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "pegasus").toString()));
 
     private static void initSpawns() {
-        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldEntity::checkAnyLightMonsterSpawnRules);
+        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractMythMonsterEntity::checkMythMonsterSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.KOBOLD_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD.get(), MobsOfMythology.config.koboldSpawnWeight, 2, 4)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD_WARRIOR, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldWarriorEntity::checkAnyLightMonsterSpawnRules);
+        SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD_WARRIOR, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractMythMonsterEntity::checkMythMonsterSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.KOBOLD_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), MobsOfMythology.config.koboldWarriorSpawnWeight, 2, 3)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.PEGASUS, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PegasusEntity::checkMobSpawnRules);
+        SpawnPlacementsRegistry.register(EntityRegistry.PEGASUS, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractMythEntity::checkMythEntitySpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.PEGASUS_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(PEGASUS.get(), MobsOfMythology.config.pegasusSpawnWeight, 2, 3)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.DRAKE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DrakeEntity::checkMobSpawnRules);
+        SpawnPlacementsRegistry.register(EntityRegistry.DRAKE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractMythEntity::checkMythEntitySpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DRAKE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(DRAKE.get(), MobsOfMythology.config.drakeSpawnWeight, 1, 1)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.CHUPACABRA, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, ChupacabraEntity::checkAnyLightMonsterSpawnRules);
+        SpawnPlacementsRegistry.register(EntityRegistry.CHUPACABRA, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractMythMonsterEntity::checkMythMonsterSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.CHUPACABRA_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(CHUPACABRA.get(), MobsOfMythology.config.chupacabraSpawnWeight, 1, 1)));
 
-        SpawnPlacementsRegistry.register(EntityRegistry.SPORELING, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SporelingEntity::checkMobSpawnRules);
+        SpawnPlacementsRegistry.register(EntityRegistry.SPORELING, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, AbstractMythEntity::checkMythEntitySpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.SPORELING_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(SPORELING.get(), MobsOfMythology.config.sporelingSpawnWeight, 4, 6)));
     }
 

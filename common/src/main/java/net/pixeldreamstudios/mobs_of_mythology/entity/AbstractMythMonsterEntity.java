@@ -7,12 +7,18 @@ import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCa
 import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -40,6 +46,17 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
 
     protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
+    }
+
+    /*
+     * Prevent myth monsters from spawning wherever they want to.
+     * Adapted from net.minecraft.world.entity.monster.Monster.checkAnyLightMonsterSpawnRules.
+     */
+    public static boolean checkMythMonsterSpawnRules(
+            EntityType<? extends Monster> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource
+    ) {
+        boolean bl =levelAccessor.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType, levelAccessor, mobSpawnType, blockPos, randomSource);
+        return levelAccessor.getBlockState(blockPos.below()).is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
     }
 
     @Override

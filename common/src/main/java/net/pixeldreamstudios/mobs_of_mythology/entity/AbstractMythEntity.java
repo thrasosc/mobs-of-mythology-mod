@@ -7,12 +7,21 @@ import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCa
 import mod.azure.azurelib.core.animation.AnimatableManager;
 import mod.azure.azurelib.core.animation.AnimationController;
 import mod.azure.azurelib.core.object.PlayState;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
+import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import net.tslat.smartbrainlib.api.SmartBrainOwner;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
@@ -41,6 +50,21 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
         super(entityType, level);
     }
 
+     /*
+      * Prevent myth mobs from spawning wherever they want to.
+      * Adapted from net.minecraft.world.entity.animal.Animal.checkAnimalSpawnRules.
+      */
+    public static boolean checkMythEntitySpawnRules(
+            EntityType<? extends PathfinderMob> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType, BlockPos blockPos, RandomSource randomSource
+    ) {
+        boolean bl = MobSpawnType.ignoresLightRequirements(mobSpawnType) || isBrightEnoughToSpawn(levelAccessor, blockPos);
+        return levelAccessor.getBlockState(blockPos.below()).is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
+    }
+
+    protected static boolean isBrightEnoughToSpawn(BlockAndTintGetter blockAndTintGetter, BlockPos blockPos) {
+        return blockAndTintGetter.getRawBrightness(blockPos, 0) > 8;
+    }
+
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
@@ -63,17 +87,6 @@ public abstract class AbstractMythEntity extends PathfinderMob implements GeoEnt
             swinging = false;
             return PlayState.STOP;
         }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
-
-    protected void produceParticles(ParticleOptions parameters) {
-        if (level().isClientSide()) {
-            for (int i = 0; i < 2; ++i) {
-                double d = this.random.nextGaussian() * 0.02;
-                double e = this.random.nextGaussian() * 0.02;
-                double f = this.random.nextGaussian() * 0.02;
-                this.level().addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d, e, f);
-            }
-        }
     }
 
     @Override
