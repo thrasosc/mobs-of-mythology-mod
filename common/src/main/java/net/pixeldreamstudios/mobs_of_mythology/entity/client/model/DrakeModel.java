@@ -8,18 +8,18 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.DrakeEntity;
 
 public class DrakeModel extends GeoModel<DrakeEntity> {
 
-    @Override
-    public ResourceLocation getModelResource(DrakeEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/drake.geo.json");
-    }
+  @Override
+  public ResourceLocation getModelResource(DrakeEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/drake.geo.json");
+  }
 
-    @Override
-    public ResourceLocation getTextureResource(DrakeEntity object) {
-        return DrakeRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
-    }
+  @Override
+  public ResourceLocation getTextureResource(DrakeEntity object) {
+    return DrakeRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
+  }
 
-    @Override
-    public ResourceLocation getAnimationResource(DrakeEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/drake.animation.json");
-    }
+  @Override
+  public ResourceLocation getAnimationResource(DrakeEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/drake.animation.json");
+  }
 }

@@ -55,233 +55,233 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, SmartBrainOwner<BasiliskEntity> {
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+  private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    public BasiliskEntity(EntityType<? extends AbstractChestedHorse> entityType, Level level) {
-        super(entityType, level);
-        this.navigation = new SmoothGroundNavigation(this, level);
+  public BasiliskEntity(EntityType<? extends AbstractChestedHorse> entityType, Level level) {
+    super(entityType, level);
+    this.navigation = new SmoothGroundNavigation(this, level);
+  }
+
+  public static AttributeSupplier.Builder createAttributes() {
+    return Monster.createMobAttributes()
+      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.basiliskHealth)
+      .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.basiliskAttackDamage)
+      .add(Attributes.ATTACK_KNOCKBACK, 1)
+      .add(Attributes.MOVEMENT_SPEED, 0.2f)
+      .add(Attributes.KNOCKBACK_RESISTANCE, 0.75)
+      .add(Attributes.JUMP_STRENGTH, 0.5f);
+  }
+
+  @Override
+  protected void randomizeAttributes(RandomSource randomSource) {
+
+  }
+
+  @Override
+  public boolean isFood(ItemStack itemStack) {
+    return itemStack.is(ItemTags.MEAT);
+  }
+
+  @Override
+  protected boolean handleEating(Player player, ItemStack itemStack) {
+    boolean bl = false;
+    float f = 0.0F;
+    if (itemStack.is(ItemTags.MEAT)) {
+      f = 4.0F;
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.basiliskHealth)
-                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.basiliskAttackDamage)
-                .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.75)
-                .add(Attributes.JUMP_STRENGTH, 0.5f);
+    if (this.getHealth() < this.getMaxHealth() && f > 0.0F) {
+      this.heal(f);
+      bl = true;
     }
 
-    @Override
-    protected void randomizeAttributes(RandomSource randomSource) {
-
+    if (bl) {
+      this.eat();
+      this.gameEvent(GameEvent.EAT);
     }
 
-    @Override
-    public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(ItemTags.MEAT);
-    }
+    return bl;
+  }
 
-    @Override
-    protected boolean handleEating(Player player, ItemStack itemStack) {
-        boolean bl = false;
-        float f = 0.0F;
-        if (itemStack.is(ItemTags.MEAT)) {
-            f = 4.0F;
-        }
+  @Override
+  protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions entityDimensions, float f) {
+    return super.getPassengerAttachmentPoint(entity, entityDimensions, f)
+      .add(new Vec3(0.0, 0.01 * (double) f, -0.1 * (double) f).yRot(
+        -this.getYRot() * (float) (Math.PI / 180.0)));
+  }
 
-        if (this.getHealth() < this.getMaxHealth() && f > 0.0F) {
-            this.heal(f);
-            bl = true;
-        }
-
-        if (bl) {
-            this.eat();
-            this.gameEvent(GameEvent.EAT);
-        }
-
-        return bl;
-    }
-
-    @Override
-    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions entityDimensions, float f) {
-        return super.getPassengerAttachmentPoint(entity, entityDimensions, f)
-                .add(new Vec3(0.0, 0.01 * (double) f, -0.1 * (double) f).yRot(
-                        -this.getYRot() * (float) (Math.PI / 180.0)));
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
-                    // SADDLED
-                    if (isSaddled() || (!isSaddled() && hasExactlyOnePlayerPassenger())) {
-                        if (state.isMoving() && !swinging) {
-                            if (isAggressive() || hasExactlyOnePlayerPassenger()) {
-                                state.getController()
-                                        .setAnimation(DefaultMythAnimations.RUN_RIDING);
-                                return PlayState.CONTINUE;
-                            }
-                            state.getController()
-                                    .setAnimation(DefaultMythAnimations.WALK_RIDING);
-                            return PlayState.CONTINUE;
-                        }
-                        state.getController()
-                                .setAnimation(DefaultMythAnimations.IDLE_RIDING);
-                        return PlayState.CONTINUE;
-                    }
-                    // NOT SADDLED
-                    if (state.isMoving() && !swinging) {
-                        if (isAggressive() || hasExactlyOnePlayerPassenger()) {
-                            state.getController()
-                                    .setAnimation(DefaultMythAnimations.RUN);
-                            return PlayState.CONTINUE;
-                        }
-                        state.getController()
-                                .setAnimation(DefaultMythAnimations.WALK);
-                        return PlayState.CONTINUE;
-                    }
-                    state.getController()
-                            .setAnimation(DefaultMythAnimations.IDLE);
-                    return PlayState.CONTINUE;
-                }))
-                .add(new AnimationController<>(this, "attackController", 3, event -> {
-                    swinging = false;
-                    return PlayState.STOP;
-                }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
-
-    @Override
-    public List<ExtendedSensor<BasiliskEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<>(),
-                new HurtBySensor<>()
-        );
-    }
-
-    @Override
-    public BrainActivityGroup<BasiliskEntity> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
-                new FloatToSurfaceOfFluid<>(),
-                new LookAtTarget<>(),
-                new MoveToWalkTarget<>());
-    }
-
-    @Override
-    public BrainActivityGroup<BasiliskEntity> getIdleTasks() {
-        return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<BasiliskEntity>(
-                        //TODO group retaliation
-                        new TargetOrRetaliate<>()
-                                .attackablePredicate(
-                                        target -> (target instanceof Monster && !(target instanceof Creeper)) && target.isAlive() && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(
-                                                target))
-                                .alertAlliesWhen((mob, entity) -> this.isAggressive()),
-                        new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()),
-                new OneRandomBehaviour<>(
-                        new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom()
-                                .nextInt(30, 60))));
-    }
-
-    //TODO fix attacking owner
-    @Override
-    public BrainActivityGroup<BasiliskEntity> getFightTasks() {
-        return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>()
-                        .invalidateIf(
-                                (target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target) || target.is(
-                                        getOwner())),
-                new SetWalkTargetToAttackTarget<>()
-                        .speedMod((mob, livingEntity) -> 1.5f),
-                new AnimatableMeleeAttack<>(7)
-                        .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
-                        })
-        );
-    }
-
-    @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
-    }
-
-    @Override
-    protected void customServerAiStep() {
-        tickBrain(this);
-    }
-
-    private void eat() {
-        if (!this.isSilent()) {
-            SoundEvent soundEvent = this.getEatingSound();
-            if (soundEvent != null) {
-                this.level()
-                        .playSound(
-                                null, this.getX(), this.getY(), this.getZ(), soundEvent, this.getSoundSource(), 1.0F,
-                                1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F
-                        );
+  @Override
+  public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+    controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
+        // SADDLED
+        if (isSaddled() || (!isSaddled() && hasExactlyOnePlayerPassenger())) {
+          if (state.isMoving() && !swinging) {
+            if (isAggressive() || hasExactlyOnePlayerPassenger()) {
+              state.getController()
+                .setAnimation(DefaultMythAnimations.RUN_RIDING);
+              return PlayState.CONTINUE;
             }
+            state.getController()
+              .setAnimation(DefaultMythAnimations.WALK_RIDING);
+            return PlayState.CONTINUE;
+          }
+          state.getController()
+            .setAnimation(DefaultMythAnimations.IDLE_RIDING);
+          return PlayState.CONTINUE;
         }
-    }
-
-    @Override
-    public boolean causeFallDamage(float f, float g, DamageSource damageSource) {
-        if (f > 1.0F) {
-            this.playSound(SoundEvents.HORSE_LAND, 0.4F, 1.0F);
+        // NOT SADDLED
+        if (state.isMoving() && !swinging) {
+          if (isAggressive() || hasExactlyOnePlayerPassenger()) {
+            state.getController()
+              .setAnimation(DefaultMythAnimations.RUN);
+            return PlayState.CONTINUE;
+          }
+          state.getController()
+            .setAnimation(DefaultMythAnimations.WALK);
+          return PlayState.CONTINUE;
         }
+        state.getController()
+          .setAnimation(DefaultMythAnimations.IDLE);
+        return PlayState.CONTINUE;
+      }))
+      .add(new AnimationController<>(this, "attackController", 3, event -> {
+        swinging = false;
+        return PlayState.STOP;
+      }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+  }
 
-        int i = this.calculateFallDamage(f, g);
-        if (i <= 0) {
-            return false;
-        } else {
-            this.hurt(damageSource, (float) i);
-            if (this.isVehicle()) {
-                for (Entity entity : this.getIndirectPassengers()) {
-                    entity.hurt(damageSource, (float) i);
-                }
-            }
+  @Override
+  public AnimatableInstanceCache getAnimatableInstanceCache() {
+    return cache;
+  }
 
-            this.playBlockFallSound();
-            return true;
+  @Override
+  public List<ExtendedSensor<BasiliskEntity>> getSensors() {
+    return ObjectArrayList.of(
+      new NearbyLivingEntitySensor<>(),
+      new HurtBySensor<>()
+    );
+  }
+
+  @Override
+  public BrainActivityGroup<BasiliskEntity> getCoreTasks() {
+    return BrainActivityGroup.coreTasks(
+      new FloatToSurfaceOfFluid<>(),
+      new LookAtTarget<>(),
+      new MoveToWalkTarget<>());
+  }
+
+  @Override
+  public BrainActivityGroup<BasiliskEntity> getIdleTasks() {
+    return BrainActivityGroup.idleTasks(
+      new FirstApplicableBehaviour<BasiliskEntity>(
+        //TODO group retaliation
+        new TargetOrRetaliate<>()
+          .attackablePredicate(
+            target -> (target instanceof Monster && !(target instanceof Creeper)) && target.isAlive() && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(
+              target))
+          .alertAlliesWhen((mob, entity) -> this.isAggressive()),
+        new SetPlayerLookTarget<>(),
+        new SetRandomLookTarget<>()),
+      new OneRandomBehaviour<>(
+        new SetRandomWalkTarget<>(),
+        new Idle<>().runFor(entity -> entity.getRandom()
+          .nextInt(30, 60))));
+  }
+
+  //TODO fix attacking owner
+  @Override
+  public BrainActivityGroup<BasiliskEntity> getFightTasks() {
+    return BrainActivityGroup.fightTasks(
+      new InvalidateAttackTarget<>()
+        .invalidateIf(
+          (target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target) || target.is(
+            getOwner())),
+      new SetWalkTargetToAttackTarget<>()
+        .speedMod((mob, livingEntity) -> 1.5f),
+      new AnimatableMeleeAttack<>(7)
+        .whenStarting(mob -> {
+          this.triggerAnim("attackController", "attack");
+        })
+    );
+  }
+
+  @Override
+  protected Brain.Provider<?> brainProvider() {
+    return new SmartBrainProvider<>(this);
+  }
+
+  @Override
+  protected void customServerAiStep() {
+    tickBrain(this);
+  }
+
+  private void eat() {
+    if (!this.isSilent()) {
+      SoundEvent soundEvent = this.getEatingSound();
+      if (soundEvent != null) {
+        this.level()
+          .playSound(
+            null, this.getX(), this.getY(), this.getZ(), soundEvent, this.getSoundSource(), 1.0F,
+            1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F
+          );
+      }
+    }
+  }
+
+  @Override
+  public boolean causeFallDamage(float f, float g, DamageSource damageSource) {
+    if (f > 1.0F) {
+      this.playSound(SoundEvents.HORSE_LAND, 0.4F, 1.0F);
+    }
+
+    int i = this.calculateFallDamage(f, g);
+    if (i <= 0) {
+      return false;
+    } else {
+      this.hurt(damageSource, (float) i);
+      if (this.isVehicle()) {
+        for (Entity entity : this.getIndirectPassengers()) {
+          entity.hurt(damageSource, (float) i);
         }
-    }
+      }
 
-    @Override
-    protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.SNIFFER_IDLE, 1.0f, 0.25f);
-        return null;
+      this.playBlockFallSound();
+      return true;
     }
+  }
 
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.SNIFFER_HURT, 1.0f, 0.25f);
-        return null;
-    }
+  @Override
+  protected SoundEvent getAmbientSound() {
+    this.playSound(SoundEvents.SNIFFER_IDLE, 1.0f, 0.25f);
+    return null;
+  }
 
-    @Override
-    protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.SNIFFER_DEATH, 1.0f, 0.25f);
-        return null;
-    }
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    this.playSound(SoundEvents.SNIFFER_HURT, 1.0f, 0.25f);
+    return null;
+  }
 
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.SNIFFER_STEP, 0.25f, 0.75f);
-    }
+  @Override
+  protected SoundEvent getDeathSound() {
+    this.playSound(SoundEvents.SNIFFER_DEATH, 1.0f, 0.25f);
+    return null;
+  }
 
-    @Override
-    protected void playJumpSound() {
-        this.playSound(SoundEvents.GOAT_SCREAMING_LONG_JUMP, 0.4F, 0.5F);
-    }
+  @Override
+  protected void playStepSound(BlockPos pos, BlockState state) {
+    this.playSound(SoundEvents.SNIFFER_STEP, 0.25f, 0.75f);
+  }
 
-    @Nullable
-    protected SoundEvent getEatingSound() {
-        this.playSound(SoundEvents.SNIFFER_EAT, 1.0f, 0.5f);
-        return null;
-    }
+  @Override
+  protected void playJumpSound() {
+    this.playSound(SoundEvents.GOAT_SCREAMING_LONG_JUMP, 0.4F, 0.5F);
+  }
+
+  @Nullable
+  protected SoundEvent getEatingSound() {
+    this.playSound(SoundEvents.SNIFFER_EAT, 1.0f, 0.5f);
+    return null;
+  }
 }

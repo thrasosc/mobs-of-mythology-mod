@@ -7,19 +7,19 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.ChupacabraEntity;
 
 public class ChupacabraModel extends GeoModel<ChupacabraEntity> {
 
-    @Override
-    public ResourceLocation getModelResource(ChupacabraEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/chupacabra.geo.json");
-    }
+  @Override
+  public ResourceLocation getModelResource(ChupacabraEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/chupacabra.geo.json");
+  }
 
-    @Override
-    public ResourceLocation getTextureResource(ChupacabraEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
-    }
+  @Override
+  public ResourceLocation getTextureResource(ChupacabraEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
+  }
 
-    @Override
-    public ResourceLocation getAnimationResource(ChupacabraEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
-                                                     "animations/entity/chupacabra.animation.json");
-    }
+  @Override
+  public ResourceLocation getAnimationResource(ChupacabraEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                 "animations/entity/chupacabra.animation.json");
+  }
 }

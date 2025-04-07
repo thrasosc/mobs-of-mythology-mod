@@ -9,14 +9,14 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.ChupacabraMod
 import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.ChupacabraEntity;
 
 public class ChupacabraRenderer extends GeoEntityRenderer<ChupacabraEntity> {
-    public ChupacabraRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new ChupacabraModel());
-        this.shadowRadius = 0.65f;
-        addRenderLayer(new AutoGlowingGeoLayer<>(this));
-    }
+  public ChupacabraRenderer(EntityRendererProvider.Context ctx) {
+    super(ctx, new ChupacabraModel());
+    this.shadowRadius = 0.65f;
+    addRenderLayer(new AutoGlowingGeoLayer<>(this));
+  }
 
-    @Override
-    public ResourceLocation getTextureLocation(ChupacabraEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
-    }
+  @Override
+  public ResourceLocation getTextureLocation(ChupacabraEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/chupacabra.png");
+  }
 }

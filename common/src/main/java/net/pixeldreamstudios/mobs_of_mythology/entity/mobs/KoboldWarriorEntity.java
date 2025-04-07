@@ -32,63 +32,63 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class KoboldWarriorEntity extends AbstractKoboldEntity {
-    public KoboldWarriorEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
-        super(entityType, world, Monster.XP_REWARD_MEDIUM);
-        this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemRegistry.KOBOLD_SPEAR, 1));
-    }
+  public KoboldWarriorEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
+    super(entityType, world, Monster.XP_REWARD_MEDIUM);
+    this.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemRegistry.KOBOLD_SPEAR, 1));
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.koboldWarriorHealth)
-                .add(Attributes.ARMOR, MobsOfMythology.config.koboldWarriorArmor)
-                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.koboldWarriorAttackDamage)
-                .add(Attributes.ATTACK_SPEED, 2)
-                .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
-    }
+  public static AttributeSupplier.Builder createAttributes() {
+    return Monster.createMobAttributes()
+      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.koboldWarriorHealth)
+      .add(Attributes.ARMOR, MobsOfMythology.config.koboldWarriorArmor)
+      .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.koboldWarriorAttackDamage)
+      .add(Attributes.ATTACK_SPEED, 2)
+      .add(Attributes.ATTACK_KNOCKBACK, 1)
+      .add(Attributes.MOVEMENT_SPEED, 0.3);
+  }
 
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
-        KoboldWarriorVariant variant = Util.getRandom(KoboldWarriorVariant.values(), this.random);
-        setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
-    }
+  @Override
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                      MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    KoboldWarriorVariant variant = Util.getRandom(KoboldWarriorVariant.values(), this.random);
+    setVariant(variant);
+    return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+  }
 
-    @Override
-    public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
-                        .setPredicate((target, entity) -> {
-                            return target instanceof Player
-                                    || target instanceof Villager
-                                    || target instanceof IronGolem
-                                    || target instanceof AutomatonEntity;
-                        }),
-                new HurtBySensor<>()
-        );
-    }
+  @Override
+  public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
+    return ObjectArrayList.of(
+      new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
+        .setPredicate((target, entity) -> {
+          return target instanceof Player
+            || target instanceof Villager
+            || target instanceof IronGolem
+            || target instanceof AutomatonEntity;
+        }),
+      new HurtBySensor<>()
+    );
+  }
 
-    @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
-        return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>()
-                        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>()
-                        .speedMod((mob, livingEntity) -> 1.25f),
-                new AnimatableMeleeAttack<>(6)
-                        .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
-                        })
-        );
-    }
+  @Override
+  public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
+    return BrainActivityGroup.fightTasks(
+      new InvalidateAttackTarget<>()
+        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+      new SetWalkTargetToAttackTarget<>()
+        .speedMod((mob, livingEntity) -> 1.25f),
+      new AnimatableMeleeAttack<>(6)
+        .whenStarting(mob -> {
+          this.triggerAnim("attackController", "attack");
+        })
+    );
+  }
 
-    @Override
-    public <T> T getVariant() {
-        return (T) KoboldWarriorVariant.byId(this.getTypeVariant() & 255);
-    }
+  @Override
+  public <T> T getVariant() {
+    return (T) KoboldWarriorVariant.byId(this.getTypeVariant() & 255);
+  }
 
-    private void setVariant(KoboldWarriorVariant variant) {
-        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-    }
+  private void setVariant(KoboldWarriorVariant variant) {
+    this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+  }
 }

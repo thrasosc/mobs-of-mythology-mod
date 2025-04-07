@@ -7,9 +7,9 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 
 @Mod(MobsOfMythology.MOD_ID)
 public final class MobsOfMythologyNeoForge {
-    public MobsOfMythologyNeoForge() {
-        MobsOfMythology.init();
-        EnvExecutor.runInEnv(Dist.CLIENT, () -> MobsOfMythology::initClient);
-    }
+  public MobsOfMythologyNeoForge() {
+    MobsOfMythology.init();
+    EnvExecutor.runInEnv(Dist.CLIENT, () -> MobsOfMythology::initClient);
+  }
 }
 

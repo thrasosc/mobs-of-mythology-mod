@@ -12,31 +12,31 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.PegasusEntity;
 
 public class PegasusModel extends GeoModel<PegasusEntity> {
 
-    @Override
-    public ResourceLocation getModelResource(PegasusEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/pegasus.geo.json");
-    }
+  @Override
+  public ResourceLocation getModelResource(PegasusEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/pegasus.geo.json");
+  }
 
-    @Override
-    public ResourceLocation getTextureResource(PegasusEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
-    }
+  @Override
+  public ResourceLocation getTextureResource(PegasusEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
+  }
 
-    @Override
-    public ResourceLocation getAnimationResource(PegasusEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
-                                                     "animations/entity/pegasus.animation.json");
-    }
+  @Override
+  public ResourceLocation getAnimationResource(PegasusEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                 "animations/entity/pegasus.animation.json");
+  }
 
-    @Override
-    public void setCustomAnimations(PegasusEntity animatable, long instanceId,
-                                    AnimationState<PegasusEntity> animationState) {
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
+  @Override
+  public void setCustomAnimations(PegasusEntity animatable, long instanceId,
+                                  AnimationState<PegasusEntity> animationState) {
+    CoreGeoBone head = getAnimationProcessor().getBone("head");
 
-        if (head != null) {
-            EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-            head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
-            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
-        }
+    if (head != null) {
+      EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+      head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
+      head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
     }
+  }
 }

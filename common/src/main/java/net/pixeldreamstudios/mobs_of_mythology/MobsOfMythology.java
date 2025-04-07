@@ -10,29 +10,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class MobsOfMythology {
-    public static final String MOD_ID = "mobs_of_mythology";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-    public static MobsOfMythologyConfig config;
+  public static final String MOD_ID = "mobs_of_mythology";
+  public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+  public static MobsOfMythologyConfig config;
 
-    public static void init() {
-        AzureLib.initialize();
-        config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties())
-                .getConfigInstance();
-        SoundRegistry.init();
-        EntityRegistry.init();
-        ItemRegistry.init();
-        BlockRegistry.init();
-        TabRegistry.init();
-    }
+  public static void init() {
+    AzureLib.initialize();
+    config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties())
+      .getConfigInstance();
+    SoundRegistry.init();
+    EntityRegistry.init();
+    ItemRegistry.init();
+    BlockRegistry.init();
+    TabRegistry.init();
+  }
 
-    public static void initClient() {
-        EntityRendererRegistry.register(EntityRegistry.AUTOMATON, AutomatonRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.CHUPACABRA, ChupacabraRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.KOBOLD, KoboldRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.KOBOLD_WARRIOR, KoboldWarriorRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.DRAKE, DrakeRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.SPORELING, SporelingRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.BASILISK, BasiliskRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.PEGASUS, PegasusRenderer::new);
-    }
+  public static void initClient() {
+    EntityRendererRegistry.register(EntityRegistry.AUTOMATON, AutomatonRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.CHUPACABRA, ChupacabraRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.KOBOLD, KoboldRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.KOBOLD_WARRIOR, KoboldWarriorRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.DRAKE, DrakeRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.SPORELING, SporelingRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.BASILISK, BasiliskRenderer::new);
+    EntityRendererRegistry.register(EntityRegistry.PEGASUS, PegasusRenderer::new);
+  }
 }

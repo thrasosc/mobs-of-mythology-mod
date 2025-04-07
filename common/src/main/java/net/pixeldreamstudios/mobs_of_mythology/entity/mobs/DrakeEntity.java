@@ -45,224 +45,224 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Predicate;
 
 public class DrakeEntity extends TamableAnimal implements GeoEntity {
-    public static final Predicate<LivingEntity> PREY_SELECTOR;
-    protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(
-            DrakeEntity.class, EntityDataSerializers.INT);
+  public static final Predicate<LivingEntity> PREY_SELECTOR;
+  protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(
+    DrakeEntity.class, EntityDataSerializers.INT);
 
-    static {
-        PREY_SELECTOR = (livingEntity) -> {
-            EntityType<?> entityType = livingEntity.getType();
-            return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
-        };
+  static {
+    PREY_SELECTOR = (livingEntity) -> {
+      EntityType<?> entityType = livingEntity.getType();
+      return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
+    };
+  }
+
+  private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+
+  public DrakeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
+    super(entityType, world);
+    this.xpReward = Monster.XP_REWARD_MEDIUM;
+  }
+
+  public static AttributeSupplier.Builder createAttributes() {
+    return Monster.createMobAttributes()
+      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.drakeHealth)
+      .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.drakeAttackDamage)
+      .add(Attributes.ATTACK_SPEED, 2)
+      .add(Attributes.ATTACK_KNOCKBACK, 1)
+      .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
+      .add(Attributes.MOVEMENT_SPEED, 0.3);
+  }
+
+  @Override
+  public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
+                                      MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    DrakeVariant variant = Util.getRandom(DrakeVariant.values(), this.random);
+    setVariant(variant);
+    return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+  }
+
+  @Nullable
+  @Override
+  public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
+    return null;
+  }
+
+  @Override
+  public boolean fireImmune() {
+    return true;
+  }
+
+  @Override
+  protected void applyTamingSideEffects() {
+    if (this.isTame()) {
+      this.getAttribute(Attributes.MAX_HEALTH)
+        .setBaseValue(MobsOfMythology.config.drakeHealth * 2);
+      this.setHealth((float) (MobsOfMythology.config.drakeHealth * 2));
+    } else {
+      this.getAttribute(Attributes.MAX_HEALTH)
+        .setBaseValue(MobsOfMythology.config.drakeHealth);
     }
+  }
 
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+  @Override
+  protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    super.defineSynchedData(builder);
+    builder.define(DATA_ID_TYPE_VARIANT, 0);
+  }
 
-    public DrakeEntity(EntityType<? extends TamableAnimal> entityType, Level world) {
-        super(entityType, world);
-        this.xpReward = Monster.XP_REWARD_MEDIUM;
-    }
+  @Override
+  public void addAdditionalSaveData(CompoundTag nbt) {
+    super.addAdditionalSaveData(nbt);
+    nbt.putInt("Variant", this.getTypeVariant());
+  }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.drakeHealth)
-                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.drakeAttackDamage)
-                .add(Attributes.ATTACK_SPEED, 2)
-                .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.KNOCKBACK_RESISTANCE, 0.5)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
-    }
+  @Override
+  public void readAdditionalSaveData(CompoundTag nbt) {
+    super.readAdditionalSaveData(nbt);
+    this.entityData.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
+  }
 
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-                                        MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
-        DrakeVariant variant = Util.getRandom(DrakeVariant.values(), this.random);
-        setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
-    }
+  @Override
+  public boolean isFood(ItemStack itemStack) {
+    return itemStack.is(ItemTags.MEAT);
+  }
 
-    @Nullable
-    @Override
-    public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
-        return null;
-    }
+  public DrakeVariant getVariant() {
+    return DrakeVariant.byId(this.getTypeVariant() & 255);
+  }
 
-    @Override
-    public boolean fireImmune() {
-        return true;
-    }
+  private void setVariant(DrakeVariant variant) {
+    this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
+  }
 
-    @Override
-    protected void applyTamingSideEffects() {
-        if (this.isTame()) {
-            this.getAttribute(Attributes.MAX_HEALTH)
-                    .setBaseValue(MobsOfMythology.config.drakeHealth * 2);
-            this.setHealth((float) (MobsOfMythology.config.drakeHealth * 2));
-        } else {
-            this.getAttribute(Attributes.MAX_HEALTH)
-                    .setBaseValue(MobsOfMythology.config.drakeHealth);
+  private int getTypeVariant() {
+    return this.entityData.get(DATA_ID_TYPE_VARIANT);
+  }
+
+  protected void registerGoals() {
+    this.goalSelector.addGoal(1, new FloatGoal(this));
+    this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
+    this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
+    this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
+    this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
+    this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+    this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+    this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
+    this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
+    this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
+    this.targetSelector.addGoal(4, new NonTameRandomTargetGoal(this, Animal.class, false, PREY_SELECTOR));
+    this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
+  }
+
+  @Override
+  public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+    controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
+        if (isInSittingPose()) {
+          state.getController()
+            .setAnimation(DefaultMythAnimations.SIT);
+          return PlayState.CONTINUE;
+        } else if (state.isMoving() && !swinging) {
+          if (isAggressive() && !swinging) {
+            state.getController()
+              .setAnimation(DefaultMythAnimations.RUN);
+            return PlayState.CONTINUE;
+          } else {
+            state.getController()
+              .setAnimation(DefaultMythAnimations.WALK);
+            return PlayState.CONTINUE;
+          }
         }
-    }
+        state.getController()
+          .setAnimation(DefaultMythAnimations.IDLE);
+        return PlayState.CONTINUE;
+      }))
+      .add(new AnimationController<>(this, "attackController", 3, event -> {
+        swinging = false;
+        return PlayState.STOP;
+      }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+  }
 
-    @Override
-    protected void defineSynchedData(SynchedEntityData.Builder builder) {
-        super.defineSynchedData(builder);
-        builder.define(DATA_ID_TYPE_VARIANT, 0);
-    }
+  @Override
+  public boolean doHurtTarget(Entity entity) {
+    this.triggerAnim("attackController", "attack");
+    return super.doHurtTarget(entity);
+  }
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        nbt.putInt("Variant", this.getTypeVariant());
-    }
+  @Override
+  public AnimatableInstanceCache getAnimatableInstanceCache() {
+    return cache;
+  }
 
-    @Override
-    public void readAdditionalSaveData(CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        this.entityData.set(DATA_ID_TYPE_VARIANT, nbt.getInt("Variant"));
+  @Override
+  public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
+    ItemStack itemStack = player.getItemInHand(interactionHand);
+    Item item = itemStack.getItem();
+    if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
+      boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(
+        ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
+      return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
+    } else if (this.isTame()) {
+      if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
+        itemStack.consume(1, player);
+        FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
+        float f = foodProperties != null ? (float) foodProperties.nutrition() : 1.0F;
+        this.heal(2.0F * f);
+        return InteractionResult.sidedSuccess(this.level()
+                                                .isClientSide());
+      }
+      InteractionResult interactionResult = super.mobInteract(player, interactionHand);
+      if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
+        this.setOrderedToSit(!this.isOrderedToSit());
+        this.jumping = false;
+        this.navigation.stop();
+        this.setTarget(null);
+        return InteractionResult.SUCCESS_NO_ITEM_USED;
+      } else {
+        return interactionResult;
+      }
+    } else if (itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) {
+      itemStack.consume(1, player);
+      this.tryToTame(player);
+      return InteractionResult.SUCCESS;
+    } else {
+      return super.mobInteract(player, interactionHand);
     }
+  }
 
-    @Override
-    public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(ItemTags.MEAT);
+  private void tryToTame(Player player) {
+    if (this.random.nextInt(3) == 0) {
+      this.tame(player);
+      this.navigation.stop();
+      this.setTarget(null);
+      this.setOrderedToSit(true);
+      this.level()
+        .broadcastEntityEvent(this, (byte) 7);
+    } else {
+      this.level()
+        .broadcastEntityEvent(this, (byte) 6);
     }
+  }
 
-    public DrakeVariant getVariant() {
-        return DrakeVariant.byId(this.getTypeVariant() & 255);
-    }
+  @Override
+  protected SoundEvent getAmbientSound() {
+    this.playSound(SoundRegistry.DRAKE_ROAR.get(), 1.0f, 1.0f);
+    return null;
+  }
 
-    private void setVariant(DrakeVariant variant) {
-        this.entityData.set(DATA_ID_TYPE_VARIANT, variant.getId() & 255);
-    }
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    this.playSound(SoundRegistry.DRAKE_ROAR.get(), 1.0f, 2.0f);
+    return null;
+  }
 
-    private int getTypeVariant() {
-        return this.entityData.get(DATA_ID_TYPE_VARIANT);
-    }
+  @Override
+  protected SoundEvent getDeathSound() {
+    this.playSound(SoundRegistry.DRAKE_DEATH.get(), 1.0f, 1.0f);
+    return null;
+  }
 
-    protected void registerGoals() {
-        this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0, 10.0F, 2.0F));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
-        this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
-        this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
-        this.targetSelector.addGoal(4, new NonTameRandomTargetGoal(this, Animal.class, false, PREY_SELECTOR));
-        this.targetSelector.addGoal(5, new ResetUniversalAngerTargetGoal(this, true));
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-                    if (isInSittingPose()) {
-                        state.getController()
-                                .setAnimation(DefaultMythAnimations.SIT);
-                        return PlayState.CONTINUE;
-                    } else if (state.isMoving() && !swinging) {
-                        if (isAggressive() && !swinging) {
-                            state.getController()
-                                    .setAnimation(DefaultMythAnimations.RUN);
-                            return PlayState.CONTINUE;
-                        } else {
-                            state.getController()
-                                    .setAnimation(DefaultMythAnimations.WALK);
-                            return PlayState.CONTINUE;
-                        }
-                    }
-                    state.getController()
-                            .setAnimation(DefaultMythAnimations.IDLE);
-                    return PlayState.CONTINUE;
-                }))
-                .add(new AnimationController<>(this, "attackController", 3, event -> {
-                    swinging = false;
-                    return PlayState.STOP;
-                }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
-
-    @Override
-    public boolean doHurtTarget(Entity entity) {
-        this.triggerAnim("attackController", "attack");
-        return super.doHurtTarget(entity);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
-
-    @Override
-    public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
-        ItemStack itemStack = player.getItemInHand(interactionHand);
-        Item item = itemStack.getItem();
-        if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
-            boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(
-                    ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
-            return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
-        } else if (this.isTame()) {
-            if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                itemStack.consume(1, player);
-                FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
-                float f = foodProperties != null ? (float) foodProperties.nutrition() : 1.0F;
-                this.heal(2.0F * f);
-                return InteractionResult.sidedSuccess(this.level()
-                                                              .isClientSide());
-            }
-            InteractionResult interactionResult = super.mobInteract(player, interactionHand);
-            if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
-                this.setOrderedToSit(!this.isOrderedToSit());
-                this.jumping = false;
-                this.navigation.stop();
-                this.setTarget(null);
-                return InteractionResult.SUCCESS_NO_ITEM_USED;
-            } else {
-                return interactionResult;
-            }
-        } else if (itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) {
-            itemStack.consume(1, player);
-            this.tryToTame(player);
-            return InteractionResult.SUCCESS;
-        } else {
-            return super.mobInteract(player, interactionHand);
-        }
-    }
-
-    private void tryToTame(Player player) {
-        if (this.random.nextInt(3) == 0) {
-            this.tame(player);
-            this.navigation.stop();
-            this.setTarget(null);
-            this.setOrderedToSit(true);
-            this.level()
-                    .broadcastEntityEvent(this, (byte) 7);
-        } else {
-            this.level()
-                    .broadcastEntityEvent(this, (byte) 6);
-        }
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound() {
-        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 1.0f, 1.0f);
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundRegistry.DRAKE_ROAR.get(), 1.0f, 2.0f);
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        this.playSound(SoundRegistry.DRAKE_DEATH.get(), 1.0f, 1.0f);
-        return null;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.WOLF_STEP, 0.75f, 1.0f);
-    }
+  @Override
+  protected void playStepSound(BlockPos pos, BlockState state) {
+    this.playSound(SoundEvents.WOLF_STEP, 0.75f, 1.0f);
+  }
 }

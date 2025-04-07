@@ -8,13 +8,13 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.AutomatonMode
 import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.AutomatonEntity;
 
 public class AutomatonRenderer extends GeoEntityRenderer<AutomatonEntity> {
-    public AutomatonRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new AutomatonModel());
-        this.shadowRadius = 0.85f;
-    }
+  public AutomatonRenderer(EntityRendererProvider.Context ctx) {
+    super(ctx, new AutomatonModel());
+    this.shadowRadius = 0.85f;
+  }
 
-    @Override
-    public ResourceLocation getTextureLocation(AutomatonEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/automaton.png");
-    }
+  @Override
+  public ResourceLocation getTextureLocation(AutomatonEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/automaton.png");
+  }
 }

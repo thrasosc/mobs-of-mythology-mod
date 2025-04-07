@@ -8,13 +8,13 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.client.model.PegasusModel;
 import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.PegasusEntity;
 
 public class PegasusRenderer extends GeoEntityRenderer<PegasusEntity> {
-    public PegasusRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx, new PegasusModel());
-        this.shadowRadius = 0.75f;
-    }
+  public PegasusRenderer(EntityRendererProvider.Context ctx) {
+    super(ctx, new PegasusModel());
+    this.shadowRadius = 0.75f;
+  }
 
-    @Override
-    public ResourceLocation getTextureLocation(PegasusEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
-    }
+  @Override
+  public ResourceLocation getTextureLocation(PegasusEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
+  }
 }

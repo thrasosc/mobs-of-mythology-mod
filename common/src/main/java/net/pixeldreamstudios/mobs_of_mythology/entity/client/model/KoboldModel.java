@@ -12,29 +12,29 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.KoboldRend
 import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 
 public class KoboldModel extends GeoModel<KoboldEntity> {
-    @Override
-    public ResourceLocation getModelResource(KoboldEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/kobold.geo.json");
-    }
+  @Override
+  public ResourceLocation getModelResource(KoboldEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/kobold.geo.json");
+  }
 
-    @Override
-    public ResourceLocation getTextureResource(KoboldEntity object) {
-        return KoboldRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
-    }
+  @Override
+  public ResourceLocation getTextureResource(KoboldEntity object) {
+    return KoboldRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
+  }
 
-    @Override
-    public ResourceLocation getAnimationResource(KoboldEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/kobold.animation.json");
-    }
+  @Override
+  public ResourceLocation getAnimationResource(KoboldEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "animations/entity/kobold.animation.json");
+  }
 
-    @Override
-    public void setCustomAnimations(KoboldEntity animatable, long instanceId,
-                                    AnimationState<KoboldEntity> animationState) {
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
-        if (head != null) {
-            EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
-            head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
-            head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
-        }
+  @Override
+  public void setCustomAnimations(KoboldEntity animatable, long instanceId,
+                                  AnimationState<KoboldEntity> animationState) {
+    CoreGeoBone head = getAnimationProcessor().getBone("head");
+    if (head != null) {
+      EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
+      head.setRotX(entityData.headPitch() * Mth.DEG_TO_RAD);
+      head.setRotY(entityData.netHeadYaw() * Mth.DEG_TO_RAD);
     }
+  }
 }

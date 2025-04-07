@@ -38,96 +38,96 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 import java.util.List;
 
 public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity {
-    private boolean unreachableTarget = false;
+  private boolean unreachableTarget = false;
 
-    public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
-        super(entityType, level);
-        navigation = new SmoothGroundNavigation(this, level());
-        GroundPathNavigation mobNavigation = (GroundPathNavigation) this.getNavigation();
-        mobNavigation.setCanWalkOverFences(true);
-        this.xpReward = Enemy.XP_REWARD_MEDIUM;
+  public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
+    super(entityType, level);
+    navigation = new SmoothGroundNavigation(this, level());
+    GroundPathNavigation mobNavigation = (GroundPathNavigation) this.getNavigation();
+    mobNavigation.setCanWalkOverFences(true);
+    this.xpReward = Enemy.XP_REWARD_MEDIUM;
+  }
+
+  public static AttributeSupplier.Builder createAttributes() {
+    return Monster.createMobAttributes()
+      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.chupacabraHealth)
+      .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.chupacabraAttackDamage)
+      .add(Attributes.ATTACK_SPEED, 1.25f)
+      .add(Attributes.ATTACK_KNOCKBACK, 1)
+      .add(Attributes.MOVEMENT_SPEED, 0.3);
+  }
+
+  @Override
+  public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
+    return ObjectArrayList.of(
+      new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
+        .setPredicate((target, entity) -> target instanceof Animal || target instanceof Player),
+      new HurtBySensor<>(),
+      new UnreachableTargetSensor<>()
+    );
+  }
+
+  @Override
+  public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
+    return BrainActivityGroup.fightTasks(
+      new InvalidateAttackTarget<>()
+        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+      new SetWalkTargetToAttackTarget<>()
+        .speedMod((mob, livingEntity) -> 1.25f)
+        .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
+      new FleeTarget<>()
+        .speedModifier(1.75f)
+        .startCondition(pathfinderMob -> BrainUtils.getTargetOfEntity(
+          this) instanceof Player || BrainUtils.getLastAttacker(
+          this) instanceof Player || unreachableTarget)
+        .whenStopping(pathfinderMob -> unreachableTarget = false),
+      new AnimatableMeleeAttack<>(8)
+        .whenStarting(mob -> {
+          this.triggerAnim("attackController", "attack");
+          if (getHealth() < getMaxHealth()) {
+            this.heal(1.5f);
+          }
+        }),
+      new ReactToUnreachableTarget<>()
+        .reaction((livingEntity, aBoolean) -> unreachableTarget = true)
+    );
+  }
+
+  @Override
+  public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
+    if (level.getDifficulty() == Difficulty.PEACEFUL) {
+      return false;
     }
+    BlockPos pos = this.blockPosition();
+    int skyLight = level.getBrightness(LightLayer.SKY, pos);
+    int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, MobsOfMythology.config.chupacabraHealth)
-                .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.chupacabraAttackDamage)
-                .add(Attributes.ATTACK_SPEED, 1.25f)
-                .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.MOVEMENT_SPEED, 0.3);
+    if (skyLight > 7 || blockLight > 7) {
+      return false;
     }
+    return super.checkSpawnRules(level, spawnType);
+  }
 
-    @Override
-    public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
-                        .setPredicate((target, entity) -> target instanceof Animal || target instanceof Player),
-                new HurtBySensor<>(),
-                new UnreachableTargetSensor<>()
-        );
-    }
+  @Override
+  protected SoundEvent getAmbientSound() {
+    this.playSound(SoundEvents.WOLF_AMBIENT, 1.0f, 0.25f);
+    return null;
+  }
 
-    @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
-        return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>()
-                        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>()
-                        .speedMod((mob, livingEntity) -> 1.25f)
-                        .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
-                new FleeTarget<>()
-                        .speedModifier(1.75f)
-                        .startCondition(pathfinderMob -> BrainUtils.getTargetOfEntity(
-                                this) instanceof Player || BrainUtils.getLastAttacker(
-                                this) instanceof Player || unreachableTarget)
-                        .whenStopping(pathfinderMob -> unreachableTarget = false),
-                new AnimatableMeleeAttack<>(8)
-                        .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
-                            if (getHealth() < getMaxHealth()) {
-                                this.heal(1.5f);
-                            }
-                        }),
-                new ReactToUnreachableTarget<>()
-                        .reaction((livingEntity, aBoolean) -> unreachableTarget = true)
-        );
-    }
+  @Override
+  protected SoundEvent getHurtSound(DamageSource source) {
+    this.playSound(SoundEvents.WOLF_HURT, 1.0f, 0.25f);
+    return null;
+  }
 
-    @Override
-    public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) {
-            return false;
-        }
-        BlockPos pos = this.blockPosition();
-        int skyLight = level.getBrightness(LightLayer.SKY, pos);
-        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+  @Override
+  protected SoundEvent getDeathSound() {
+    this.playSound(SoundEvents.WOLF_DEATH, 1.0f, 0.25f);
+    return null;
+  }
 
-        if (skyLight > 7 || blockLight > 7) {
-            return false;
-        }
-        return super.checkSpawnRules(level, spawnType);
-    }
-
-    @Override
-    protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.WOLF_AMBIENT, 1.0f, 0.25f);
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.WOLF_HURT, 1.0f, 0.25f);
-        return null;
-    }
-
-    @Override
-    protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.WOLF_DEATH, 1.0f, 0.25f);
-        return null;
-    }
-
-    @Override
-    protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.WOLF_STEP, 0.5f, 1.0f);
-    }
+  @Override
+  protected void playStepSound(BlockPos pos, BlockState state) {
+    this.playSound(SoundEvents.WOLF_STEP, 0.5f, 1.0f);
+  }
 }

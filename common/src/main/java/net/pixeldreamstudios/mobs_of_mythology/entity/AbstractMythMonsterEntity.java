@@ -42,107 +42,107 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import java.util.List;
 
 public abstract class AbstractMythMonsterEntity extends Monster implements GeoEntity, SmartBrainOwner<AbstractMythMonsterEntity> {
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+  private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
 
-    protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
-        super(entityType, level);
-    }
+  protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
+    super(entityType, level);
+  }
 
-    /*
-     * Prevent myth monsters from spawning wherever they want to.
-     * Adapted from net.minecraft.world.entity.monster.Monster.checkAnyLightMonsterSpawnRules.
-     */
-    public static boolean checkMythMonsterSpawnRules(
-            EntityType<? extends Monster> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType,
-            BlockPos blockPos, RandomSource randomSource
-    ) {
-        boolean bl = levelAccessor.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType,
-                                                                                                levelAccessor,
-                                                                                                mobSpawnType, blockPos,
-                                                                                                randomSource);
-        return levelAccessor.getBlockState(blockPos.below())
-                .is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
-    }
+  /*
+   * Prevent myth monsters from spawning wherever they want to.
+   * Adapted from net.minecraft.world.entity.monster.Monster.checkAnyLightMonsterSpawnRules.
+   */
+  public static boolean checkMythMonsterSpawnRules(
+    EntityType<? extends Monster> entityType, LevelAccessor levelAccessor, MobSpawnType mobSpawnType,
+    BlockPos blockPos, RandomSource randomSource
+  ) {
+    boolean bl = levelAccessor.getDifficulty() != Difficulty.PEACEFUL && checkMobSpawnRules(entityType,
+                                                                                            levelAccessor,
+                                                                                            mobSpawnType, blockPos,
+                                                                                            randomSource);
+    return levelAccessor.getBlockState(blockPos.below())
+      .is(TagRegistry.MYTH_ENTITIES_SPAWNABLE_ON) && bl;
+  }
 
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
+  @Override
+  public AnimatableInstanceCache getAnimatableInstanceCache() {
+    return cache;
+  }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-                    if (state.isMoving() && !swinging) {
-                        if (isAggressive() && !swinging) {
-                            state.getController()
-                                    .setAnimation(DefaultMythAnimations.RUN);
-                            return PlayState.CONTINUE;
-                        }
-                        state.getController()
-                                .setAnimation(DefaultMythAnimations.WALK);
-                        return PlayState.CONTINUE;
-                    }
-                    state.getController()
-                            .setAnimation(DefaultMythAnimations.IDLE);
-                    return PlayState.CONTINUE;
-                }))
-                .add(new AnimationController<>(this, "attackController", 3, event -> {
-                    swinging = false;
-                    return PlayState.STOP;
-                }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
+  @Override
+  public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+    controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
+        if (state.isMoving() && !swinging) {
+          if (isAggressive() && !swinging) {
+            state.getController()
+              .setAnimation(DefaultMythAnimations.RUN);
+            return PlayState.CONTINUE;
+          }
+          state.getController()
+            .setAnimation(DefaultMythAnimations.WALK);
+          return PlayState.CONTINUE;
+        }
+        state.getController()
+          .setAnimation(DefaultMythAnimations.IDLE);
+        return PlayState.CONTINUE;
+      }))
+      .add(new AnimationController<>(this, "attackController", 3, event -> {
+        swinging = false;
+        return PlayState.STOP;
+      }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+  }
 
-    @Override
-    public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
-                        .setPredicate((target, entity) -> target instanceof Player),
-                new HurtBySensor<>()
-        );
-    }
+  @Override
+  public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
+    return ObjectArrayList.of(
+      new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
+        .setPredicate((target, entity) -> target instanceof Player),
+      new HurtBySensor<>()
+    );
+  }
 
-    @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getCoreTasks() {
-        return BrainActivityGroup.coreTasks(
-                new FloatToSurfaceOfFluid<>(),
-                new LookAtTarget<>(),
-                new MoveToWalkTarget<>());
-    }
+  @Override
+  public BrainActivityGroup<AbstractMythMonsterEntity> getCoreTasks() {
+    return BrainActivityGroup.coreTasks(
+      new FloatToSurfaceOfFluid<>(),
+      new LookAtTarget<>(),
+      new MoveToWalkTarget<>());
+  }
 
-    @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getIdleTasks() {
-        return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<AbstractMythMonsterEntity>(
-                        new TargetOrRetaliate<>(),
-                        new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()),
-                new OneRandomBehaviour<>(
-                        new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom()
-                                .nextInt(30, 60))));
-    }
+  @Override
+  public BrainActivityGroup<AbstractMythMonsterEntity> getIdleTasks() {
+    return BrainActivityGroup.idleTasks(
+      new FirstApplicableBehaviour<AbstractMythMonsterEntity>(
+        new TargetOrRetaliate<>(),
+        new SetPlayerLookTarget<>(),
+        new SetRandomLookTarget<>()),
+      new OneRandomBehaviour<>(
+        new SetRandomWalkTarget<>(),
+        new Idle<>().runFor(entity -> entity.getRandom()
+          .nextInt(30, 60))));
+  }
 
-    @Override
-    public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
-        return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>()
-                        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>()
-                        .speedMod((mob, livingEntity) -> 1.25f),
-                new AnimatableMeleeAttack<>(20)
-                        .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
-                        })
-        );
-    }
+  @Override
+  public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
+    return BrainActivityGroup.fightTasks(
+      new InvalidateAttackTarget<>()
+        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+      new SetWalkTargetToAttackTarget<>()
+        .speedMod((mob, livingEntity) -> 1.25f),
+      new AnimatableMeleeAttack<>(20)
+        .whenStarting(mob -> {
+          this.triggerAnim("attackController", "attack");
+        })
+    );
+  }
 
-    @Override
-    protected Brain.Provider<?> brainProvider() {
-        return new SmartBrainProvider<>(this);
-    }
+  @Override
+  protected Brain.Provider<?> brainProvider() {
+    return new SmartBrainProvider<>(this);
+  }
 
-    @Override
-    protected void customServerAiStep() {
-        tickBrain(this);
-    }
+  @Override
+  protected void customServerAiStep() {
+    tickBrain(this);
+  }
 }

@@ -8,19 +8,19 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.SporelingEntity;
 
 public class SporelingModel extends GeoModel<SporelingEntity> {
 
-    @Override
-    public ResourceLocation getModelResource(SporelingEntity object) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/sporeling.geo.json");
-    }
+  @Override
+  public ResourceLocation getModelResource(SporelingEntity object) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/sporeling.geo.json");
+  }
 
-    @Override
-    public ResourceLocation getTextureResource(SporelingEntity object) {
-        return SporelingRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
-    }
+  @Override
+  public ResourceLocation getTextureResource(SporelingEntity object) {
+    return SporelingRenderer.LOCATION_BY_VARIANT.get(object.getVariant());
+  }
 
-    @Override
-    public ResourceLocation getAnimationResource(SporelingEntity animatable) {
-        return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
-                                                     "animations/entity/sporeling.animation.json");
-    }
+  @Override
+  public ResourceLocation getAnimationResource(SporelingEntity animatable) {
+    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
+                                                 "animations/entity/sporeling.animation.json");
+  }
 }
