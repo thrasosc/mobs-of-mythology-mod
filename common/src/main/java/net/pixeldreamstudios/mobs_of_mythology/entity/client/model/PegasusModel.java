@@ -14,23 +14,25 @@ public class PegasusModel extends GeoModel<PegasusEntity> {
 
   @Override
   public ResourceLocation getModelResource(PegasusEntity object) {
-    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "geo/entity/pegasus.geo.json");
+    return ResourceLocation.fromNamespaceAndPath(
+        MobsOfMythology.MOD_ID, "geo/entity/pegasus.geo.json");
   }
 
   @Override
   public ResourceLocation getTextureResource(PegasusEntity object) {
-    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
+    return ResourceLocation.fromNamespaceAndPath(
+        MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
   }
 
   @Override
   public ResourceLocation getAnimationResource(PegasusEntity animatable) {
-    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
-                                                 "animations/entity/pegasus.animation.json");
+    return ResourceLocation.fromNamespaceAndPath(
+        MobsOfMythology.MOD_ID, "animations/entity/pegasus.animation.json");
   }
 
   @Override
-  public void setCustomAnimations(PegasusEntity animatable, long instanceId,
-                                  AnimationState<PegasusEntity> animationState) {
+  public void setCustomAnimations(
+      PegasusEntity animatable, long instanceId, AnimationState<PegasusEntity> animationState) {
     CoreGeoBone head = getAnimationProcessor().getBone("head");
 
     if (head != null) {

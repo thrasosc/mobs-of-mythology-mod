@@ -1,6 +1,7 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import java.util.List;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
@@ -35,8 +36,6 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.HurtBySensor;
 import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 import net.tslat.smartbrainlib.util.BrainUtils;
 
-import java.util.List;
-
 public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity {
   private boolean unreachableTarget = false;
 
@@ -50,47 +49,48 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
 
   public static AttributeSupplier.Builder createAttributes() {
     return Monster.createMobAttributes()
-      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.chupacabraHealth)
-      .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.chupacabraAttackDamage)
-      .add(Attributes.ATTACK_SPEED, 1.25f)
-      .add(Attributes.ATTACK_KNOCKBACK, 1)
-      .add(Attributes.MOVEMENT_SPEED, 0.3);
+        .add(Attributes.MAX_HEALTH, MobsOfMythology.config.chupacabraHealth)
+        .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.chupacabraAttackDamage)
+        .add(Attributes.ATTACK_SPEED, 1.25f)
+        .add(Attributes.ATTACK_KNOCKBACK, 1)
+        .add(Attributes.MOVEMENT_SPEED, 0.3);
   }
 
   @Override
   public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
     return ObjectArrayList.of(
-      new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
-        .setPredicate((target, entity) -> target instanceof Animal || target instanceof Player),
-      new HurtBySensor<>(),
-      new UnreachableTargetSensor<>()
-    );
+        new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
+            .setPredicate((target, entity) -> target instanceof Animal || target instanceof Player),
+        new HurtBySensor<>(),
+        new UnreachableTargetSensor<>());
   }
 
   @Override
   public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
     return BrainActivityGroup.fightTasks(
-      new InvalidateAttackTarget<>()
-        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-      new SetWalkTargetToAttackTarget<>()
-        .speedMod((mob, livingEntity) -> 1.25f)
-        .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
-      new FleeTarget<>()
-        .speedModifier(1.75f)
-        .startCondition(pathfinderMob -> BrainUtils.getTargetOfEntity(
-          this) instanceof Player || BrainUtils.getLastAttacker(
-          this) instanceof Player || unreachableTarget)
-        .whenStopping(pathfinderMob -> unreachableTarget = false),
-      new AnimatableMeleeAttack<>(8)
-        .whenStarting(mob -> {
-          this.triggerAnim("attackController", "attack");
-          if (getHealth() < getMaxHealth()) {
-            this.heal(1.5f);
-          }
-        }),
-      new ReactToUnreachableTarget<>()
-        .reaction((livingEntity, aBoolean) -> unreachableTarget = true)
-    );
+        new InvalidateAttackTarget<>()
+            .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+        new SetWalkTargetToAttackTarget<>()
+            .speedMod((mob, livingEntity) -> 1.25f)
+            .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
+        new FleeTarget<>()
+            .speedModifier(1.75f)
+            .startCondition(
+                pathfinderMob ->
+                    BrainUtils.getTargetOfEntity(this) instanceof Player
+                        || BrainUtils.getLastAttacker(this) instanceof Player
+                        || unreachableTarget)
+            .whenStopping(pathfinderMob -> unreachableTarget = false),
+        new AnimatableMeleeAttack<>(8)
+            .whenStarting(
+                mob -> {
+                  this.triggerAnim("attackController", "attack");
+                  if (getHealth() < getMaxHealth()) {
+                    this.heal(1.5f);
+                  }
+                }),
+        new ReactToUnreachableTarget<>()
+            .reaction((livingEntity, aBoolean) -> unreachableTarget = true));
   }
 
   @Override

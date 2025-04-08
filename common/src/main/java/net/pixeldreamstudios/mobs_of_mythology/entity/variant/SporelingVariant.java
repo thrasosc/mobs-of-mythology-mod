@@ -8,9 +8,10 @@ public enum SporelingVariant {
 
   BROWN(1);
 
-  private static final SporelingVariant[] BY_ID = Arrays.stream(values())
-    .sorted(Comparator.comparingInt(SporelingVariant::getId))
-    .toArray(SporelingVariant[]::new);
+  private static final SporelingVariant[] BY_ID =
+      Arrays.stream(values())
+          .sorted(Comparator.comparingInt(SporelingVariant::getId))
+          .toArray(SporelingVariant[]::new);
   private final int id;
 
   SporelingVariant(int id) {

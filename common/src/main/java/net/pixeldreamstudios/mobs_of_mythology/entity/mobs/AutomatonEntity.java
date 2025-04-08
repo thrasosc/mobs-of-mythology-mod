@@ -44,7 +44,7 @@ import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
-//TODO Use `DelayedBehaviour` for charging attack
+// TODO Use `DelayedBehaviour` for charging attack
 public class AutomatonEntity extends TamableAnimal implements GeoEntity {
   private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
 
@@ -55,21 +55,20 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
 
   public static AttributeSupplier.Builder createAttributes() {
     return TamableAnimal.createMobAttributes()
-      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.automatonHealth)
-      .add(Attributes.MOVEMENT_SPEED, 0.25)
-      .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
-      .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.automatonAttackDamage);
+        .add(Attributes.MAX_HEALTH, MobsOfMythology.config.automatonHealth)
+        .add(Attributes.MOVEMENT_SPEED, 0.25)
+        .add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
+        .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.automatonAttackDamage);
   }
 
   @Override
   protected void applyTamingSideEffects() {
     if (this.isTame()) {
       this.getAttribute(Attributes.MAX_HEALTH)
-        .setBaseValue(MobsOfMythology.config.automatonHealth * 2);
+          .setBaseValue(MobsOfMythology.config.automatonHealth * 2);
       this.setHealth((float) (MobsOfMythology.config.automatonHealth * 2));
     } else {
-      this.getAttribute(Attributes.MAX_HEALTH)
-        .setBaseValue(MobsOfMythology.config.automatonHealth);
+      this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.automatonHealth);
     }
   }
 
@@ -111,8 +110,14 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         double e = this.random.nextGaussian() * 0.02;
         double f = this.random.nextGaussian() * 0.02;
         this.level()
-          .addParticle(parameters, this.getRandomX(1.0), this.getRandomY() + 1.0, this.getRandomZ(1.0), d,
-                       e, f);
+            .addParticle(
+                parameters,
+                this.getRandomX(1.0),
+                this.getRandomY() + 1.0,
+                this.getRandomZ(1.0),
+                d,
+                e,
+                f);
       }
     }
   }
@@ -138,8 +143,10 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     ItemStack itemStack = player.getItemInHand(interactionHand);
     Item item = itemStack.getItem();
     if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
-      boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(
-        ItemRegistry.GEAR.get()) && !this.isTame();
+      boolean bl =
+          this.isOwnedBy(player)
+              || this.isTame()
+              || itemStack.is(ItemRegistry.GEAR.get()) && !this.isTame();
       return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
     } else if (this.isTame()) {
       if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
@@ -147,8 +154,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
         float f = foodProperties != null ? (float) foodProperties.nutrition() : 1.0F;
         this.heal(2.0F * f);
-        return InteractionResult.sidedSuccess(this.level()
-                                                .isClientSide());
+        return InteractionResult.sidedSuccess(this.level().isClientSide());
       }
       InteractionResult interactionResult = super.mobInteract(player, interactionHand);
       if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
@@ -156,9 +162,14 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
         MinecraftServer server = player.getServer();
         if (server != null) {
-          server.tell(new TickTask(0, () -> player.displayClientMessage(
-            Component.literal(isInSittingPose() ? "I will follow you." : "I will wait for you."),
-            true)));
+          server.tell(
+              new TickTask(
+                  0,
+                  () ->
+                      player.displayClientMessage(
+                          Component.literal(
+                              isInSittingPose() ? "I will follow you." : "I will wait for you."),
+                          true)));
         }
         this.jumping = false;
         this.navigation.stop();
@@ -185,15 +196,18 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
       this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
       MinecraftServer server = player.getServer();
       if (server != null) {
-        server.tell(new TickTask(0, () -> player.displayClientMessage(
-          Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."),
-          true)));
+        server.tell(
+            new TickTask(
+                0,
+                () ->
+                    player.displayClientMessage(
+                        Component.literal(
+                            "I will protect you at all costs, " + player.getScoreboardName() + "."),
+                        true)));
       }
-      this.level()
-        .broadcastEntityEvent(this, (byte) 7);
+      this.level().broadcastEntityEvent(this, (byte) 7);
     } else {
-      this.level()
-        .broadcastEntityEvent(this, (byte) 6);
+      this.level().broadcastEntityEvent(this, (byte) 6);
     }
   }
 
@@ -204,20 +218,32 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
 
   @Override
   public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-    controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
-        if (event.isMoving() && !swinging) {
-//                if (isAggressive()) {
-//                    return event.setAndContinue(DefaultAnimations.RUN);
-//                }
-          return event.setAndContinue(DefaultMythAnimations.WALK);
-        }
-        return event.setAndContinue(DefaultMythAnimations.IDLE);
-      }))
-      .add(new AnimationController<>(this, "attackController", 3, event -> {
-        swinging = false;
-        return PlayState.STOP;
-      }).triggerableAnim("attack", DefaultMythAnimations.ATTACK)
-             .triggerableAnim("attack2", DefaultMythAnimations.ATTACK2));
+    controllerRegistrar
+        .add(
+            new AnimationController<>(
+                this,
+                "livingController",
+                3,
+                event -> {
+                  if (event.isMoving() && !swinging) {
+                    //                if (isAggressive()) {
+                    //                    return event.setAndContinue(DefaultAnimations.RUN);
+                    //                }
+                    return event.setAndContinue(DefaultMythAnimations.WALK);
+                  }
+                  return event.setAndContinue(DefaultMythAnimations.IDLE);
+                }))
+        .add(
+            new AnimationController<>(
+                    this,
+                    "attackController",
+                    3,
+                    event -> {
+                      swinging = false;
+                      return PlayState.STOP;
+                    })
+                .triggerableAnim("attack", DefaultMythAnimations.ATTACK)
+                .triggerableAnim("attack2", DefaultMythAnimations.ATTACK2));
   }
 
   @Override

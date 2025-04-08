@@ -15,6 +15,7 @@ public class PegasusRenderer extends GeoEntityRenderer<PegasusEntity> {
 
   @Override
   public ResourceLocation getTextureLocation(PegasusEntity animatable) {
-    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
+    return ResourceLocation.fromNamespaceAndPath(
+        MobsOfMythology.MOD_ID, "textures/entity/pegasus.png");
   }
 }

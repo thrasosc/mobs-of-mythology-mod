@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
+import java.util.Map;
 import mod.azure.azurelib.common.api.client.renderer.DynamicGeoEntityRenderer;
 import mod.azure.azurelib.common.api.client.renderer.layer.BlockAndItemGeoLayer;
 import mod.azure.azurelib.common.internal.common.cache.object.BakedGeoModel;
@@ -21,18 +22,20 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.mobs.KoboldEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Map;
-
 public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
   public static final Map<KoboldVariant, ResourceLocation> LOCATION_BY_VARIANT =
-    Util.make(Maps.newEnumMap(KoboldVariant.class), (map) -> {
-      map.put(KoboldVariant.KOBOLD,
-              ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
-                                                    "textures/entity/kobold/kobold.png"));
-      map.put(KoboldVariant.KOBOLD_CLOTHED,
-              ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID,
-                                                    "textures/entity/kobold/kobold_cloth.png"));
-    });
+      Util.make(
+          Maps.newEnumMap(KoboldVariant.class),
+          (map) -> {
+            map.put(
+                KoboldVariant.KOBOLD,
+                ResourceLocation.fromNamespaceAndPath(
+                    MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold.png"));
+            map.put(
+                KoboldVariant.KOBOLD_CLOTHED,
+                ResourceLocation.fromNamespaceAndPath(
+                    MobsOfMythology.MOD_ID, "textures/entity/kobold/kobold_cloth.png"));
+          });
   private static final String RIGHT_HAND = "hand";
   private static final String LEFT_HAND = "hand2";
   protected ItemStack mainHandItem;
@@ -42,57 +45,74 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
     super(ctx, new KoboldModel());
     this.shadowRadius = 0.4f;
 
-    //TODO Add glow
-//        addRenderLayer(new AutoGlowingGeoLayer<>(this));
+    // TODO Add glow
+    //        addRenderLayer(new AutoGlowingGeoLayer<>(this));
 
     // Add some held item rendering
-    addRenderLayer(new BlockAndItemGeoLayer<>(this) {
-      @Nullable
-      @Override
-      protected ItemStack getStackForBone(GeoBone bone, KoboldEntity animatable) {
-        // Retrieve the items in the entity's hands for the relevant bone
-        return switch (bone.getName()) {
-          case LEFT_HAND -> animatable.isLeftHanded() ?
-            KoboldRenderer.this.mainHandItem : KoboldRenderer.this.offHandItem;
-          case RIGHT_HAND -> animatable.isLeftHanded() ?
-            KoboldRenderer.this.offHandItem : KoboldRenderer.this.mainHandItem;
-          default -> null;
-        };
-      }
-
-      @Override
-      protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack,
-                                                            KoboldEntity animatable) {
-        // Apply the camera transform for the given hand
-        return switch (bone.getName()) {
-          case LEFT_HAND, RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
-          default -> ItemDisplayContext.NONE;
-        };
-      }
-
-      // Do some quick render modifications depending on what the item is
-      @Override
-      protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack,
-                                        KoboldEntity animatable, MultiBufferSource bufferSource,
-                                        float partialTick, int packedLight, int packedOverlay) {
-        if (stack == KoboldRenderer.this.mainHandItem) {
-          poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
-
-          if (stack.getItem() instanceof ShieldItem)
-            poseStack.translate(0, 0.125, -0.25);
-        } else if (stack == KoboldRenderer.this.offHandItem) {
-          poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
-
-          if (stack.getItem() instanceof ShieldItem) {
-            poseStack.translate(0, 0.125, 0.25);
-            poseStack.mulPose(Axis.YP.rotationDegrees(180));
+    addRenderLayer(
+        new BlockAndItemGeoLayer<>(this) {
+          @Nullable
+          @Override
+          protected ItemStack getStackForBone(GeoBone bone, KoboldEntity animatable) {
+            // Retrieve the items in the entity's hands for the relevant bone
+            return switch (bone.getName()) {
+              case LEFT_HAND ->
+                  animatable.isLeftHanded()
+                      ? KoboldRenderer.this.mainHandItem
+                      : KoboldRenderer.this.offHandItem;
+              case RIGHT_HAND ->
+                  animatable.isLeftHanded()
+                      ? KoboldRenderer.this.offHandItem
+                      : KoboldRenderer.this.mainHandItem;
+              default -> null;
+            };
           }
-        }
 
-        super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight,
-                                 packedOverlay);
-      }
-    });
+          @Override
+          protected ItemDisplayContext getTransformTypeForStack(
+              GeoBone bone, ItemStack stack, KoboldEntity animatable) {
+            // Apply the camera transform for the given hand
+            return switch (bone.getName()) {
+              case LEFT_HAND, RIGHT_HAND -> ItemDisplayContext.THIRD_PERSON_RIGHT_HAND;
+              default -> ItemDisplayContext.NONE;
+            };
+          }
+
+          // Do some quick render modifications depending on what the item is
+          @Override
+          protected void renderStackForBone(
+              PoseStack poseStack,
+              GeoBone bone,
+              ItemStack stack,
+              KoboldEntity animatable,
+              MultiBufferSource bufferSource,
+              float partialTick,
+              int packedLight,
+              int packedOverlay) {
+            if (stack == KoboldRenderer.this.mainHandItem) {
+              poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
+
+              if (stack.getItem() instanceof ShieldItem) poseStack.translate(0, 0.125, -0.25);
+            } else if (stack == KoboldRenderer.this.offHandItem) {
+              poseStack.mulPose(Axis.XP.rotationDegrees(-90f));
+
+              if (stack.getItem() instanceof ShieldItem) {
+                poseStack.translate(0, 0.125, 0.25);
+                poseStack.mulPose(Axis.YP.rotationDegrees(180));
+              }
+            }
+
+            super.renderStackForBone(
+                poseStack,
+                bone,
+                stack,
+                animatable,
+                bufferSource,
+                partialTick,
+                packedLight,
+                packedOverlay);
+          }
+        });
   }
 
   @Override
@@ -101,11 +121,28 @@ public class KoboldRenderer extends DynamicGeoEntityRenderer<KoboldEntity> {
   }
 
   @Override
-  public void preRender(PoseStack poseStack, KoboldEntity animatable, BakedGeoModel model,
-                        MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick,
-                        int packedLight, int packedOverlay, int colour) {
-    super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight,
-                    packedOverlay, colour);
+  public void preRender(
+      PoseStack poseStack,
+      KoboldEntity animatable,
+      BakedGeoModel model,
+      MultiBufferSource bufferSource,
+      VertexConsumer buffer,
+      boolean isReRender,
+      float partialTick,
+      int packedLight,
+      int packedOverlay,
+      int colour) {
+    super.preRender(
+        poseStack,
+        animatable,
+        model,
+        bufferSource,
+        buffer,
+        isReRender,
+        partialTick,
+        packedLight,
+        packedOverlay,
+        colour);
 
     this.mainHandItem = animatable.getMainHandItem();
     this.offHandItem = animatable.getOffhandItem();

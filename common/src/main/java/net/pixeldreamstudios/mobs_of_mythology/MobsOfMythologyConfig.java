@@ -9,86 +9,93 @@ public class MobsOfMythologyConfig {
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double automatonHealth = 100.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double automatonAttackDamage = 16.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double chupacabraHealth = 16.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double chupacabraAttackDamage = 6.0;
-  @Configurable
-  @Configurable.Synchronized
-  public int chupacabraSpawnWeight = 15;
+
+  @Configurable @Configurable.Synchronized public int chupacabraSpawnWeight = 15;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double koboldHealth = 10.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double koboldAttackDamage = 1.5;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1.0f)
   public float koboldFleeSpeedMod = 2.0f;
-  @Configurable
-  @Configurable.Synchronized
-  public int koboldSpawnWeight = 10;
-  @Configurable
-  @Configurable.Synchronized
-  public boolean shouldKoboldsSteal = true;
+
+  @Configurable @Configurable.Synchronized public int koboldSpawnWeight = 10;
+  @Configurable @Configurable.Synchronized public boolean shouldKoboldsSteal = true;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double koboldWarriorHealth = 20.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double koboldWarriorArmor = 6.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double koboldWarriorAttackDamage = 5.5;
-  @Configurable
-  @Configurable.Synchronized
-  public int koboldWarriorSpawnWeight = 10;
+
+  @Configurable @Configurable.Synchronized public int koboldWarriorSpawnWeight = 10;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double drakeHealth = 30.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double drakeAttackDamage = 5.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double basiliskHealth = 100.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double basiliskAttackDamage = 8.0;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double pegasusHealth = 50.0;
-  @Configurable
-  @Configurable.Synchronized
-  public int pegasusSpawnWeight = 10;
-  @Configurable
-  @Configurable.Synchronized
-  public int drakeSpawnWeight = 10;
+
+  @Configurable @Configurable.Synchronized public int pegasusSpawnWeight = 10;
+  @Configurable @Configurable.Synchronized public int drakeSpawnWeight = 10;
+
   @Configurable
   @Configurable.Synchronized
   @Configurable.DecimalRange(min = 1)
   public double sporelingHealth = 6.0;
-  @Configurable
-  @Configurable.Synchronized
+
+  @Configurable @Configurable.Synchronized
   public String[] redSporelingLines = {
     "playerGreeting",
     "Seen any smurfs lately?",
@@ -107,8 +114,8 @@ public class MobsOfMythologyConfig {
     "Some people blame me for the apocalypse...",
     "Γειά σου Ελλάδα!"
   };
-  @Configurable
-  @Configurable.Synchronized
+
+  @Configurable @Configurable.Synchronized
   public String[] brownSporelingLines = {
     "Why do I feel like a fun-guy in a no-fun zone?",
     "You want a piece of my spore attitude? Take a hike!",
@@ -129,7 +136,6 @@ public class MobsOfMythologyConfig {
     "Let's get blazed! Go bring the blaze rod.",
     "Is it 4:20 already?"
   };
-  @Configurable
-  @Configurable.Synchronized
-  public int sporelingSpawnWeight = 16;
+
+  @Configurable @Configurable.Synchronized public int sporelingSpawnWeight = 16;
 }

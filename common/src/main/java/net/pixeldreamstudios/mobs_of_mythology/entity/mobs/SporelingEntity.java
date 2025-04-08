@@ -1,5 +1,7 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
+import java.util.Arrays;
+import java.util.List;
 import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
 import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -39,14 +41,10 @@ import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimat
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.SporelingVariant;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class SporelingEntity extends PathfinderMob implements GeoEntity {
-  public static final RawAnimation BOUNCE = RawAnimation.begin()
-    .thenPlay("bounce");
-  protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(
-    SporelingEntity.class, EntityDataSerializers.INT);
+  public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
+  protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT =
+      SynchedEntityData.defineId(SporelingEntity.class, EntityDataSerializers.INT);
   private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private Component currentLine;
   private String[] lines;
@@ -64,13 +62,16 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
 
   public static AttributeSupplier.Builder createAttributes() {
     return Monster.createMobAttributes()
-      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.sporelingHealth)
-      .add(Attributes.MOVEMENT_SPEED, 0.3);
+        .add(Attributes.MAX_HEALTH, MobsOfMythology.config.sporelingHealth)
+        .add(Attributes.MOVEMENT_SPEED, 0.3);
   }
 
   @Override
-  public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty,
-                                      MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+  public SpawnGroupData finalizeSpawn(
+      ServerLevelAccessor world,
+      DifficultyInstance difficulty,
+      MobSpawnType spawnReason,
+      @Nullable SpawnGroupData entityData) {
     SporelingVariant variant = Util.getRandom(SporelingVariant.values(), this.random);
     setVariant(variant);
     return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
@@ -130,26 +131,32 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
 
   @Override
   public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-    controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-      if (state.isMoving()) {
-        state.getController()
-          .setAnimation(DefaultMythAnimations.WALK);
-        return PlayState.CONTINUE;
-      }
-      state.getController()
-        .setAnimation(DefaultMythAnimations.IDLE);
-      return PlayState.CONTINUE;
-    }));
-    controllerRegistrar.add(new AnimationController<>(this, "bounceController", 3, state -> {
-      if (touched) {
-        state.getController()
-          .forceAnimationReset();
-        state.getController()
-          .setAnimation(BOUNCE);
-        touched = false;
-      }
-      return PlayState.CONTINUE;
-    }));
+    controllerRegistrar.add(
+        new AnimationController<>(
+            this,
+            "livingController",
+            3,
+            state -> {
+              if (state.isMoving()) {
+                state.getController().setAnimation(DefaultMythAnimations.WALK);
+                return PlayState.CONTINUE;
+              }
+              state.getController().setAnimation(DefaultMythAnimations.IDLE);
+              return PlayState.CONTINUE;
+            }));
+    controllerRegistrar.add(
+        new AnimationController<>(
+            this,
+            "bounceController",
+            3,
+            state -> {
+              if (touched) {
+                state.getController().forceAnimationReset();
+                state.getController().setAnimation(BOUNCE);
+                touched = false;
+              }
+              return PlayState.CONTINUE;
+            }));
   }
 
   @Override
@@ -162,15 +169,15 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     if (getVariant().equals(SporelingVariant.RED)) {
       interactSound = SoundEvents.VILLAGER_YES;
       lines = MobsOfMythology.config.redSporelingLines;
-      greetings = Arrays.asList(
-        "Hello there, ",
-        "Hey there, ",
-        "Howdy, ",
-        "Howdy-do, ",
-        "Salutations, ",
-        "Hiya, ",
-        "Godspeed, "
-      );
+      greetings =
+          Arrays.asList(
+              "Hello there, ",
+              "Hey there, ",
+              "Howdy, ",
+              "Howdy-do, ",
+              "Salutations, ",
+              "Hiya, ",
+              "Godspeed, ");
     } else {
       interactSound = SoundEvents.VILLAGER_NO;
       lines = MobsOfMythology.config.brownSporelingLines;
@@ -184,8 +191,11 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
       do {
         currentLine = Component.literal(lines[random.nextInt(lines.length)]);
         if (currentLine.equals(Component.literal("playerGreeting"))) {
-          currentLine = Component.literal(
-            greetings.get(random.nextInt(greetings.size())) + player.getScoreboardName() + '!');
+          currentLine =
+              Component.literal(
+                  greetings.get(random.nextInt(greetings.size()))
+                      + player.getScoreboardName()
+                      + '!');
         }
       } while (currentLine.equals(previousLine));
       MinecraftServer server = player.getServer();

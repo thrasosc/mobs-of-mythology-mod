@@ -12,4 +12,3 @@ public final class MobsOfMythologyNeoForge {
     EnvExecutor.runInEnv(Dist.CLIENT, () -> MobsOfMythology::initClient);
   }
 }
-

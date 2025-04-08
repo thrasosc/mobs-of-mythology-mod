@@ -24,57 +24,84 @@ public class BasiliskRenderer extends GeoEntityRenderer<BasiliskEntity> {
     super(ctx, new BasiliskModel());
     this.shadowRadius = 0.75f;
     addRenderLayer(new AutoGlowingGeoLayer<>(this));
-    addRenderLayer(new BlockAndItemGeoLayer<>(this) {
-      @Nullable
-      @Override
-      protected ItemStack getStackForBone(GeoBone bone, BasiliskEntity animatable) {
-        if (animatable.hasChest() && (bone.getName()
-          .equals("chest_left") || bone.getName()
-          .equals("chest_right"))) {
-          return new ItemStack(Items.CHEST);
-        }
-        return null;
-      }
+    addRenderLayer(
+        new BlockAndItemGeoLayer<>(this) {
+          @Nullable
+          @Override
+          protected ItemStack getStackForBone(GeoBone bone, BasiliskEntity animatable) {
+            if (animatable.hasChest()
+                && (bone.getName().equals("chest_left") || bone.getName().equals("chest_right"))) {
+              return new ItemStack(Items.CHEST);
+            }
+            return null;
+          }
 
-      @Override
-      protected ItemDisplayContext getTransformTypeForStack(GeoBone bone, ItemStack stack,
-                                                            BasiliskEntity animatable) {
-        if (animatable.hasChest()) {
-          return ItemDisplayContext.FIXED;
-        }
-        return ItemDisplayContext.NONE;
-      }
+          @Override
+          protected ItemDisplayContext getTransformTypeForStack(
+              GeoBone bone, ItemStack stack, BasiliskEntity animatable) {
+            if (animatable.hasChest()) {
+              return ItemDisplayContext.FIXED;
+            }
+            return ItemDisplayContext.NONE;
+          }
 
-      @Override
-      protected void renderStackForBone(PoseStack poseStack, GeoBone bone, ItemStack stack,
-                                        BasiliskEntity animatable, MultiBufferSource bufferSource,
-                                        float partialTick, int packedLight, int packedOverlay) {
-        if (bone.getName()
-          .equals("chest_left")) {
-          poseStack.mulPose(Axis.YP.rotationDegrees(90));
-        } else if (bone.getName()
-          .equals("chest_right")) {
-          poseStack.mulPose(Axis.YP.rotationDegrees(-90));
-        }
-        super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight,
-                                 packedOverlay);
-      }
-    });
+          @Override
+          protected void renderStackForBone(
+              PoseStack poseStack,
+              GeoBone bone,
+              ItemStack stack,
+              BasiliskEntity animatable,
+              MultiBufferSource bufferSource,
+              float partialTick,
+              int packedLight,
+              int packedOverlay) {
+            if (bone.getName().equals("chest_left")) {
+              poseStack.mulPose(Axis.YP.rotationDegrees(90));
+            } else if (bone.getName().equals("chest_right")) {
+              poseStack.mulPose(Axis.YP.rotationDegrees(-90));
+            }
+            super.renderStackForBone(
+                poseStack,
+                bone,
+                stack,
+                animatable,
+                bufferSource,
+                partialTick,
+                packedLight,
+                packedOverlay);
+          }
+        });
   }
 
   @Override
-  public void preRender(PoseStack poseStack, BasiliskEntity animatable, BakedGeoModel model,
-                        MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick,
-                        int packedLight, int packedOverlay, int colour) {
-    super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight,
-                    packedOverlay, colour);
-    model.getBone("saddle")
-      .get()
-      .setHidden(!animatable.isSaddled());
+  public void preRender(
+      PoseStack poseStack,
+      BasiliskEntity animatable,
+      BakedGeoModel model,
+      MultiBufferSource bufferSource,
+      VertexConsumer buffer,
+      boolean isReRender,
+      float partialTick,
+      int packedLight,
+      int packedOverlay,
+      int colour) {
+    super.preRender(
+        poseStack,
+        animatable,
+        model,
+        bufferSource,
+        buffer,
+        isReRender,
+        partialTick,
+        packedLight,
+        packedOverlay,
+        colour);
+    model.getBone("saddle").get().setHidden(!animatable.isSaddled());
   }
 
   @Override
   public ResourceLocation getTextureLocation(BasiliskEntity animatable) {
-    return ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "textures/entity/basilisk.png");
+    return ResourceLocation.fromNamespaceAndPath(
+        MobsOfMythology.MOD_ID, "textures/entity/basilisk.png");
   }
 }

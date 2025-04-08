@@ -35,10 +35,10 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
 
   public static AttributeSupplier.Builder createAttributes() {
     return AbstractChestedHorse.createBaseChestedHorseAttributes()
-      .add(Attributes.MAX_HEALTH, MobsOfMythology.config.pegasusHealth)
-      .add(Attributes.MOVEMENT_SPEED, 0.25)
-      .add(Attributes.FLYING_SPEED, 0.8)
-      .add(Attributes.JUMP_STRENGTH, 1.0);
+        .add(Attributes.MAX_HEALTH, MobsOfMythology.config.pegasusHealth)
+        .add(Attributes.MOVEMENT_SPEED, 0.25)
+        .add(Attributes.FLYING_SPEED, 0.8)
+        .add(Attributes.JUMP_STRENGTH, 1.0);
   }
 
   @Override
@@ -47,9 +47,9 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
     if (flyingTime > 0) {
       flyingTime--;
     }
-//        if (!isVehicle()) {
-//            isFlying = false;
-//        }
+    //        if (!isVehicle()) {
+    //            isFlying = false;
+    //        }
     if (this.onGround()) {
       isFlying = false;
     }
@@ -68,8 +68,7 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
           Vec3 currentMotion = this.getDeltaMovement();
           this.setDeltaMovement(currentMotion.add(0.0, 0.05, 0.0));
           super.travel(new Vec3(rider.xxa, currentMotion.y, rider.zza));
-          this.setDeltaMovement(this.getDeltaMovement()
-                                  .multiply(0.91D, 0.98D, 0.91D));
+          this.setDeltaMovement(this.getDeltaMovement().multiply(0.91D, 0.98D, 0.91D));
         } else {
           this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
           super.travel(new Vec3(rider.xxa, 0, rider.zza));
@@ -94,17 +93,15 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
 
   @Override
   public void onPlayerJump(int jumpPower) {
-//        if (this.canJump()) {
-//            this.setJumping(true);
+    //        if (this.canJump()) {
+    //            this.setJumping(true);
     this.flyingJump();
-
   }
 
   public void flyingJump() {
     if (flyingTime <= 0 && this.canJump()) {
       float jumpMotion = 1.6F;
-      this.setDeltaMovement(this.getDeltaMovement()
-                              .add(0, jumpMotion, 0));
+      this.setDeltaMovement(this.getDeltaMovement().add(0, jumpMotion, 0));
       this.flyingTime = FLYING_INTERVAL;
       this.isFlying = true;
     }
@@ -149,15 +146,20 @@ public class PegasusEntity extends AbstractChestedHorse implements GeoEntity {
 
   @Override
   public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-    controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
-      if (isFlying) {
-        return state.setAndContinue(DefaultMythAnimations.FLY);
-      }
-      if (this.onGround() && state.isMoving()) {
-        return state.setAndContinue(DefaultMythAnimations.WALK);
-      }
-      return state.setAndContinue(DefaultMythAnimations.IDLE);
-    }));
+    controllerRegistrar.add(
+        new AnimationController<>(
+            this,
+            "controller",
+            3,
+            state -> {
+              if (isFlying) {
+                return state.setAndContinue(DefaultMythAnimations.FLY);
+              }
+              if (this.onGround() && state.isMoving()) {
+                return state.setAndContinue(DefaultMythAnimations.WALK);
+              }
+              return state.setAndContinue(DefaultMythAnimations.IDLE);
+            }));
   }
 
   @Override
