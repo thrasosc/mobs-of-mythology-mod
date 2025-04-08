@@ -27,18 +27,11 @@ public class EntityRegistry {
       .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "automaton")
                .toString()));
 
-  public static final RegistrySupplier<EntityType<ChupacabraEntity>> CHUPACABRA = ENTITIES.register("chupacabra",
-                                                                                                    () ->
-                                                                                                      EntityType.Builder.of(
-                                                                                                          ChupacabraEntity::new,
-                                                                                                          MobCategory.MONSTER)
-                                                                                                        .sized(1.25f,
-                                                                                                               1.0f)
-                                                                                                        .build(
-                                                                                                          ResourceLocation.fromNamespaceAndPath(
-                                                                                                              MobsOfMythology.MOD_ID,
-                                                                                                              "chupacabra")
-                                                                                                            .toString()));
+  public static final RegistrySupplier<EntityType<ChupacabraEntity>> CHUPACABRA = ENTITIES.register("chupacabra", () ->
+    EntityType.Builder.of(ChupacabraEntity::new, MobCategory.MONSTER)
+      .sized(1.25f, 1.0f)
+      .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "chupacabra")
+               .toString()));
 
   public static final RegistrySupplier<EntityType<KoboldEntity>> KOBOLD = ENTITIES.register("kobold", () ->
     EntityType.Builder.of(KoboldEntity::new, MobCategory.MONSTER)
