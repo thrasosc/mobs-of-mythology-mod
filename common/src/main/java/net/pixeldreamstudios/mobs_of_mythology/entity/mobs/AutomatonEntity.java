@@ -32,7 +32,6 @@ import net.minecraft.world.entity.ai.goal.target.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -41,6 +40,7 @@ import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.registry.ItemRegistry;
 import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
+import net.pixeldreamstudios.mobs_of_mythology.registry.TagRegistry;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,7 +80,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
 
   @Override
   public boolean isFood(ItemStack itemStack) {
-    return itemStack.is(ItemRegistry.BRONZE_INGOT.get());
+    return itemStack.is(TagRegistry.BRONZE_INGOTS);
   }
 
   protected void registerGoals() {
