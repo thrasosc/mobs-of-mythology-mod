@@ -115,6 +115,7 @@ public class KoboldEntity extends AbstractKoboldEntity {
             .startCondition(
                 mob ->
                     getItemStack().isEmpty()
+                        && getTarget() != null
                         && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),
         new AnimatableMeleeAttack<>(6)
             .whenStarting(
@@ -125,14 +126,19 @@ public class KoboldEntity extends AbstractKoboldEntity {
                 mob ->
                     MobsOfMythology.config.shouldKoboldsSteal
                         && getItemStack().isEmpty()
+                        && getTarget() != null
                         && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty())
             .stopIf(mob -> !getItemStack().isEmpty())
             .whenStopping(
                 mob -> {
                   if (!MobsOfMythology.config.shouldKoboldsSteal) return;
                   LivingEntity target = getTarget();
-                  setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
-                  target.getItemInHand(InteractionHand.MAIN_HAND).shrink(getItemStack().getCount());
+                  if (target != null) {
+                    setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
+                    target
+                        .getItemInHand(InteractionHand.MAIN_HAND)
+                        .shrink(getItemStack().getCount());
+                  }
                 }),
         new FleeTarget<>()
             .fleeDistance(10)
