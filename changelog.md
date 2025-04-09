@@ -1,7 +1,9 @@
 # Mobs of Mythology
 
-## [2.1.8] - 06/04/2025
+## [2.2.0] - 09/04/2025
 
-- add config option for toggling kobold stealing
+- add spawn checks to prevent spawning uncontrollably
+- update dependencies
+- update pt_br translation (thanks @Xlr11)
 
 [![Bisect Hosting](https://www.bisecthosting.com/images/CF/Mobs_of_Mythology/BH_MOM_promo.webp)](https://bisecthosting.com/PixelDream)
