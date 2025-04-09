@@ -43,6 +43,7 @@
   "config.mobs_of_mythology.option.koboldAttackDamage": "Dano de Ataque do Kobold",
   "config.mobs_of_mythology.option.koboldFleeSpeedMod": "Modificador de Velocidade de Fuga do Kobold",
   "config.mobs_of_mythology.option.koboldSpawnWeight": "Taxa de Geração do Kobold",
+  "config.mobs_of_mythology.option.shouldKoboldsSteal": "Kobolds Devem Roubar",
   "config.mobs_of_mythology.option.koboldWarriorHealth": "Vida do Guerreiro Kobold",
   "config.mobs_of_mythology.option.koboldWarriorAttackDamage": "Dano de Ataque do Guerreiro Kobold",
   "config.mobs_of_mythology.option.koboldWarriorArmor": "Armadura do Guerreiro Kobold",
@@ -56,5 +57,6 @@
   "config.mobs_of_mythology.option.sporelingSpawnWeight": "Taxa de Geração do Esporos",
   "config.mobs_of_mythology.option.basiliskHealth": "Vida do Basilisco",
   "config.mobs_of_mythology.option.basiliskAttackDamage": "Dano de Ataque do Basilisco",
-  "config.mobs_of_mythology.option.pegasusHealth": "Vida do Pegasus"
+  "config.mobs_of_mythology.option.pegasusHealth": "Vida do Pegasus",
+  "config.mobs_of_mythology.option.pegasusSpawnWeight": "Taxa de Geração do Pegasus"
 }
