@@ -141,8 +141,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
   @Override
   public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
     ItemStack itemStack = player.getItemInHand(interactionHand);
-    Item item = itemStack.getItem();
-    if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
+      if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
       boolean bl =
           this.isOwnedBy(player)
               || this.isTame()
