@@ -6,6 +6,12 @@ loom {
     forge {
         mixinConfig "mobs_of_mythology.mixins.json"
     }
+    runs {
+        client {
+            property "mixin.env.remapRefMap", "true"
+            property "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
+        }
+    }
 }
 
 architectury {
@@ -31,6 +37,8 @@ configurations {
 }
 repositories {
     maven { url 'https://maven.shedaniel.me/' }
+    maven { url = "https://repo.spongepowered.org/maven" }
+    maven { url 'https://dl.cloudsmith.io/public/tslat/sbl/maven/' }
     maven { url 'https://maven.kosmx.dev/' }
     maven { url 'https://jitpack.io' }
     maven { url 'https://api.modrinth.com/maven' }
@@ -50,6 +58,9 @@ dependencies {
     modImplementation "dev.architectury:architectury-forge:$rootProject.architectury_api_version"
     modImplementation "mod.azure.azurelib:azurelib-neo-${minecraft_version}:${azurelib_version}"
     modImplementation "net.tslat.smartbrainlib:SmartBrainLib-forge-${minecraft_version}:${sbl_version}"
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.5.0"))
+    implementation(include("io.github.llamalad7:mixinextras-forge:0.5.0"))
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
@@ -70,47 +81,5 @@ shadowJar {
 
 remapJar {
     input.set shadowJar.archiveFile
-}
 
-unifiedPublishing {
-    project {
-        displayName = "Mobs of Mythology $project.version"
-        gameVersions = ["${minecraft_version}"]
-        gameLoaders = ["forge"]
-        releaseType = "release" // Optional, use "release", "beta" or "alpha"
-        changelog = rootProject.file("changelog.md").text
-
-        mainPublication tasks.remapJar // Declares the publicated jar
-
-        relations {
-            depends {
-                curseforge = "architectury-api"
-                modrinth = "architectury-api"
-            }
-            depends {
-                curseforge = "azurelib"
-                modrinth = "azurelib"
-            }
-            depends {
-                curseforge = "smartbrainlib"
-                modrinth = "smartbrainlib"
-            }
-        }
-
-        var cfToken = System.getenv("CURSEFORGE_TOKEN")
-        if (cfToken != null) {
-            curseforge {
-                token = cfToken
-                id = "699989" // Required, must be a string, ID of CurseForge project
-            }
-        }
-
-        var mrToken = System.getenv("MODRINTH_TOKEN")
-        if (mrToken != null) {
-            modrinth {
-                token = mrToken
-                id = "avrKhvsK" // Required, must be a string, ID of Modrinth project
-            }
-        }
-    }
 }

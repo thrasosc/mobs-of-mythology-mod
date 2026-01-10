@@ -36,7 +36,7 @@
     "java": ">=17",
     "architectury": ">=9.2.14",
     "fabric-api": "*",
-    "azurelib": ">=2.0.30",
+    "azurelib": ">=3.1.1",
     "smartbrainlib": ">=1.14.2"
   },
   "custom": {

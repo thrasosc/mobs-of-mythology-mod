@@ -1,7 +1,7 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mod.azure.azurelib.animatable.GeoEntity;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
@@ -25,6 +25,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.ReactToUnreachableTarget;
@@ -40,13 +41,16 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 
 import java.util.List;
 
-public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity {
+public class ChupacabraEntity extends AbstractMythMonsterEntity {
     private boolean unreachableTarget = false;
+
+    public DefaultMythAnimations dispatcher;
 
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         navigation = new SmoothGroundNavigation(this, level());
         this.xpReward = Enemy.XP_REWARD_MEDIUM;
+        dispatcher = new DefaultMythAnimations(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -93,7 +97,9 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                         .whenStopping(pathfinderMob -> unreachableTarget = false),
                 new AnimatableMeleeAttack<>(8)
                         .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
+                            if (!level().isClientSide) {
+                                dispatcher.attack();
+                            }
                             produceParticles(ParticleTypes.CRIMSON_SPORE);
                             if (getHealth() < getMaxHealth()) {
                                 this.heal(1.5f);

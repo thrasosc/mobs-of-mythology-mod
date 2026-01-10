@@ -1,8 +1,7 @@
 plugins {
-    id 'dev.architectury.loom' version '1.6-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.13-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
-    id "me.shedaniel.unified-publishing" version "0.1.+"
 }
 
 architectury {
@@ -18,20 +17,18 @@ subprojects {
     apply plugin: 'dev.architectury.loom'
     apply plugin: 'architectury-plugin'
     apply plugin: 'maven-publish'
-    apply plugin: "me.shedaniel.unified-publishing"
 
     base {
         // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name-$minecraft_version"
+        archivesName = "$rootProject.archives_name-$project.name"
     }
 
     repositories {
-        maven { url 'https://dl.cloudsmith.io/public/tslat/sbl/maven/' }
-        maven { url 'https://maven.azuredoom.com/mods' }
-    }
-
-    loom {
-        silentMojangMappingsLicense()
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
     }
 
     dependencies {

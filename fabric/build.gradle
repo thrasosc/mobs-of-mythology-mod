@@ -1,6 +1,5 @@
 plugins {
     id 'com.github.johnrengelman.shadow'
-    id "me.shedaniel.unified-publishing"
 }
 
 architectury {
@@ -24,28 +23,25 @@ configurations {
         canBeConsumed = false
     }
 }
-
 repositories {
-    maven { url 'https://maven.terraformersmc.com/releases' } // Needed for Fabric only at the moment (for AzureLib)
+    maven { url 'https://dl.cloudsmith.io/public/tslat/sbl/maven/' }
+    maven { url "https://maven.azuredoom.com/mods" }
+    maven { url 'https://maven.terraformersmc.com/releases' }
 }
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
 
-    // Architectury API. This is optional, and you can comment it out if you don't need it.
     modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+    modImplementation "mod.azure.azurelib:azurelib-fabric-${minecraft_version}:${azurelib_version}"
+    modApi "com.terraformersmc:modmenu:${modmenu_version}"
+    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
-    modImplementation "mod.azure.azurelib:azurelib-fabric-${minecraft_version}:${azurelib_version}"
-    modApi "com.terraformersmc:modmenu:${modmenu_version}" // Fabric bug is requiring this
-    modImplementation "net.tslat.smartbrainlib:SmartBrainLib-fabric-${minecraft_version}:${sbl_version}"
 }
-
 processResources {
     inputs.property 'version', project.version
 
@@ -61,47 +57,4 @@ shadowJar {
 
 remapJar {
     input.set shadowJar.archiveFile
-}
-
-unifiedPublishing {
-    project {
-        displayName = "Mobs of Mythology $project.version"
-        gameVersions = ["${minecraft_version}"]
-        gameLoaders = ["fabric"]
-        releaseType = "release" // Optional, use "release", "beta" or "alpha"
-        changelog = rootProject.file("changelog.md").text
-
-        mainPublication tasks.remapJar // Declares the publicated jar
-
-        relations {
-            depends {
-                curseforge = "architectury-api"
-                modrinth = "architectury-api"
-            }
-            depends {
-                curseforge = "azurelib"
-                modrinth = "azurelib"
-            }
-            depends {
-                curseforge = "smartbrainlib"
-                modrinth = "smartbrainlib"
-            }
-        }
-
-        var cfToken = System.getenv("CURSEFORGE_TOKEN")
-        if (cfToken != null) {
-            curseforge {
-                token = cfToken
-                id = "699989" // Required, must be a string, ID of CurseForge project
-            }
-        }
-
-        var mrToken = System.getenv("MODRINTH_TOKEN")
-        if (mrToken != null) {
-            modrinth {
-                token = mrToken
-                id = "avrKhvsK" // Required, must be a string, ID of Modrinth project
-            }
-        }
-    }
 }
