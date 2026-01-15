@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.KoboldVariant;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
@@ -38,6 +39,7 @@ public class KoboldEntity extends AbstractKoboldEntity {
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);
         navigation = new SmoothGroundNavigation(this, level());
+        this.dispatcher = new DefaultMythAnimations(this);
     }
 
     @Override
@@ -102,45 +104,54 @@ public class KoboldEntity extends AbstractKoboldEntity {
                 .add(Attributes.MOVEMENT_SPEED, 0.3);
     }
 
-    //TODO re-implement item stealing using `ItemTemptingSensor` and `FollowTemptation`
     @Override
     public BrainActivityGroup<AbstractMythMonsterEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
-                new InvalidateAttackTarget<>().invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
-                new SetWalkTargetToAttackTarget<>().startCondition(mob -> getItemStack().isEmpty() && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()),
+                new InvalidateAttackTarget<>()
+                        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
+                new SetWalkTargetToAttackTarget<>()
+                        .startCondition(mob ->
+                                MobsOfMythology.config.shouldKoboldsSteal
+                                        && getItemStack().isEmpty()
+                                        && getTarget() != null
+                                        && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
+                        ),
+
                 new AnimatableMeleeAttack<>(6)
                         .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
+                            if (!level().isClientSide) {
+                                dispatcher.attack();
+                            }
                         })
                         .startCondition(mob ->
-                                MobsOfMythology.config.shouldKoboldsSteal &&
-                                        getItemStack().isEmpty() &&
-                                        !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
+                                MobsOfMythology.config.shouldKoboldsSteal
+                                        && getItemStack().isEmpty()
+                                        && getTarget() != null
+                                        && !getTarget().getItemInHand(InteractionHand.MAIN_HAND).isEmpty()
                         )
                         .stopIf(mob -> !getItemStack().isEmpty())
                         .whenStopping(mob -> {
                             if (!MobsOfMythology.config.shouldKoboldsSteal) return;
+
                             LivingEntity target = getTarget();
-                            setItemStack(target.getItemInHand(InteractionHand.MAIN_HAND).copy());
-                            target.getItemInHand(InteractionHand.MAIN_HAND).shrink(getItemStack().getCount());
+                            if (target == null) return;
+
+                            ItemStack targetStack = target.getItemInHand(InteractionHand.MAIN_HAND);
+                            if (targetStack.isEmpty()) return;
+                            ItemStack stolen = targetStack.split(1);
+                            if (!stolen.isEmpty()) {
+                                setItemStack(stolen);
+                            }
                         }),
+
                 new FleeTarget<>()
                         .speedModifier(2.0f)
-                        .startCondition(mob -> !getItemStack().isEmpty() || BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this)))
+                        .startCondition(mob -> !getItemStack().isEmpty()
+                                || (BrainUtils.getTargetOfEntity(this) != null
+                                && BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this))))
         );
     }
 
-    // TODO implement eating (see gigeresque)
-//    public void tick() {
-//        super.tick();
-//        super.tick();
-//        ItemStack itemStack = getItemStack();
-//        if (!itemStack.isEmpty()) {
-//            if (itemStack.is(ItemTags.WOLF_FOOD)) {
-//                eat(level(), itemStack);
-//            }
-//        }
-//    }
 
     @Override
     public <T> T getVariant() {

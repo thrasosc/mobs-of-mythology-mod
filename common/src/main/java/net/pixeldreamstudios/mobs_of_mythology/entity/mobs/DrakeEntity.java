@@ -1,11 +1,5 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
-import mod.azure.azurelib.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -41,8 +35,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class DrakeEntity extends TamableAnimal implements GeoEntity {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+public class DrakeEntity extends TamableAnimal {
+
+    public final DefaultMythAnimations dispatcher = new DefaultMythAnimations(this);
+
+    private enum BaseAnim { IDLE, WALK, RUN, SIT }
+    private BaseAnim baseAnim = BaseAnim.IDLE;
+
+
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
     public static final Predicate<LivingEntity> PREY_SELECTOR;
 
@@ -147,40 +147,43 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
             return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
         };
     }
-
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (isInSittingPose()) {
-                state.getController().setAnimation(DefaultMythAnimations.SIT);
-                return PlayState.CONTINUE;
-            } else if (state.isMoving() && !swinging) {
-                if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
-                    return PlayState.CONTINUE;
-                }
-                else {
-                    state.getController().setAnimation(DefaultMythAnimations.WALK);
-                    return PlayState.CONTINUE;
-                }
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
+    public void aiStep() {
+        super.aiStep();
 
+        if (level().isClientSide) return;
+
+        BaseAnim next;
+
+        if (isInSittingPose()) {
+            next = BaseAnim.SIT;
+        } else {
+            boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+            if (!moving) {
+                next = BaseAnim.IDLE;
+            } else if (isAggressive()) {
+                next = BaseAnim.RUN;
+            } else {
+                next = BaseAnim.WALK;
+            }
+        }
+
+        if (next != baseAnim) {
+            baseAnim = next;
+            switch (baseAnim) {
+                case SIT -> dispatcher.sit();
+                case RUN -> dispatcher.run();
+                case WALK -> dispatcher.walk();
+                default -> dispatcher.idle();
+            }
+        }
+    }
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.triggerAnim("attackController", "attack");
+        if (!level().isClientSide) {
+            dispatcher.attack();
+        }
         return super.doHurtTarget(entity);
-    }
-
-        @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 
     @Override

@@ -1,9 +1,9 @@
 package net.pixeldreamstudios.mobs_of_mythology;
 
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
-import mod.azure.azurelib.AzureLib;
 import mod.azure.azurelib.AzureLibMod;
 import mod.azure.azurelib.config.format.ConfigFormats;
+import net.minecraft.resources.ResourceLocation;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.*;
 import net.pixeldreamstudios.mobs_of_mythology.registry.*;
 import org.slf4j.Logger;
@@ -15,13 +15,15 @@ public final class MobsOfMythology {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static void init() {
-        AzureLib.initialize();
         config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties()).getConfigInstance();
         SoundRegistry.init();
         EntityRegistry.init();
         ItemRegistry.init();
         BlockRegistry.init();
         TabRegistry.init();
+    }
+    public static ResourceLocation modResource(String name) {
+        return new ResourceLocation(MOD_ID, name);
     }
 
     public static void initClient() {

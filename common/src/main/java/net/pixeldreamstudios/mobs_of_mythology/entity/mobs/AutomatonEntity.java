@@ -1,11 +1,7 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
-import mod.azure.azurelib.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
 import mod.azure.azurelib.util.AzureLibUtil;
+import mod.azure.azurelib.util.MoveAnalysis;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,10 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -43,12 +36,19 @@ import net.pixeldreamstudios.mobs_of_mythology.registry.SoundRegistry;
 import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
-public class AutomatonEntity extends TamableAnimal implements GeoEntity {
-    private final AnimatableInstanceCache cache = AzureLibUtil.createInstanceCache(this);
+public class AutomatonEntity extends TamableAnimal {
+
+    public DefaultMythAnimations dispatcher;
+    public final MoveAnalysis moveAnalysis;
+    private enum BaseAnim { IDLE, WALK, RUN, SIT }
+    private BaseAnim baseAnim = BaseAnim.IDLE;
+
 
     public AutomatonEntity(EntityType<? extends TamableAnimal> entityType, Level level) {
         super(entityType, level);
-        this.navigation = new SmoothGroundNavigation(this, level);
+//        this.navigation = new SmoothGroundNavigation(this, level);
+        this.moveAnalysis = new MoveAnalysis(this);
+        dispatcher = new DefaultMythAnimations(this);
     }
 
     @Override
@@ -75,7 +75,21 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(1, new FloatGoal(this));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0D, false) {
+            @Override
+            protected void checkAndPerformAttack(LivingEntity target, double distanceToSqr) {
+                double reachSqr = this.getAttackReachSqr(target);
+
+                if (distanceToSqr <= reachSqr && this.getTicksUntilNextAttack()<= 0) {
+                    this.resetAttackCooldown();
+                    if (this.mob instanceof AutomatonEntity AutomatonEntity) {
+                        AutomatonEntity.dispatcher.attack();
+                    }
+                    this.mob.swing(InteractionHand.MAIN_HAND);
+                    this.mob.doHurtTarget(target);
+                }
+            }
+        });
         this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.2, 8.0F, 2.0F, false));
         this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0));
@@ -117,6 +131,7 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     @Override
     public void tick() {
         super.tick();
+        moveAnalysis.update();
         if (getHealth() < (double) 50) {
             if (getHealth() < (double) 25) {
                 if (level().isClientSide()) {
@@ -128,13 +143,44 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
                 produceParticles(ParticleTypes.SMOKE);
             }
         }
+
+    }
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (level().isClientSide) return;
+        BaseAnim next;
+
+        if (isInSittingPose()) {
+            next = BaseAnim.SIT;
+        } else {
+            boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+
+            if (!moving) {
+                next = BaseAnim.IDLE;
+            } else if (isAggressive() || getTarget() != null) {
+                next = BaseAnim.RUN;
+            } else {
+                next = BaseAnim.WALK;
+            }
+        }
+
+        if (next != baseAnim) {
+            baseAnim = next;
+            switch (baseAnim) {
+                case SIT -> dispatcher.sit();
+                case RUN -> dispatcher.run();
+                case WALK -> dispatcher.walk();
+                default -> dispatcher.idle();
+            }
+        }
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
         Item item = itemStack.getItem();
-        if (((Level)this.level()).isClientSide) {
+        if (((Level) this.level()).isClientSide) {
             boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.GEAR.get()) && !this.isTame();
             return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
         }
@@ -151,7 +197,8 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
                     return InteractionResult.SUCCESS;
                 }
             }
-            if ((interactionResult = super.mobInteract(player, interactionHand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player)) return interactionResult;
+            if ((interactionResult = super.mobInteract(player, interactionHand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player))
+                return interactionResult;
             this.playSound(SoundRegistry.ROBOTIC_VOICE.get(), 1.0f, 1.0f);
             if (getServer() != null) {
                 getServer().tell(new TickTask(0, () -> player.displayClientMessage(Component.literal(isInSittingPose() ? "I will follow you." : "I will wait for you."), true)));
@@ -176,10 +223,10 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
             if (server != null) {
                 server.tell(new TickTask(0, () -> player.displayClientMessage(Component.literal("I will protect you at all costs, " + player.getScoreboardName() + "."), true)));
             }
-            ((Level)this.level()).broadcastEntityEvent(this, (byte)7);
+            ((Level) this.level()).broadcastEntityEvent(this, (byte) 7);
             return InteractionResult.SUCCESS;
         } else {
-            ((Level)this.level()).broadcastEntityEvent(this, (byte)6);
+            ((Level) this.level()).broadcastEntityEvent(this, (byte) 6);
         }
         return InteractionResult.SUCCESS;
     }
@@ -189,22 +236,13 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
         return new Vec3(0.0, 0.845f * this.getEyeHeight(), this.getBbWidth() * 0.4f);
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, event -> {
-            if (event.isMoving() && !swinging) {
-                return event.setAndContinue(DefaultMythAnimations.WALK);
-            }
-            return event.setAndContinue(DefaultMythAnimations.IDLE);
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK).triggerableAnim("attack2", DefaultMythAnimations.ATTACK2));
-    }
 
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.triggerAnim("attackController", "attack");
+        if (!level().isClientSide) {
+            if (getRandom().nextBoolean()) dispatcher.attack();
+            else dispatcher.attack2();
+        }
         this.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 30, 255, true, true, true));
         return super.doHurtTarget(entity);
     }
@@ -227,10 +265,5 @@ public class AutomatonEntity extends TamableAnimal implements GeoEntity {
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
         this.playSound(SoundEvents.IRON_GOLEM_STEP, 1.0f, 1.0f);
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 }

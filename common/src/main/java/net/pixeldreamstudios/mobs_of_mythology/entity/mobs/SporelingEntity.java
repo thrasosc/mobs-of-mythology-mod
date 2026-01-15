@@ -1,12 +1,5 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
-import mod.azure.azurelib.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.animation.RawAnimation;
-import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -35,16 +28,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
+import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythEntity;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.SporelingVariant;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class SporelingEntity extends PathfinderMob implements GeoEntity {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
+public class SporelingEntity extends PathfinderMob {
+
+    public DefaultMythAnimations dispatcher;
+
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(SporelingEntity.class, EntityDataSerializers.INT);
     private Component currentLine;
     private String[] lines;
@@ -58,6 +54,8 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     public SporelingEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 1;
+        this.navigation = new SmoothGroundNavigation(this, level);
+        dispatcher = new DefaultMythAnimations(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -123,32 +121,17 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
                 lineCooldown = 60;
             }
         }
+        if (this.level().isClientSide()) {
+            boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+
+            if (moving) {
+                dispatcher.walk();
+            } else {
+                dispatcher.idle();
+            }
+        }
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (state.isMoving()) {
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
-                return PlayState.CONTINUE;
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        }));
-        controllerRegistrar.add(new AnimationController<>(this, "bounceController", 3, state -> {
-            if (touched) {
-                state.getController().forceAnimationReset();
-                state.getController().setAnimation(BOUNCE);
-                touched = false;
-            }
-            return PlayState.CONTINUE;
-        }));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
