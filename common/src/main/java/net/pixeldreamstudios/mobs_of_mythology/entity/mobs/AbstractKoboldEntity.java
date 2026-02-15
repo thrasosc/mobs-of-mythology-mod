@@ -7,11 +7,15 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
 
@@ -63,6 +67,20 @@ public abstract class AbstractKoboldEntity extends AbstractMythMonsterEntity imp
     protected SoundEvent getDeathSound() {
         this.playSound(SoundEvents.VINDICATOR_DEATH, 1.0f, 1.75f);
         return null;
+    }
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            return false;
+        }
+        BlockPos pos = this.blockPosition();
+        int skyLight = level.getBrightness(LightLayer.SKY, pos);
+        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+
+        if (skyLight > 7 || blockLight > 7) {
+            return false;
+        }
+        return super.checkSpawnRules(level, spawnType);
     }
 
     @Override

@@ -2,7 +2,9 @@ package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,6 +20,8 @@ import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
@@ -105,6 +109,20 @@ public class KoboldWarriorEntity extends AbstractKoboldEntity {
                 new AnimatableMeleeAttack<>(6)
                         .whenStarting(mob -> this.dispatcher.attack())
         );
+    }
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            return false;
+        }
+        BlockPos pos = this.blockPosition();
+        int skyLight = level.getBrightness(LightLayer.SKY, pos);
+        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+
+        if (skyLight > 7 || blockLight > 7) {
+            return false;
+        }
+        return super.checkSpawnRules(level, spawnType);
     }
 
 

@@ -1,11 +1,13 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,6 +20,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
@@ -150,6 +154,20 @@ public class KoboldEntity extends AbstractKoboldEntity {
                                 || (BrainUtils.getTargetOfEntity(this) != null
                                 && BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this))))
         );
+    }
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            return false;
+        }
+        BlockPos pos = this.blockPosition();
+        int skyLight = level.getBrightness(LightLayer.SKY, pos);
+        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+
+        if (skyLight > 7 || blockLight > 7) {
+            return false;
+        }
+        return super.checkSpawnRules(level, spawnType);
     }
 
 
