@@ -1,11 +1,13 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -18,6 +20,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
@@ -33,13 +37,14 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class KoboldEntity extends AbstractKoboldEntity {
+    public DefaultMythAnimations dispatcher;
     private static final EntityDataAccessor<ItemStack> DATA_ITEM_STACK = SynchedEntityData.defineId(KoboldEntity.class, EntityDataSerializers.ITEM_STACK);
     ;
 
     public KoboldEntity(EntityType<? extends AbstractKoboldEntity> entityType, Level world) {
         super(entityType, world, Monster.XP_REWARD_SMALL);
         navigation = new SmoothGroundNavigation(this, level());
-        this.dispatcher = new DefaultMythAnimations(this);
+        dispatcher = new DefaultMythAnimations(this);
     }
 
     @Override
@@ -150,6 +155,20 @@ public class KoboldEntity extends AbstractKoboldEntity {
                                 || (BrainUtils.getTargetOfEntity(this) != null
                                 && BrainUtils.getTargetOfEntity(this).is(BrainUtils.getLastAttacker(this))))
         );
+    }
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+            return false;
+        }
+        BlockPos pos = this.blockPosition();
+        int skyLight = level.getBrightness(LightLayer.SKY, pos);
+        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+
+        if (skyLight > 7 || blockLight > 7) {
+            return false;
+        }
+        return super.checkSpawnRules(level, spawnType);
     }
 
 
