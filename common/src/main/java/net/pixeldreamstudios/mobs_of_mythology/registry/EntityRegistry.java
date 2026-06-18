@@ -53,10 +53,10 @@ public class EntityRegistry {
                     .sized(2.0f, 1.5f)
                     .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "basilisk").toString()));
 
-    public static final RegistrySupplier<EntityType<PegasusEntity>> PEGASUS = ENTITIES.register("pegasus", () ->
-            EntityType.Builder.of(PegasusEntity::new, MobCategory.MONSTER)
-                    .sized(2.0f, 1.5f)
-                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "pegasus").toString()));
+//    public static final RegistrySupplier<EntityType<PegasusEntity>> PEGASUS = ENTITIES.register("pegasus", () ->
+//            EntityType.Builder.of(PegasusEntity::new, MobCategory.MONSTER)
+//                    .sized(2.0f, 1.5f)
+//                    .build(ResourceLocation.fromNamespaceAndPath(MobsOfMythology.MOD_ID, "pegasus").toString()));
 
     private static void initSpawns() {
         SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldEntity::checkAnyLightMonsterSpawnRules);
@@ -64,9 +64,6 @@ public class EntityRegistry {
 
         SpawnPlacementsRegistry.register(EntityRegistry.KOBOLD_WARRIOR, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, KoboldWarriorEntity::checkAnyLightMonsterSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.KOBOLD_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(KOBOLD_WARRIOR.get(), MobsOfMythology.config.koboldWarriorSpawnWeight, 2, 3)));
-
-        SpawnPlacementsRegistry.register(EntityRegistry.PEGASUS, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, PegasusEntity::checkMobSpawnRules);
-        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.PEGASUS_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(PEGASUS.get(), MobsOfMythology.config.pegasusSpawnWeight, 2, 3)));
 
         SpawnPlacementsRegistry.register(EntityRegistry.DRAKE, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, DrakeEntity::checkMobSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.DRAKE_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(DRAKE.get(), MobsOfMythology.config.drakeSpawnWeight, 1, 1)));
@@ -76,6 +73,9 @@ public class EntityRegistry {
 
         SpawnPlacementsRegistry.register(EntityRegistry.SPORELING, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, SporelingEntity::checkMobSpawnRules);
         BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.SPORELING_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(SPORELING.get(), MobsOfMythology.config.sporelingSpawnWeight, 4, 6)));
+
+        SpawnPlacementsRegistry.register(EntityRegistry.BASILISK, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BasiliskEntity::checkMobSpawnRules);
+        BiomeModifications.addProperties(b -> b.hasTag(TagRegistry.BASILISKS_BIOMES), (ctx, b) -> b.getSpawnProperties().addSpawn(MobCategory.MONSTER, new MobSpawnSettings.SpawnerData(BASILISK.get(), MobsOfMythology.config.basiliskSpawnWeight, 1, 1)));
     }
 
     private static void initAttributes() {
@@ -87,7 +87,7 @@ public class EntityRegistry {
         EntityAttributeRegistry.register(DRAKE, DrakeEntity::createAttributes);
         EntityAttributeRegistry.register(SPORELING, SporelingEntity::createAttributes);
         EntityAttributeRegistry.register(BASILISK, BasiliskEntity::createAttributes);
-        EntityAttributeRegistry.register(PEGASUS, PegasusEntity::createAttributes);
+//        EntityAttributeRegistry.register(PEGASUS, PegasusEntity::createAttributes);
     }
 
     public static void init() {

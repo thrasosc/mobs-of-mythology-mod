@@ -1,11 +1,5 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -17,6 +11,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -30,9 +25,10 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
@@ -44,8 +40,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class DrakeEntity extends TamableAnimal implements GeoEntity {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+public class DrakeEntity extends TamableAnimal {
+
+    public final DefaultMythAnimations dispatcher = new DefaultMythAnimations(this);
+
+    private enum BaseAnim { IDLE, WALK, RUN, SIT }
+    private BaseAnim baseAnim = BaseAnim.IDLE;
+
+
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(DrakeEntity.class, EntityDataSerializers.INT);
     public static final Predicate<LivingEntity> PREY_SELECTOR;
 
@@ -55,10 +57,13 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData) {
+        SpawnGroupData out = super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
+
         DrakeVariant variant = Util.getRandom(DrakeVariant.values(), this.random);
         setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+
+        return out;
     }
 
     @Nullable
@@ -73,8 +78,9 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
-    protected void applyTamingSideEffects() {
-        if (this.isTame()) {
+    public void setTame(boolean bl, boolean applyTamingSideEffects) {
+        super.setTame(bl, applyTamingSideEffects);
+        if (bl) {
             this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(MobsOfMythology.config.drakeHealth * 2);
             this.setHealth((float) (MobsOfMythology.config.drakeHealth * 2));
         } else {
@@ -102,11 +108,12 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
 
     @Override
     public boolean isFood(ItemStack itemStack) {
-        return itemStack.is(ItemTags.MEAT);
+        return itemStack.has(DataComponents.FOOD) && itemStack.is(ItemTags.MEAT);
     }
 
-    public DrakeVariant getVariant() {
-        return DrakeVariant.byId(this.getTypeVariant() & 255);
+    @SuppressWarnings("unchecked")
+    public <T> T getVariant() {
+        return (T) DrakeVariant.byId(this.getTypeVariant() & 255);
     }
 
     private void setVariant(DrakeVariant variant) {
@@ -148,74 +155,86 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
             return entityType == EntityType.VILLAGER || entityType == EntityType.WANDERING_TRADER || entityType == EntityType.WOLF;
         };
     }
-
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (isInSittingPose()) {
-                state.getController().setAnimation(DefaultMythAnimations.SIT);
-                return PlayState.CONTINUE;
-            } else if (state.isMoving() && !swinging) {
-                if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
-                    return PlayState.CONTINUE;
-                }
-                else {
-                    state.getController().setAnimation(DefaultMythAnimations.WALK);
-                    return PlayState.CONTINUE;
-                }
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
+    public void aiStep() {
+        super.aiStep();
 
+        if (level().isClientSide) return;
+
+        BaseAnim next;
+
+        if (isInSittingPose()) {
+            next = BaseAnim.SIT;
+        } else {
+            boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+            if (!moving) {
+                next = BaseAnim.IDLE;
+            } else if (isAggressive()) {
+                next = BaseAnim.RUN;
+            } else {
+                next = BaseAnim.WALK;
+            }
+        }
+
+        if (next != baseAnim) {
+            baseAnim = next;
+            switch (baseAnim) {
+                case SIT -> dispatcher.sit();
+                case RUN -> dispatcher.run();
+                case WALK -> dispatcher.walk();
+                default -> dispatcher.idle();
+            }
+        }
+    }
     @Override
     public boolean doHurtTarget(Entity entity) {
-        this.triggerAnim("attackController", "attack");
+        if (!level().isClientSide) {
+            dispatcher.attack();
+        }
         return super.doHurtTarget(entity);
-    }
-
-        @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
     }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand interactionHand) {
         ItemStack itemStack = player.getItemInHand(interactionHand);
-        Item item = itemStack.getItem();
-        if (this.level().isClientSide && (!this.isBaby() || !this.isFood(itemStack))) {
+        if (((Level)this.level()).isClientSide) {
             boolean bl = this.isOwnedBy(player) || this.isTame() || itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get()) && !this.isTame();
             return bl ? InteractionResult.CONSUME : InteractionResult.PASS;
-        } else if (this.isTame()) {
+        }
+        if (this.isTame()) {
+            InteractionResult interactionResult;
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                itemStack.consume(1, player);
-                FoodProperties foodProperties = (FoodProperties)itemStack.get(DataComponents.FOOD);
-                float f = foodProperties != null ? (float)foodProperties.nutrition() : 1.0F;
-                this.heal(2.0F * f);
-                return InteractionResult.sidedSuccess(this.level().isClientSide());
+                FoodProperties foodProperties = itemStack.get(DataComponents.FOOD);
+                if (foodProperties != null) {
+                    if (!player.getAbilities().instabuild) {
+                        itemStack.shrink(1);
+                    }
+                    this.heal(2.0f * foodProperties.nutrition());
+                    return InteractionResult.SUCCESS;
+                }
             }
-            InteractionResult interactionResult = super.mobInteract(player, interactionHand);
-            if (!interactionResult.consumesAction() && this.isOwnedBy(player)) {
-                this.setOrderedToSit(!this.isOrderedToSit());
-                this.jumping = false;
-                this.navigation.stop();
-                this.setTarget((LivingEntity)null);
-                return InteractionResult.SUCCESS_NO_ITEM_USED;
-            } else {
-                return interactionResult;
-            }
-        } else if (itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) {
-            itemStack.consume(1, player);
-            this.tryToTame(player);
+            if ((interactionResult = super.mobInteract(player, interactionHand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player)) return interactionResult;
+            this.setOrderedToSit(!this.isOrderedToSit());
+            this.jumping = false;
+            this.navigation.stop();
+            this.setTarget(null);
+            return InteractionResult.SUCCESS;
+        }
+        if (!itemStack.is(ItemRegistry.COOKED_CHUPACABRA_MEAT.get())) return super.mobInteract(player, interactionHand);
+        if (!player.getAbilities().instabuild) {
+            itemStack.shrink(1);
+        }
+        if (this.random.nextInt(3) == 0) {
+            this.tame(player);
+            this.navigation.stop();
+            this.setTarget(null);
+            this.setOrderedToSit(true);
+            ((Level)this.level()).broadcastEntityEvent(this, (byte)7);
             return InteractionResult.SUCCESS;
         } else {
-            return super.mobInteract(player, interactionHand);
+            ((Level)this.level()).broadcastEntityEvent(this, (byte)6);
         }
+        return InteractionResult.SUCCESS;
     }
 
     private void tryToTame(Player player) {
@@ -246,6 +265,18 @@ public class DrakeEntity extends TamableAnimal implements GeoEntity {
     protected SoundEvent getDeathSound() {
         this.playSound(SoundRegistry.DRAKE_DEATH.get(), 1.0f, 1.0f);
         return null;
+    }
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL)
+            return false;
+
+        BlockPos pos = this.blockPosition();
+        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+        if (blockLight > 4)
+            return false;
+
+        return super.checkSpawnRules(level, spawnType);
     }
 
     @Override

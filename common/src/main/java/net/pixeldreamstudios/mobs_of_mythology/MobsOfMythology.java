@@ -1,9 +1,9 @@
 package net.pixeldreamstudios.mobs_of_mythology;
 
 import dev.architectury.registry.client.level.entity.EntityRendererRegistry;
-import mod.azure.azurelib.common.internal.common.AzureLib;
-import mod.azure.azurelib.common.internal.common.AzureLibMod;
-import mod.azure.azurelib.common.internal.common.config.format.ConfigFormats;
+import mod.azure.azurelib.AzureLibMod;
+import mod.azure.azurelib.common.config.format.ConfigFormats;
+import net.minecraft.resources.ResourceLocation;
 import net.pixeldreamstudios.mobs_of_mythology.entity.client.renderer.*;
 import net.pixeldreamstudios.mobs_of_mythology.registry.*;
 import org.slf4j.Logger;
@@ -15,13 +15,16 @@ public final class MobsOfMythology {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static void init() {
-        AzureLib.initialize();
         config = AzureLibMod.registerConfig(MobsOfMythologyConfig.class, ConfigFormats.properties()).getConfigInstance();
         SoundRegistry.init();
         EntityRegistry.init();
         ItemRegistry.init();
         BlockRegistry.init();
         TabRegistry.init();
+    }
+
+    public static ResourceLocation modResource(String name) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
     }
 
     public static void initClient() {
@@ -32,6 +35,6 @@ public final class MobsOfMythology {
         EntityRendererRegistry.register(EntityRegistry.DRAKE, DrakeRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.SPORELING, SporelingRenderer::new);
         EntityRendererRegistry.register(EntityRegistry.BASILISK, BasiliskRenderer::new);
-        EntityRendererRegistry.register(EntityRegistry.PEGASUS, PegasusRenderer::new);
+//        EntityRendererRegistry.register(EntityRegistry.PEGASUS, PegasusRenderer::new);
     }
 }

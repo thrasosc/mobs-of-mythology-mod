@@ -1,12 +1,8 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
+import mod.azure.azurelib.common.util.MoveAnalysis;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.monster.Monster;
@@ -35,35 +31,35 @@ import net.tslat.smartbrainlib.api.core.sensor.vanilla.NearbyLivingEntitySensor;
 
 import java.util.List;
 
-public abstract class AbstractMythMonsterEntity extends Monster implements GeoEntity, SmartBrainOwner<AbstractMythMonsterEntity> {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+public abstract class AbstractMythMonsterEntity extends Monster implements SmartBrainOwner<AbstractMythMonsterEntity> {
+
+    public final DefaultMythAnimations animationDispatcher;
+    public final MoveAnalysis moveAnalysis;
+
+    private enum BaseAnim { IDLE, WALK, RUN }
+    private BaseAnim baseAnim = BaseAnim.IDLE;
 
     protected AbstractMythMonsterEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
+        this.animationDispatcher = new DefaultMythAnimations(this);
+        this.moveAnalysis = new MoveAnalysis(this);
+
     }
 
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
-
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (state.isMoving() && !swinging) {
-                if (isAggressive() && !swinging) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
-                    return PlayState.CONTINUE;
-                }
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
-                return PlayState.CONTINUE;
+    protected void produceParticles(ParticleOptions parameters) {
+        if (level().isClientSide()) {
+            for (int i = 0; i < 2; ++i) {
+                double d = this.random.nextGaussian() * 0.02;
+                double e = this.random.nextGaussian() * 0.02;
+                double f = this.random.nextGaussian() * 0.02;
+                this.level().addParticle(parameters,
+                        this.getRandomX(1.0),
+                        this.getRandomY() + 1.0,
+                        this.getRandomZ(1.0),
+                        d, e, f
+                );
             }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
+        }
     }
 
     @Override
@@ -80,19 +76,23 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
         return BrainActivityGroup.coreTasks(
                 new FloatToSurfaceOfFluid<>(),
                 new LookAtTarget<>(),
-                new MoveToWalkTarget<>());
+                new MoveToWalkTarget<>()
+        );
     }
 
     @Override
     public BrainActivityGroup<AbstractMythMonsterEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
-                new FirstApplicableBehaviour<AbstractMythMonsterEntity>(
+                new FirstApplicableBehaviour<>(
                         new TargetOrRetaliate<>(),
                         new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()),
+                        new SetRandomLookTarget<>()
+                ),
                 new OneRandomBehaviour<>(
                         new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))
+                )
+        );
     }
 
     @Override
@@ -103,15 +103,40 @@ public abstract class AbstractMythMonsterEntity extends Monster implements GeoEn
                 new SetWalkTargetToAttackTarget<>()
                         .speedMod((mob, livingEntity) -> 1.25f),
                 new AnimatableMeleeAttack<>(20)
-                        .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
-                        })
+                        .whenStarting(mob -> animationDispatcher.attack())
         );
     }
 
     @Override
     protected Brain.Provider<?> brainProvider() {
         return new SmartBrainProvider<>(this);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (level().isClientSide) return;
+
+        BaseAnim next;
+
+        boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+
+        if (!moving) {
+            next = BaseAnim.IDLE;
+        } else if (isAggressive() || getTarget() != null) {
+            next = BaseAnim.RUN;
+        } else {
+            next = BaseAnim.WALK;
+        }
+
+        if (next != baseAnim) {
+            baseAnim = next;
+            switch (baseAnim) {
+                case RUN  -> animationDispatcher.run();
+                case WALK -> animationDispatcher.walk();
+                default   -> animationDispatcher.idle();
+            }
+        }
     }
 
     @Override

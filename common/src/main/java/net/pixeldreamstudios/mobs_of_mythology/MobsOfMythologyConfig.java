@@ -1,10 +1,14 @@
 package net.pixeldreamstudios.mobs_of_mythology;
 
-import mod.azure.azurelib.common.api.common.config.Config;
-import mod.azure.azurelib.common.internal.common.config.Configurable;
+
+import mod.azure.azurelib.common.config.Config;
+import mod.azure.azurelib.common.config.Configurable;
 
 @Config(id = MobsOfMythology.MOD_ID)
 public class MobsOfMythologyConfig {
+    @Configurable
+    @Configurable.Synchronized
+    public boolean automatonAlwaysHostile = false;
     @Configurable
     @Configurable.Synchronized
     @Configurable.DecimalRange(min = 1)
@@ -72,8 +76,11 @@ public class MobsOfMythologyConfig {
     public double basiliskAttackDamage = 8.0;
     @Configurable
     @Configurable.Synchronized
-    @Configurable.DecimalRange(min = 1)
-    public double pegasusHealth = 50.0;
+    public int basiliskSpawnWeight = 10;
+//    @Configurable
+//    @Configurable.Synchronized
+//    @Configurable.DecimalRange(min = 1)
+//    public double pegasusHealth = 50.0;
     @Configurable
     @Configurable.Synchronized
     public int pegasusSpawnWeight = 10;

@@ -40,6 +40,7 @@ dependencies {
 
     implementation "mod.azure.azurelib:azurelib-neo-${minecraft_version}:${azurelib_version}"
     implementation "net.tslat.smartbrainlib:SmartBrainLib-neoforge-${minecraft_version}:${sbl_version}"
+    modApi "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_config_version}"
 }
 
 processResources {

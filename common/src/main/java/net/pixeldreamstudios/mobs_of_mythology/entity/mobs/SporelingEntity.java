@@ -1,12 +1,5 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.animation.RawAnimation;
-import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -32,19 +26,23 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.pixeldreamstudios.mobs_of_mythology.entity.variant.SporelingVariant;
+import net.tslat.smartbrainlib.api.core.navigation.SmoothGroundNavigation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class SporelingEntity extends PathfinderMob implements GeoEntity {
-    private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
-    public static final RawAnimation BOUNCE = RawAnimation.begin().thenPlay("bounce");
+public class SporelingEntity extends PathfinderMob {
+
+    public DefaultMythAnimations dispatcher;
+
     protected static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(SporelingEntity.class, EntityDataSerializers.INT);
     private Component currentLine;
     private String[] lines;
@@ -58,6 +56,8 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     public SporelingEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 1;
+        this.navigation = new SmoothGroundNavigation(this, level);
+        dispatcher = new DefaultMythAnimations(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -67,10 +67,10 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
     }
 
     @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData entityData) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance difficultyInstance, MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnGroupData) {
         SporelingVariant variant = Util.getRandom(SporelingVariant.values(), this.random);
         setVariant(variant);
-        return super.finalizeSpawn(world, difficulty, spawnReason, entityData);
+        return super.finalizeSpawn(serverLevelAccessor, difficultyInstance, mobSpawnType, spawnGroupData);
     }
 
     @Override
@@ -123,37 +123,23 @@ public class SporelingEntity extends PathfinderMob implements GeoEntity {
                 lineCooldown = 60;
             }
         }
+        if (this.level().isClientSide()) {
+            boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4;
+
+            if (moving) {
+                dispatcher.walk();
+            } else {
+                dispatcher.idle();
+            }
+        }
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "livingController", 3, state -> {
-            if (state.isMoving()) {
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
-                return PlayState.CONTINUE;
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        }));
-        controllerRegistrar.add(new AnimationController<>(this, "bounceController", 3, state -> {
-            if (touched) {
-                state.getController().forceAnimationReset();
-                state.getController().setAnimation(BOUNCE);
-                touched = false;
-            }
-            return PlayState.CONTINUE;
-        }));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
-    }
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (getVariant().equals(SporelingVariant.RED)) {
             interactSound = SoundEvents.VILLAGER_YES;
+            //TODO Make this data-driven
             lines = MobsOfMythology.config.redSporelingLines;
             greetings = Arrays.asList(
                     "Hello there, ",

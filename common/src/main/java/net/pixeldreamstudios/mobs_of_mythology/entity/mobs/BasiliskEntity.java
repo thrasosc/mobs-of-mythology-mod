@@ -1,12 +1,6 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
-import mod.azure.azurelib.core.animatable.instance.AnimatableInstanceCache;
-import mod.azure.azurelib.core.animatable.instance.SingletonAnimatableInstanceCache;
-import mod.azure.azurelib.core.animation.AnimatableManager;
-import mod.azure.azurelib.core.animation.AnimationController;
-import mod.azure.azurelib.core.object.PlayState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -54,17 +48,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, SmartBrainOwner<BasiliskEntity> {
-    private final AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
+public class BasiliskEntity extends AbstractChestedHorse implements SmartBrainOwner<BasiliskEntity> {
+
+    public final DefaultMythAnimations dispatcher;
+
+    private enum BaseAnim { IDLE, WALK, RUN }
+    private BaseAnim baseAnim = BaseAnim.IDLE;
 
     public BasiliskEntity(EntityType<? extends AbstractChestedHorse> entityType, Level level) {
         super(entityType, level);
         this.navigation = new SmoothGroundNavigation(this, level);
-    }
-
-    @Override
-    protected void randomizeAttributes(RandomSource randomSource) {
-
+        this.dispatcher = new DefaultMythAnimations(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -72,9 +66,13 @@ public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, S
                 .add(Attributes.MAX_HEALTH, MobsOfMythology.config.basiliskHealth)
                 .add(Attributes.ATTACK_DAMAGE, MobsOfMythology.config.basiliskAttackDamage)
                 .add(Attributes.ATTACK_KNOCKBACK, 1)
-                .add(Attributes.MOVEMENT_SPEED, 0.2f)
+                .add(Attributes.MOVEMENT_SPEED, 0.2F)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.75)
-                .add(Attributes.JUMP_STRENGTH, 0.5f);
+                .add(Attributes.JUMP_STRENGTH, 0.5F);
+    }
+
+    @Override
+    protected void randomizeAttributes(RandomSource randomSource) {
     }
 
     @Override
@@ -84,75 +82,65 @@ public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, S
 
     @Override
     protected boolean handleEating(Player player, ItemStack itemStack) {
-        boolean bl = false;
-        float f = 0.0F;
+        boolean ate = false;
+        float healAmount = 0.0F;
+
         if (itemStack.is(ItemTags.MEAT)) {
-            f = 4.0F;
+            healAmount = 4.0F;
         }
 
-        if (this.getHealth() < this.getMaxHealth() && f > 0.0F) {
-            this.heal(f);
-            bl = true;
+        if (this.getHealth() < this.getMaxHealth() && healAmount > 0.0F) {
+            this.heal(healAmount);
+            ate = true;
         }
 
-        if (bl) {
+        if (ate) {
             this.eat();
             this.gameEvent(GameEvent.EAT);
         }
 
-        return bl;
+        return ate;
     }
 
     @Override
-    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions entityDimensions, float f) {
-        return super.getPassengerAttachmentPoint(entity, entityDimensions, f)
-                .add(new Vec3(0.0, 0.01 * (double) f, -0.1 * (double) f).yRot(-this.getYRot() * (float) (Math.PI / 180.0)));
+    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions entityDimensions, float scale) {
+        return super.getPassengerAttachmentPoint(entity, entityDimensions, scale)
+                .add(new Vec3(0.0D, 0.01D * scale, -0.1D * scale)
+                        .yRot(-this.getYRot() * ((float) Math.PI / 180.0F)));
     }
 
     @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-        controllerRegistrar.add(new AnimationController<>(this, "controller", 3, state -> {
-            // SADDLED
-            if (isSaddled() || (!isSaddled() && hasExactlyOnePlayerPassenger())) {
-                if (state.isMoving() && !swinging) {
-                    if (isAggressive() || hasExactlyOnePlayerPassenger()) {
-                        state.getController().setAnimation(DefaultMythAnimations.RUN_RIDING);
-                        return PlayState.CONTINUE;
-                    }
-                    state.getController().setAnimation(DefaultMythAnimations.WALK_RIDING);
-                    return PlayState.CONTINUE;
-                }
-                state.getController().setAnimation(DefaultMythAnimations.IDLE_RIDING);
-                return PlayState.CONTINUE;
+    public void aiStep() {
+        super.aiStep();
+
+        if (!this.level().isClientSide()) {
+            return;
+        }
+
+        boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-4D;
+        BaseAnim next;
+
+        if (!moving) {
+            next = BaseAnim.IDLE;
+        } else if (this.isAggressive() || this.hasExactlyOnePlayerPassenger()) {
+            next = BaseAnim.RUN;
+        } else {
+            next = BaseAnim.WALK;
+        }
+
+        if (next != this.baseAnim) {
+            this.baseAnim = next;
+            switch (this.baseAnim) {
+                case RUN -> this.dispatcher.run();
+                case WALK -> this.dispatcher.walk();
+                default -> this.dispatcher.idle();
             }
-            // NOT SADDLED
-            if (state.isMoving() && !swinging) {
-                if (isAggressive() || hasExactlyOnePlayerPassenger()) {
-                    state.getController().setAnimation(DefaultMythAnimations.RUN);
-                    return PlayState.CONTINUE;
-                }
-                state.getController().setAnimation(DefaultMythAnimations.WALK);
-                return PlayState.CONTINUE;
-            }
-            state.getController().setAnimation(DefaultMythAnimations.IDLE);
-            return PlayState.CONTINUE;
-        })).add(new AnimationController<>(this, "attackController", 3, event -> {
-            swinging = false;
-            return PlayState.STOP;
-        }).triggerableAnim("attack", DefaultMythAnimations.ATTACK));
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return cache;
+        }
     }
 
     @Override
     public List<ExtendedSensor<BasiliskEntity>> getSensors() {
-        return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<>(),
-                new HurtBySensor<>()
-        );
+        return ObjectArrayList.of(new NearbyLivingEntitySensor<>(), new HurtBySensor<>());
     }
 
     @Override
@@ -160,36 +148,46 @@ public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, S
         return BrainActivityGroup.coreTasks(
                 new FloatToSurfaceOfFluid<>(),
                 new LookAtTarget<>(),
-                new MoveToWalkTarget<>());
+                new MoveToWalkTarget<>()
+        );
     }
 
     @Override
     public BrainActivityGroup<BasiliskEntity> getIdleTasks() {
         return BrainActivityGroup.idleTasks(
                 new FirstApplicableBehaviour<BasiliskEntity>(
-                        //TODO group retaliation
                         new TargetOrRetaliate<>()
-                                .attackablePredicate(target -> (target instanceof Monster && !(target instanceof Creeper)) && target.isAlive() && (!(target instanceof Player player) || !player.getAbilities().invulnerable) && !isAlliedTo(target))
+                                .attackablePredicate(target ->
+                                        target instanceof Monster
+                                                && !(target instanceof Creeper)
+                                                && target.isAlive()
+                                                && (!(target instanceof Player player) || !player.getAbilities().invulnerable)
+                                                && !isAlliedTo(target)
+                                )
                                 .alertAlliesWhen((mob, entity) -> this.isAggressive()),
                         new SetPlayerLookTarget<>(),
-                        new SetRandomLookTarget<>()),
+                        new SetRandomLookTarget<>()
+                ),
                 new OneRandomBehaviour<>(
                         new SetRandomWalkTarget<>(),
-                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))));
+                        new Idle<>().runFor(entity -> entity.getRandom().nextInt(30, 60))
+                )
+        );
     }
 
-    //TODO fix attacking owner
     @Override
     public BrainActivityGroup<BasiliskEntity> getFightTasks() {
         return BrainActivityGroup.fightTasks(
                 new InvalidateAttackTarget<>()
-                        .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target) || target.is(getOwner())),
+                        .invalidateIf((target, entity) ->
+                                !target.isAlive()
+                                        || !entity.hasLineOfSight(target)
+                                        || target.is(getOwner())
+                        ),
                 new SetWalkTargetToAttackTarget<>()
-                        .speedMod((mob, livingEntity) -> 1.5f),
+                        .speedMod((mob, livingEntity) -> 1.5F),
                 new AnimatableMeleeAttack<>(7)
-                        .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
-                        })
+                        .whenStarting(mob -> this.dispatcher.attack())
         );
     }
 
@@ -207,57 +205,63 @@ public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, S
         if (!this.isSilent()) {
             SoundEvent soundEvent = this.getEatingSound();
             if (soundEvent != null) {
-                this.level()
-                        .playSound(
-                                null, this.getX(), this.getY(), this.getZ(), soundEvent, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F
-                        );
+                this.level().playSound(
+                        null,
+                        this.getX(),
+                        this.getY(),
+                        this.getZ(),
+                        soundEvent,
+                        this.getSoundSource(),
+                        1.0F,
+                        1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F
+                );
             }
         }
     }
 
     @Override
-    public boolean causeFallDamage(float f, float g, DamageSource damageSource) {
-        if (f > 1.0F) {
+    public boolean causeFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        if (fallDistance > 1.0F) {
             this.playSound(SoundEvents.HORSE_LAND, 0.4F, 1.0F);
         }
 
-        int i = this.calculateFallDamage(f, g);
-        if (i <= 0) {
+        int damage = this.calculateFallDamage(fallDistance, damageMultiplier);
+        if (damage <= 0) {
             return false;
-        } else {
-            this.hurt(damageSource, (float)i);
-            if (this.isVehicle()) {
-                for (Entity entity : this.getIndirectPassengers()) {
-                    entity.hurt(damageSource, (float)i);
-                }
-            }
-
-            this.playBlockFallSound();
-            return true;
         }
+
+        this.hurt(damageSource, damage);
+        if (this.isVehicle()) {
+            for (Entity passenger : this.getIndirectPassengers()) {
+                passenger.hurt(damageSource, damage);
+            }
+        }
+
+        this.playBlockFallSound();
+        return true;
     }
 
     @Override
     protected SoundEvent getAmbientSound() {
-        this.playSound(SoundEvents.SNIFFER_IDLE, 1.0f, 0.25f);
+        this.playSound(SoundEvents.SNIFFER_IDLE, 1.0F, 0.25F);
         return null;
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        this.playSound(SoundEvents.SNIFFER_HURT, 1.0f, 0.25f);
+        this.playSound(SoundEvents.SNIFFER_HURT, 1.0F, 0.25F);
         return null;
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        this.playSound(SoundEvents.SNIFFER_DEATH, 1.0f, 0.25f);
+        this.playSound(SoundEvents.SNIFFER_DEATH, 1.0F, 0.25F);
         return null;
     }
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.SNIFFER_STEP, 0.25f, 0.75f);
+        this.playSound(SoundEvents.SNIFFER_STEP, 0.25F, 0.75F);
     }
 
     @Override
@@ -267,7 +271,7 @@ public class BasiliskEntity extends AbstractChestedHorse implements GeoEntity, S
 
     @Nullable
     protected SoundEvent getEatingSound() {
-        this.playSound(SoundEvents.SNIFFER_EAT, 1.0f, 0.5f);
+        this.playSound(SoundEvents.SNIFFER_EAT, 1.0F, 0.5F);
         return null;
     }
 }

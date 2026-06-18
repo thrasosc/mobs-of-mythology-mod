@@ -1,8 +1,8 @@
 package net.pixeldreamstudios.mobs_of_mythology.entity.mobs;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import mod.azure.azurelib.common.api.common.animatable.GeoEntity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.Difficulty;
@@ -11,7 +11,9 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.Monster;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.pixeldreamstudios.mobs_of_mythology.MobsOfMythology;
 import net.pixeldreamstudios.mobs_of_mythology.entity.AbstractMythMonsterEntity;
+import net.pixeldreamstudios.mobs_of_mythology.entity.constant.DefaultMythAnimations;
 import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.attack.AnimatableMeleeAttack;
 import net.tslat.smartbrainlib.api.core.behaviour.custom.misc.ReactToUnreachableTarget;
@@ -37,15 +40,16 @@ import net.tslat.smartbrainlib.util.BrainUtils;
 
 import java.util.List;
 
-public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEntity {
+public class ChupacabraEntity extends AbstractMythMonsterEntity {
     private boolean unreachableTarget = false;
+
+    public DefaultMythAnimations dispatcher;
 
     public ChupacabraEntity(EntityType<? extends Monster> entityType, Level level) {
         super(entityType, level);
         navigation = new SmoothGroundNavigation(this, level());
-        GroundPathNavigation mobNavigation = (GroundPathNavigation)this.getNavigation();
-        mobNavigation.setCanWalkOverFences(true);
         this.xpReward = Enemy.XP_REWARD_MEDIUM;
+        dispatcher = new DefaultMythAnimations(this);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -57,10 +61,22 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
     }
 
     @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.5f, true));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomStrollGoal(this, 0.75f));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0f));
+        this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Animal.class, false));
+
+    }
+
+    @Override
     public List<ExtendedSensor<AbstractMythMonsterEntity>> getSensors() {
         return ObjectArrayList.of(
-                new NearbyLivingEntitySensor<AbstractMythMonsterEntity>()
-                        .setPredicate((target, entity) -> target instanceof Animal || target instanceof Player),
+                new NearbyLivingEntitySensor<>(),
                 new HurtBySensor<>(),
                 new UnreachableTargetSensor<>()
         );
@@ -73,35 +89,36 @@ public class ChupacabraEntity extends AbstractMythMonsterEntity implements GeoEn
                         .invalidateIf((target, entity) -> !target.isAlive() || !entity.hasLineOfSight(target)),
                 new SetWalkTargetToAttackTarget<>()
                         .speedMod((mob, livingEntity) -> 1.25f)
-                        .startCondition(mob -> BrainUtils.getTargetOfEntity(this) instanceof Animal),
+                        .startCondition(mob -> mob.getTarget() != null && mob.getTarget().isAlive()),
                 new FleeTarget<>()
                         .speedModifier(1.75f)
                         .startCondition(pathfinderMob -> BrainUtils.getTargetOfEntity(this) instanceof Player || BrainUtils.getLastAttacker(this) instanceof Player || unreachableTarget)
                         .whenStopping(pathfinderMob -> unreachableTarget = false),
                 new AnimatableMeleeAttack<>(8)
                         .whenStarting(mob -> {
-                            this.triggerAnim("attackController", "attack");
+                            if (!level().isClientSide) {
+                                dispatcher.attack();
+                            }
+                            produceParticles(ParticleTypes.CRIMSON_SPORE);
                             if (getHealth() < getMaxHealth()) {
                                 this.heal(1.5f);
+                                produceParticles(ParticleTypes.HAPPY_VILLAGER);
                             }
                         }),
                 new ReactToUnreachableTarget<>()
                         .reaction((livingEntity, aBoolean) -> unreachableTarget = true)
         );
     }
-
     @Override
     public boolean checkSpawnRules(LevelAccessor level, MobSpawnType spawnType) {
-        if (level.getDifficulty() == Difficulty.PEACEFUL) {
+        if (level.getDifficulty() == Difficulty.PEACEFUL)
             return false;
-        }
-        BlockPos pos = this.blockPosition();
-        int skyLight = level.getBrightness(LightLayer.SKY, pos);
-        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
 
-        if (skyLight > 7 || blockLight > 7) {
+        BlockPos pos = this.blockPosition();
+        int blockLight = level.getBrightness(LightLayer.BLOCK, pos);
+        if (blockLight > 4)
             return false;
-        }
+
         return super.checkSpawnRules(level, spawnType);
     }
 
